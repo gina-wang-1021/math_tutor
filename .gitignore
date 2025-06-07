@@ -1,0 +1,5 @@
+.env
+notes.md
+docs.txt
+.streamlit/
+__pycache__/
