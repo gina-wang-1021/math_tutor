@@ -1,13 +1,17 @@
 import streamlit as st
 import numpy as np
 from openai import OpenAI
-from engine import generate_response
+from engine import pipeline
 import pandas as pd
 import csv
+from logger_config import setup_logger
+
+# Initialize logger
+logger = setup_logger('app')
 
 df = pd.read_csv("student_data.csv")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY2"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "login_success" not in st.session_state:
     st.session_state.login_success = False
@@ -30,12 +34,14 @@ if not st.session_state.login_success:
     
     if st.button("Start Learning"):
         if student_id in df["student_id"].values:
+            logger.info(f"Successful login for student {student_id}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
             st.session_state.student_id = student_id
             st.success("Login successful!")
             st.rerun()
         else:
+            logger.warning(f"Failed login attempt with ID {student_id}")
             st.session_state.login_failed = True
             st.rerun()
 
@@ -49,17 +55,46 @@ else:
             st.markdown(message["content"])
 
     if question := st.chat_input(f"Ask a question on math"):
+        logger.info(f"New question from student {st.session_state.student_id}")
+        logger.debug(f"Question: {question}")
+        
+        # Display user message
         with st.chat_message("user"):
             st.markdown(question)
         st.session_state.messages.append({"role": "user", "content": question})
 
+        # Handle assistant response
         with st.chat_message("assistant"):
+            # Prepare chat history
             history_str = "\n".join([
                 f"User: {m['content']}" if m["role"] == "user" else f"AI: {m['content']}"
                 for m in st.session_state.messages
             ])
-
-            stream = generate_response(st.session_state.user_grade, st.session_state.learning_topic, question, history_str)
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            logger.debug(f"Chat history length: {len(history_str.split())} words")
+            
+            try:
+                logger.info("Calling pipeline for response")
+                # Call pipeline with student_id
+                response = pipeline(
+                    student_id=st.session_state.student_id,
+                    user_question=question,
+                    history=history_str
+                )
+                
+                if response:
+                    logger.info("Successfully generated response")
+                    # Add response to chat and display it
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    st.markdown(response)
+                else:
+                    logger.warning("Empty response from pipeline")
+                    error_msg = "I couldn't generate a response. Please try again."
+                    st.error(error_msg)
+                    st.session_state.messages.append({"role": "assistant", "content": error_msg})
+                    
+            except Exception as e:
+                logger.error(f"Pipeline error: {str(e)}")
+                error_msg = f"An error occurred: {str(e)}"
+                st.error(error_msg)
+                st.session_state.messages.append({"role": "assistant", "content": error_msg})
 
