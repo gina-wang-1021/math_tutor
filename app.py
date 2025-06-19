@@ -3,7 +3,6 @@ import numpy as np
 from openai import OpenAI
 from engine import pipeline
 import pandas as pd
-import csv
 from logger_config import setup_logger
 
 # Initialize logger
@@ -52,7 +51,7 @@ else:
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            st.markdown(message["content"], unsafe_allow_html=True)
 
     if question := st.chat_input(f"Ask a question on math"):
         logger.info(f"New question from student {st.session_state.student_id}")
@@ -60,7 +59,7 @@ else:
         
         # Display user message
         with st.chat_message("user"):
-            st.markdown(question)
+            st.markdown(question, unsafe_allow_html=True)
         st.session_state.messages.append({"role": "user", "content": question})
 
         # Handle assistant response
@@ -73,27 +72,51 @@ else:
             logger.debug(f"Chat history length: {len(history_str.split())} words")
             
             try:
-                logger.info("Calling pipeline for response")
-                # Call pipeline with student_id
+                logger.info("Calling pipeline")
+                # Create placeholders for the hint and response
+                hint_placeholder = st.empty()
+                response_placeholder = st.empty()
+                full_response = []
+
+                # Show generating hint with subtle styling
+                with hint_placeholder:
+                    st.markdown("<div color='gray' style='font-size: 0.9em;'>⌛ Generating response...</div>", unsafe_allow_html=True)
+
+                # Callback to handle streaming tokens
+                def handle_token(token: str):
+                    # Clear the hint on first token
+                    if not full_response:
+                        hint_placeholder.empty()
+                    full_response.append(token)
+                    # Join all tokens and display
+                    response_placeholder.markdown(''.join(full_response), unsafe_allow_html=True)
+                
+                # Call pipeline with student_id and streaming handler
                 response = pipeline(
                     student_id=st.session_state.student_id,
                     user_question=question,
-                    history=history_str
+                    history=history_str,
+                    stream_handler=handle_token
                 )
                 
                 if response:
-                    logger.info("Successfully generated response")
-                    # Add response to chat and display it
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                    st.markdown(response)
+                    # Get the complete response
+                    complete_response = ''.join(full_response) if full_response else response
+                    # Add response to chat history
+                    st.session_state.messages.append({"role": "assistant", "content": complete_response})
+                    # Update the placeholder with the complete response
+                    response_placeholder.markdown(complete_response, unsafe_allow_html=True)
                 else:
-                    logger.warning("Empty response from pipeline")
+                    # Clear the hint and show error
+                    hint_placeholder.empty()
                     error_msg = "I couldn't generate a response. Please try again."
                     st.error(error_msg)
                     st.session_state.messages.append({"role": "assistant", "content": error_msg})
                     
             except Exception as e:
                 logger.error(f"Pipeline error: {str(e)}")
+                # Clear the hint and show error
+                hint_placeholder.empty()
                 error_msg = f"An error occurred: {str(e)}"
                 st.error(error_msg)
                 st.session_state.messages.append({"role": "assistant", "content": error_msg})

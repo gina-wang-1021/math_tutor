@@ -3,6 +3,4 @@ notes.md
 docs.txt
 .streamlit/
 __pycache__/
-logs/
-student_data.csv
-indexes/indexes/
+indexes/

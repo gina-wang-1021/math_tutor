@@ -1,0 +1,58 @@
+2025-06-16 18:22:47,564 | INFO     | app | Successful login for student TestTT22
+2025-06-16 18:25:06,501 | INFO     | app | New question from student TestTT22
+2025-06-16 18:25:06,503 | DEBUG    | app | Question: If a car travels at 60 mph, how long will it take to go 180 miles?
+2025-06-16 18:25:06,505 | DEBUG    | app | Chat history length: 17 words
+2025-06-16 18:25:06,505 | INFO     | app | Calling pipeline
+2025-06-16 18:30:27,273 | INFO     | app | New question from student TestTT22
+2025-06-16 18:30:27,273 | DEBUG    | app | Question: What’s the difference between mean, median, and mode?
+2025-06-16 18:30:27,275 | DEBUG    | app | Chat history length: 106 words
+2025-06-16 18:30:27,275 | INFO     | app | Calling pipeline
+2025-06-16 18:51:51,651 | INFO     | app | Successful login for student ywa3324
+2025-06-16 18:53:10,597 | INFO     | app | New question from student ywa3324
+2025-06-16 18:53:10,598 | DEBUG    | app | Question: Why is a bell curve so common in real life?
+2025-06-16 18:53:10,599 | DEBUG    | app | Chat history length: 11 words
+2025-06-16 18:53:10,599 | INFO     | app | Calling pipeline
+2025-06-16 19:09:57,863 | INFO     | app | New question from student ywa3324
+2025-06-16 19:09:57,863 | DEBUG    | app | Question: What does it mean when something is ‘normally distributed’?
+2025-06-16 19:09:57,867 | DEBUG    | app | Chat history length: 35 words
+2025-06-16 19:09:57,867 | INFO     | app | Calling pipeline
+2025-06-16 19:10:26,354 | INFO     | app | Successful login for student TestTT22
+2025-06-16 19:10:31,340 | INFO     | app | New question from student TestTT22
+2025-06-16 19:10:31,341 | DEBUG    | app | Question: What does it mean when something is ‘normally distributed’?
+2025-06-16 19:10:31,342 | DEBUG    | app | Chat history length: 10 words
+2025-06-16 19:10:31,343 | INFO     | app | Calling pipeline
+2025-06-16 19:11:05,118 | INFO     | app | New question from student TestTT22
+2025-06-16 19:11:05,119 | DEBUG    | app | Question: What does it mean when something is ‘normally distributed’?
+2025-06-16 19:11:05,120 | DEBUG    | app | Chat history length: 62 words
+2025-06-16 19:11:05,120 | INFO     | app | Calling pipeline
+2025-06-16 19:13:06,147 | INFO     | app | Successful login for student ywa3324
+2025-06-16 19:13:31,141 | INFO     | app | New question from student ywa3324
+2025-06-16 19:13:31,142 | DEBUG    | app | Question: What does it mean when something is ‘normally distributed’?
+2025-06-16 19:13:31,145 | DEBUG    | app | Chat history length: 10 words
+2025-06-16 19:13:31,145 | INFO     | app | Calling pipeline
+2025-06-16 19:13:48,140 | INFO     | app | New question from student ywa3324
+2025-06-16 19:13:48,140 | DEBUG    | app | Question: Why is it bad to only survey your friends for a school project?
+2025-06-16 19:13:48,142 | DEBUG    | app | Chat history length: 49 words
+2025-06-16 19:13:48,143 | INFO     | app | Calling pipeline
+2025-06-16 19:16:18,101 | INFO     | app | New question from student ywa3324
+2025-06-16 19:16:18,101 | DEBUG    | app | Question: what is 10*32/3
+2025-06-16 19:16:18,103 | DEBUG    | app | Chat history length: 118 words
+2025-06-16 19:16:18,103 | INFO     | app | Calling pipeline
+2025-06-16 19:17:29,026 | INFO     | app | New question from student ywa3324
+2025-06-16 19:17:29,026 | DEBUG    | app | Question: What's the difference between a line, a line segment, and a ray?
+2025-06-16 19:17:29,028 | DEBUG    | app | Chat history length: 173 words
+2025-06-16 19:17:29,028 | INFO     | app | Calling pipeline
+2025-06-16 19:38:04,276 | INFO     | app | Successful login for student ywa3324
+2025-06-16 19:38:24,437 | INFO     | app | New question from student ywa3324
+2025-06-16 19:38:24,438 | DEBUG    | app | Question: What’s the Pythagorean Theorem and when do I use it?
+2025-06-16 19:38:24,446 | DEBUG    | app | Chat history length: 11 words
+2025-06-16 19:38:24,447 | INFO     | app | Calling pipeline
+2025-06-16 19:39:49,127 | INFO     | app | New question from student ywa3324
+2025-06-16 19:39:49,128 | DEBUG    | app | Question: what are formulas related to Pythagorean Theorem
+2025-06-16 19:39:49,132 | DEBUG    | app | Chat history length: 182 words
+2025-06-16 19:39:49,132 | INFO     | app | Calling pipeline
+2025-06-16 19:40:42,024 | INFO     | app | Successful login for student TestTT22
+2025-06-16 19:40:50,891 | INFO     | app | New question from student TestTT22
+2025-06-16 19:40:50,892 | DEBUG    | app | Question: What’s the Pythagorean Theorem and when do I use it?
+2025-06-16 19:40:50,897 | DEBUG    | app | Chat history length: 11 words
+2025-06-16 19:40:50,897 | INFO     | app | Calling pipeline

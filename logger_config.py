@@ -19,7 +19,7 @@ def setup_logger(name, log_dir='logs'):
         
     # Create logger
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)  # Set root logger to DEBUG
     
     # Prevent adding handlers multiple times
     if logger.handlers:
@@ -41,12 +41,12 @@ def setup_logger(name, log_dir='logs'):
         backupCount=5
     )
     file_handler.setFormatter(file_formatter)
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)  # Capture all debug logs in file
     
     # Console handler
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(console_formatter)
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.INFO)  # Keep console at INFO to reduce noise
     
     # Add handlers to logger
     logger.addHandler(file_handler)
