@@ -1,0 +1,26 @@
+
+            Given a chat history and the latest user question, reformulate the question as a standalone question.
+            Pay special attention to:
+            1. References to practice examples or exercises from previous responses
+            2. Questions asking for answers, solutions or explanations of non-specified problems, which likely refer to the last example
+            3. References to specific values or numbers mentioned in the history
+            4. Questions that require information from parts of the chat history to answer
+
+            If the question refers to a practice example or previous problem, include the full problem details in your reformulation.
+            If the question requires information from parts of the chat history, include the relevant details in your reformulation.
+            If the question is already standalone and doesn't reference the history, return the original question.
+
+            Chat history:
+            {history}
+
+            Follow-up question:
+            {user_question}
+
+            Example reformulations:
+            - Original: "what is the answer?" (after a practice example about a 45° triangle)
+            Reformulated: "In the practice example with a right triangle with angle 45°, opposite side 4 units, and hypotenuse 5 units, what is the length of the adjacent side?"
+            - Original: "I don't understand how to solve it"
+            Reformulated: "How do I solve the problem about finding the adjacent side in a right triangle with angle 45°, opposite side 4 units, and hypotenuse 5 units?"
+            - Original: "What did we talk about?"
+            Reformulated: "What did we talk about? (previous topic was trigonometric functions)"
+            

@@ -1,0 +1,34 @@
+2025-06-19 07:52:14,117 | INFO     | ingest_mock_historic_data | Starting mock historical Q&A data ingestion...
+2025-06-19 07:52:14,117 | INFO     | ingest_mock_historic_data | Ensuring data directory exists at: /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data
+2025-06-19 07:52:14,190 | INFO     | ingest_mock_historic_data | Processing Grade 11 data...
+2025-06-19 07:52:14,190 | INFO     | ingest_mock_historic_data | Generating embeddings for 3 questions for Grade 11...
+2025-06-19 07:52:17,457 | INFO     | ingest_mock_historic_data | Embeddings generated successfully for Grade 11.
+2025-06-19 07:52:17,463 | INFO     | ingest_mock_historic_data | Connected to SQLite DB: historic_qa_data/grade11_historic.db
+2025-06-19 07:52:17,468 | ERROR    | ingest_mock_historic_data | SQLite error for Grade 11: table qa_pairs has no column named question_text
+2025-06-19 07:52:17,468 | INFO     | ingest_mock_historic_data | Processing Grade 12 data...
+2025-06-19 07:52:17,468 | INFO     | ingest_mock_historic_data | Generating embeddings for 3 questions for Grade 12...
+2025-06-19 07:52:18,000 | INFO     | ingest_mock_historic_data | Embeddings generated successfully for Grade 12.
+2025-06-19 07:52:18,002 | INFO     | ingest_mock_historic_data | Connected to SQLite DB: historic_qa_data/grade12_historic.db
+2025-06-19 07:52:18,003 | ERROR    | ingest_mock_historic_data | SQLite error for Grade 12: table qa_pairs has no column named question_text
+2025-06-19 07:52:18,004 | INFO     | ingest_mock_historic_data | Mock historical Q&A data ingestion complete.
+2025-06-19 07:53:52,179 | INFO     | ingest_mock_historic_data | Starting mock historical Q&A data ingestion...
+2025-06-19 07:53:52,179 | INFO     | ingest_mock_historic_data | Ensuring data directory exists at: /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data
+2025-06-19 07:53:52,246 | INFO     | ingest_mock_historic_data | Processing Grade 11 data...
+2025-06-19 07:53:52,246 | INFO     | ingest_mock_historic_data | Generating embeddings for 3 questions for Grade 11...
+2025-06-19 07:53:53,506 | INFO     | ingest_mock_historic_data | Embeddings generated successfully for Grade 11.
+2025-06-19 07:53:53,512 | INFO     | ingest_mock_historic_data | Connected to SQLite DB: historic_qa_data/grade11_historic.db
+2025-06-19 07:53:53,518 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'What is the Pythagorean theore...' A: 'In a right-angled triangle, th...' with ID: 1 into Grade 11 DB.
+2025-06-19 07:53:53,518 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'Explain quadratic equations....' A: 'A quadratic equation is a seco...' with ID: 2 into Grade 11 DB.
+2025-06-19 07:53:53,519 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'What are the properties of a p...' A: 'Opposite sides are equal and p...' with ID: 3 into Grade 11 DB.
+2025-06-19 07:53:53,520 | INFO     | ingest_mock_historic_data | Added 3 vectors to FAISS index for Grade 11.
+2025-06-19 07:53:53,522 | INFO     | ingest_mock_historic_data | FAISS index for Grade 11 saved to: historic_qa_data/grade11.index
+2025-06-19 07:53:53,522 | INFO     | ingest_mock_historic_data | Processing Grade 12 data...
+2025-06-19 07:53:53,522 | INFO     | ingest_mock_historic_data | Generating embeddings for 3 questions for Grade 12...
+2025-06-19 07:53:54,365 | INFO     | ingest_mock_historic_data | Embeddings generated successfully for Grade 12.
+2025-06-19 07:53:54,366 | INFO     | ingest_mock_historic_data | Connected to SQLite DB: historic_qa_data/grade12_historic.db
+2025-06-19 07:53:54,368 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'What are derivatives in calcul...' A: 'A derivative represents the ra...' with ID: 1 into Grade 12 DB.
+2025-06-19 07:53:54,369 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'Explain the concept of limits....' A: 'A limit describes the value th...' with ID: 2 into Grade 12 DB.
+2025-06-19 07:53:54,369 | DEBUG    | ingest_mock_historic_data | Inserted Q: 'What is integration?...' A: 'Integration is a fundamental c...' with ID: 3 into Grade 12 DB.
+2025-06-19 07:53:54,369 | INFO     | ingest_mock_historic_data | Added 3 vectors to FAISS index for Grade 12.
+2025-06-19 07:53:54,370 | INFO     | ingest_mock_historic_data | FAISS index for Grade 12 saved to: historic_qa_data/grade12.index
+2025-06-19 07:53:54,371 | INFO     | ingest_mock_historic_data | Mock historical Q&A data ingestion complete.

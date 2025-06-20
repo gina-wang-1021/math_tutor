@@ -3,9 +3,28 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.callbacks.base import BaseCallbackHandler
-import pandas as pd
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+# Removed: from langchain_chroma import Chroma (now in retrieval_utils)
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.callbacks.base import BaseCallbackHandler
+# Removed: import pandas as pd (now in student_utils)
 import os
 from logger_config import setup_logger
+# Removed: import faiss (now in qa_utils)
+# Removed: import sqlite3 (now in qa_utils)
+import numpy as np
+
+# Import from new utility modules
+from utilities.student_utils import get_student_level, get_student_topic_level
+from utilities.qa_utils import (
+    load_historic_qa_resources, 
+    search_historic_qa, 
+    rephrase_question,
+    MAX_L2_DISTANCE_THRESHOLD, # Constant used by pipeline
+    HISTORIC_QA_K_NEIGHBORS # Constant used by pipeline
+)
+from utilities.retrieval_utils import get_relevant_chunks, get_topic
 
 
 class StreamingCallbackHandler(BaseCallbackHandler):
@@ -27,242 +46,38 @@ class StreamingCallbackHandler(BaseCallbackHandler):
 # Initialize logger
 logger = setup_logger('engine')
 
-# Test all log levels
+# Path to the prompts directory
+# Assuming engine.py is in the project root directory
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROMPT_DIR = os.path.join(PROJECT_ROOT, "prompts")
+
+def load_prompt(prompt_name: str) -> str:
+    """Loads a prompt string from a file in the PROMPT_DIR."""
+    prompt_file_path = os.path.join(PROMPT_DIR, prompt_name)
+    try:
+        with open(prompt_file_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        logger.error(f"Prompt file not found: {prompt_file_path}")
+        raise
+    except Exception as e:
+        logger.error(f"Error reading prompt file {prompt_file_path}: {e}")
+        raise
+
+# Constants for Historic Q&A are now in utilities.qa_utils
+# MAX_L2_DISTANCE_THRESHOLD and HISTORIC_QA_K_NEIGHBORS are imported from qa_utils
+
+# Test all log levels (can be kept here or removed if not essential for engine.py's direct operation)
 logger.debug('Test DEBUG message')
 logger.info('Test INFO message')
 logger.warning('Test WARNING message')
 logger.error('Test ERROR message')
 
-def get_student_level(student_id):
-    """Get student's grade from student_data.csv and convert grade to level.
-    
-    Args:
-        student_id (str): The student's ID to look up
-        
-    Returns:
-        str: The student's grade
-    """
-    try:
-        df = pd.read_csv("student_data.csv")
-        student_data = df[df["student_id"] == student_id]
-        if student_data.empty:
-            logger.warning(f"Student {student_id} not found in database")
-            return None
-        
-        if student_data.iloc[0]["grade"] == 11:
-            return "intermediate"
-        elif student_data.iloc[0]["grade"] == 12:
-            return "advanced"
-        else:
-            return "beginner"
-    except Exception as e:
-        logger.error(f"Error getting student grade: {str(e)}")
-        return None
+# All helper functions (get_student_level, load_historic_qa_resources, 
+# search_historic_qa, get_student_topic_level, get_relevant_chunks, 
+# get_topic, rephrase_question) have been moved to their respective utility files.
 
-def get_student_topic_level(student_id, topic):
-    """Get student's level (0 to 5) for a specific topic from student_data.csv.
-    
-    Args:
-        student_id (str): The student's ID to look up
-        topic (str): The topic to get the level for
-        
-    Returns:
-        int: The student's level as an integer from 0 to 5
-    """
-    try:
-        logger.info(f"Getting level for student {student_id} in topic {topic}")
-        
-        # Read student data - In future, this could be a database query
-        df = pd.read_csv("student_data.csv")
-        
-        # Get the specific student's data
-        student_data = df[df["student_id"] == student_id]
-        
-        if student_data.empty:
-            logger.warning(f"Student {student_id} not found in database")
-            return 0
-        
-        # Get the student's level for the topic
-        student_level = student_data.iloc[0][topic]
-        logger.info(f"Student {student_id} is at {student_level} level for {topic}")
-        return student_level
-        
-    except Exception as e:
-        logger.error(f"Error getting student level: {str(e)}")
-        return 0
-
-def get_relevant_chunks(topic, year, query):
-    """Get relevant chunks for a topic up to and including the specified year level.
-    
-    Args:
-        topic (str): The topic to search for
-        year (str): The maximum year level ('beginner', 'intermediate', 'advanced')
-        query (str): The search query
-        
-    Returns:
-        list: Combined list of relevant chunks from all applicable levels
-    """
-    logger.info(f"Retrieving chunks for topic {topic} up to level {year}")
-    
-    # Map string levels to match build_index.py's file_level_mapping
-    level_order = ['beginner', 'intermediate', 'advanced']
-    if year not in level_order:
-        logger.warning(f"Invalid level {year}, defaulting to beginner")
-        year = 'beginner'
-    max_level_idx = level_order.index(year)
-    
-    try:
-        # Get chunks from all levels up to and including the student's level
-        index_path = os.path.join('indexes', topic)
-        if not os.path.exists(index_path):
-            logger.error(f"No index found for topic {topic} at {index_path}")
-            logger.debug(f"Available indexes: {os.listdir('indexes') if os.path.exists('indexes') else 'none'}")
-            return []
-            
-        db = Chroma(persist_directory=index_path, embedding_function=OpenAIEmbeddings())
-        
-        try:
-            # Check what metadata is actually in the database
-            collection = db.get()
-        except Exception as e:
-            logger.warning(f"Could not inspect database metadata: {str(e)}")
-        
-        all_chunks = []
-        
-        # Get chunks for each level up to max_level
-        for level in level_order[:max_level_idx + 1]:
-            k_value = 2 if level != year else 3  # Get more results from current level
-            
-            try:
-                # Use similarity search directly with metadata filter
-                chunks = db.similarity_search(
-                    query,
-                    k=k_value,
-                    filter={"level": level}  # This should match the metadata set in build_index.py
-                )
-                
-                if chunks:
-                    logger.debug(f"Found {len(chunks)} chunks for level {level}")
-                    # Add score metadata if missing
-                    for chunk in chunks:
-                        if 'score' not in chunk.metadata:
-                            chunk.metadata['score'] = 0.0
-                    all_chunks.extend(chunks)
-                else:
-                    logger.debug(f"No chunks found for level {level}")
-                    
-            except Exception as e:
-                logger.warning(f"Error retrieving chunks for level {level}: {str(e)}")
-                continue
-        
-        logger.info(f"Retrieved total of {len(all_chunks)} chunks for topic {topic}")
-        return all_chunks
-        
-    except Exception as e:
-        logger.error(f"Error retrieving chunks for topic {topic}: {str(e)}")
-        return []
-
-def get_topic(question):
-    """Determine the math topics based on the question. 
-    Returns:
-        - None if it's a calculation question
-        - 'overview' if it's asking about general capabilities
-        - The most relevant topic otherwise
-    """
-
-    try:
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
-        topic_prompt = PromptTemplate.from_template("""
-            Analyze if the following question is:
-            A) A regular math calculation/arithmetic (e.g., "what is 2+2", "calculate 15% of 80", "solve 3x + 5 = 11")
-            B) A general inquiry about capabilities (e.g., "what can you teach me", "what topics do you cover", "what can I learn from you")
-            C) A question about specific math topics/concepts that requires explanation
-
-            If it's type A, respond with exactly: "calculation"
-            If it's type B, respond with exactly: "overview"
-            If it's type C, classify it into one of these topics that is the most relevant:
-
-            - algebra: Linear equations, inequalities, binomial theorem
-            - basics: Numbers, polynomials, coordinate geometry, real numbers, pair of linear equations, quadratic equations, complex numbers
-            - geometry: Coordinate geometry, trigonometry, circles, surface areas, volumes, conic sections, three dimensional geometry
-            - miscellaneous: Arithmetic progression, infinite series, sets, relations and functions, permutations and combinations, sequences and series
-            - modelling: Mathematical modeling and applications
-            - probability: Probability theory and applications
-            - statistics: Data analysis, statistical methods, measures of central tendency
-
-            Question: {question}
-            
-            For type C, respond with the **exact** topic name from the list above.
-            e.g. "algebra" or "geometry"
-            """)
-        
-        topic_chain = LLMChain(llm=llm, prompt=topic_prompt)
-        response = topic_chain.run({"question": question}).strip().lower()
-        
-        if response == "calculation":
-            return None
-        elif response == "overview":
-            return "overview"
-        
-        # Validate the topic
-        valid_topics = ["algebra", "basics", "geometry", "miscellaneous", 
-                       "modelling", "probability", "statistics"]
-        if response in valid_topics:
-            return response
-        
-        return "basics"
-        
-    except Exception as e:
-        logger.error(f"Error detecting topics: {str(e)}")
-        return "basics"  # Default to basics if detection fails
-
-def rephrase_question(user_question: str, history: str) -> str:
-    """Generate a standalone version of a follow-up question using chat history.
-
-    Args:
-        user_question (str): The raw question from the student.
-        history (str): Concatenated chat history.
-
-    Returns:
-        str: Reformulated standalone question (falls back to original on error).
-    """
-    try:
-        llm_rephrase = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
-        rephrase_prompt = PromptTemplate.from_template(
-            """
-            Given a chat history and the latest user question, reformulate the question as a standalone question.
-            Pay special attention to:
-            1. References to practice examples or exercises from previous responses
-            2. Questions asking for answers, solutions or explanations of non-specified problems, which likely refer to the last example
-            3. References to specific values or numbers mentioned in the history
-            4. Questions that require information from parts of the chat history to answer
-
-            If the question refers to a practice example or previous problem, include the full problem details in your reformulation.
-            If the question requires information from parts of the chat history, include the relevant details in your reformulation.
-            If the question is already standalone and doesn't reference the history, return the original question.
-
-            Chat history:
-            {history}
-
-            Follow-up question:
-            {user_question}
-
-            Example reformulations:
-            - Original: "what is the answer?" (after a practice example about a 45° triangle)
-            Reformulated: "In the practice example with a right triangle with angle 45°, opposite side 4 units, and hypotenuse 5 units, what is the length of the adjacent side?"
-            - Original: "I don't understand how to solve it"
-            Reformulated: "How do I solve the problem about finding the adjacent side in a right triangle with angle 45°, opposite side 4 units, and hypotenuse 5 units?"
-            - Original: "What did we talk about?"
-            Reformulated: "What did we talk about? (previous topic was trigonometric functions)"
-            """
-        )
-        llm_chain = LLMChain(llm=llm_rephrase, prompt=rephrase_prompt)
-        return llm_chain.run({"user_question": user_question, "history": history}).strip()
-    except Exception as e:
-        logger.error(f"Error rephrasing question: {str(e)}")
-        return user_question
-
-def pipeline(student_id, user_question, history, stream_handler=None):
+def pipeline(student_id, user_question, history, stream_handler=None, historic_qa_l2_threshold=MAX_L2_DISTANCE_THRESHOLD):
     """Process a question and return an answer.
     
     Args:
@@ -297,13 +112,8 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             # Handle different types of questions
             if not detected_topic:
                 # It's a calculation question
-                calculation_prompt = PromptTemplate.from_template("""
-                    You are an expert math tutor. Answer the following math calculation question.
-                    Show your work step by step, but be concise. At the end, warn that AI is less reliable for calculations. Students should double-check the outputs.
-
-                    Question:
-                    {question}
-                """)
+                calculation_prompt_text = load_prompt("calculation_answer_prompt.txt")
+                calculation_prompt = PromptTemplate.from_template(calculation_prompt_text)
                 
                 answer_chain = LLMChain(llm=llm_answer, prompt=calculation_prompt)
                 response = answer_chain.run({"question": standalone_question}).strip()
@@ -312,22 +122,8 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             
             elif detected_topic == "overview":
                 # It's a general inquiry about capabilities
-                overview_prompt = PromptTemplate.from_template("""
-                    Answer the student's question. Bellow is a list of topics you cover, use these as context when necessary:
-
-                    - Algebra: Linear equations, inequalities, binomial theorem
-                    - Basics: Numbers, polynomials, coordinate geometry, real numbers, pair of linear equations, quadratic equations, complex numbers
-                    - Geometry: Coordinate geometry, trigonometry, circles, surface areas, volumes, conic sections, three dimensional geometry
-                    - Miscellaneous: Arithmetic progression, infinite series, sets, relations and functions, permutations and combinations, sequences and series
-                    - Mathematical Modeling: Applications of math to real-world problems
-                    - Probability: Probability theory and applications
-                    - Statistics: Data analysis, statistical methods, measures of central tendency
-
-                    Keep the response friendly and encouraging, but concise.
-
-                    Question:
-                    {question}
-                """)
+                overview_prompt_text = load_prompt("overview_answer_prompt.txt")
+                overview_prompt = PromptTemplate.from_template(overview_prompt_text)
                 
                 answer_chain = LLMChain(llm=llm_answer, prompt=overview_prompt)
                 response = answer_chain.run({"question": standalone_question}).strip()
@@ -335,8 +131,48 @@ def pipeline(student_id, user_question, history, stream_handler=None):
                 return response
 
             # Determine student's overall grade-based level (mapped from grade 11/12)
-            grade_based_level = get_student_level(student_id) or "beginner"
-            logger.debug(f"Student {student_id} is at grade {grade_based_level}")
+            grade_based_level, numeric_grade = get_student_level(student_id)
+            if grade_based_level is None and numeric_grade is None: # student_id not found or other error in get_student_level
+                grade_based_level = "beginner" # Default level string
+                # numeric_grade remains None, historic Q&A will be skipped.
+                logger.info(f"Student {student_id}: Grade Based Level: {grade_based_level}, Numeric Grade: {numeric_grade}")
+
+            # Detect whether a similar question had been asked before
+            if numeric_grade in [11, 12]:
+                logger.info(f"Attempting to retrieve historic Q&A for grade {numeric_grade} for question: '{standalone_question[:50]}...'")
+                historic_faiss_index = None # Ensure it's defined for finally block
+                historic_db_conn = None   # Ensure it's defined for finally block
+                try:
+                    # Initialize embeddings model here if not already available globally or passed in.
+                    # This assumes OPENAI_API_KEY is set in the environment.
+                    embeddings_model_instance = OpenAIEmbeddings()
+                    current_question_embedding_list = embeddings_model_instance.embed_query(standalone_question)
+                    # FAISS expects a 2D array for searching (batch of 1 embedding)
+                    current_question_embedding = np.array([current_question_embedding_list], dtype='float32')
+
+                    historic_faiss_index, historic_db_conn = load_historic_qa_resources(numeric_grade)
+
+                    if historic_faiss_index and historic_db_conn:
+                        historic_answer = search_historic_qa(
+                            current_question_embedding,
+                            historic_faiss_index,
+                            historic_db_conn,
+                            k=HISTORIC_QA_K_NEIGHBORS,
+                            max_distance_threshold=historic_qa_l2_threshold
+                        )
+                        if historic_answer:
+                            logger.info(f"Found and using historic answer for grade {numeric_grade} question.")
+                            return historic_answer
+                    else:
+                        logger.debug(f"Could not load historic Q&A resources for grade {numeric_grade}. Proceeding with normal generation.")
+                
+                except Exception as e:
+                    logger.error(f"Error during historic Q&A retrieval attempt for grade {numeric_grade}: {e}")
+                finally:
+                    if historic_db_conn:
+                        historic_db_conn.close()
+
+            logger.info(f"Did not find a similar question asked for grade {numeric_grade}")
 
             # For topic-based questions, first get all student levels
             topic_level = get_student_topic_level(student_id, detected_topic)
@@ -376,29 +212,8 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             chunks = "\n\n".join(chunks)
 
             # Determine if student's question is covered in the retrieved chunks
-            chunk_coverage_prompt = PromptTemplate.from_template("""
-                You are a curriculum-aligned tutor assistant. A student has asked a question, and you have been given excerpts from their current textbooks. Your task is to decide whether the student's question can be reasonably answered based on the textbook content.
-
-                Consider the following:
-                - The question may not appear word-for-word in the textbook, but if the underlying concept or skill is explained, it counts as covered.
-                - If the question is **on the same topic** but **requires knowledge that is not yet taught** in the retrieved material, consider it **not covered**.
-                
-                ---
-
-                **Student Question:**
-                {student_question}
-
-                **Retrieved Textbook Content:**
-                {retrieved_chunks}
-
-                ---
-
-                Answer **only** with one of the following:
-                - `Yes` – if the question is clearly answerable using the retrieved content.
-                - `No` – if the question is not covered or is too advanced based on this content.
-
-                Keep in mind to return **exactly** with **only** the word `Yes` or `No` and nothing else.
-            """)
+            chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
+            chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
             llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
             coverage_answer_chain = LLMChain(llm=llm, prompt=chunk_coverage_prompt)
             coverage_answer = coverage_answer_chain.run({
@@ -411,70 +226,8 @@ def pipeline(student_id, user_question, history, stream_handler=None):
                 return f"This topic is not covered in your textbook yet. I'm happy to help with other questions you have! 😊"
             
             # Topic-based answer prompt
-            topic_prompt = PromptTemplate.from_template("""
-                You are an intelligent math tutor helping students understand questions based on textbook materials. The student has asked a question that is covered by the curriculum and has a specific confidence level with the topic.
-
-                Below is the student question, the relevant textbook excerpts, and the student's self-rated confidence on this topic (from 1 to 5):
-
-                ---
-
-                **Student Question:**
-                {student_question}
-
-                **Relevant Textbook Content:**
-                {retrieved_chunks}
-
-                **Topic:**
-                {topic}
-
-                **Student Confidence Level (1–5):**
-                {confidence_level}
-
-                ---
-
-                Please answer the student's question **based on the textbook content and their confidence level**. 
-
-                Adjust your explanation style based on the student's confidence level as follows. Make sure the depth, tone, vocabulary, and structure are meaningfully different at each level. Do not reuse the same explanation across levels.
-
-                - **Confidence Level 1 (Beginner):**
-                    - Assume the student has little to no background in the topic.
-                    - Use very simple language and short sentences.
-                    - Break down the explanation into small, clear steps.
-                    - Define every math term (e.g., radius, slope).
-                    - Use real-life analogies or visuals where possible.
-                    - Do not use jargon or formal math notation unless you explain it carefully.
-
-                - **Confidence Level 2 (Low):**
-                    - Assume the student has seen the topic before but is still unsure.
-                    - Use simple terms, but introduce basic math language with explanations.
-                    - Provide step-by-step reasoning, with examples.
-                    - Focus on building intuition and comfort with the process.
-
-                - **Confidence Level 3 (Moderate):**
-                    - Assume the student has a basic grasp and is looking to solidify understanding.
-                    - Use standard math vocabulary and walk through logic clearly.
-                    - Include some math notation or formulas with explanation.
-                    - Give a clean, thorough explanation without over-explaining.
-
-                - **Confidence Level 4 (High):**
-                    - Assume the student understands the topic but may need clarity or refinement.
-                    - Use formal math terms and concise language.
-                    - Connect this concept to other related ideas or typical problems.
-                    - Offer strategic tips or shortcuts when appropriate.
-
-                - **Confidence Level 5 (Advanced):**
-                    - Assume the student has a strong grasp and wants deeper insights.
-                    - Be precise, efficient, and use technical language.
-                    - Refer to related theorems, derivations, or alternate methods if relevant.
-                    - Emphasize reasoning, abstraction, and generalization over step-by-step detail.
-
-                Always adjust tone, detail, and vocabulary based on the level. Use examples or equations where helpful, but only at the appropriate level.
-
-                **Do not repeat or mention the student’s question, confidence level, topic, or textbook content. Do not say "Since your confidence level is..."**
-
-                Make sure the explanation is accurate and based only on the provided material. 
-                Return only a clear, direct answer for the student's level, **not every level and DO NOT MENTION THE CONFIDENCE LEVEL**.
-            """)
+            topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
+            topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
 
             # Generate answer
             try:
@@ -488,6 +241,10 @@ def pipeline(student_id, user_question, history, stream_handler=None):
                     "confidence_level": student_level_info
                 })
                 logger.info(f"Final Answer for topic-based question → {response}")
+
+                # TODO:
+                # Save generated answer and the student's question to both databases
+
                 return response
                 
             except Exception as e:
