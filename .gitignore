@@ -4,3 +4,4 @@ docs.txt
 .streamlit/
 __pycache__/
 indexes/
+logs/
