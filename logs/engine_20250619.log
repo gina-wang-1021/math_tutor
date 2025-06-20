@@ -1,0 +1,481 @@
+2025-06-19 18:31:58,204 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:31:58,204 | INFO     | engine | Test INFO message
+2025-06-19 18:31:58,204 | WARNING  | engine | Test WARNING message
+2025-06-19 18:31:58,204 | ERROR    | engine | Test ERROR message
+2025-06-19 18:31:58,207 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,207 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,207 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,208 | INFO     | engine | Rephrased Question → Explain calculus in detail.
+2025-06-19 18:31:58,208 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6302275904'>
+2025-06-19 18:31:58,211 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,214 | INFO     | engine | Processing question for student student_g12
+2025-06-19 18:31:58,214 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,214 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,214 | INFO     | engine | Rephrased Question → Explain calculus for grade 12.
+2025-06-19 18:31:58,215 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6302588592'>
+2025-06-19 18:31:58,215 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,218 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,219 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,219 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,219 | INFO     | engine | Rephrased Question → A slightly different calculus question.
+2025-06-19 18:31:58,219 | INFO     | engine | Detected topic: calculus_topic
+2025-06-19 18:31:58,219 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,220 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,221 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,221 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,221 | INFO     | engine | Rephrased Question → A very unique calculus question.
+2025-06-19 18:31:58,221 | INFO     | engine | Detected topic: calculus_unique
+2025-06-19 18:31:58,221 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,222 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,222 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,222 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,222 | INFO     | engine | Rephrased Question → Calculus question for custom threshold.
+2025-06-19 18:31:58,222 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6302887584'>
+2025-06-19 18:31:58,223 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,224 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,224 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,224 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,224 | INFO     | engine | Rephrased Question → Calculus question for stricter threshold.
+2025-06-19 18:31:58,224 | INFO     | engine | Detected topic: calculus_strict
+2025-06-19 18:31:58,224 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,226 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,226 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,226 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,226 | INFO     | engine | Rephrased Question → Question needing DB.
+2025-06-19 18:31:58,226 | INFO     | engine | Detected topic: db_fail_topic
+2025-06-19 18:31:58,226 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,229 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,229 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,229 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,229 | INFO     | engine | Rephrased Question → Another calculus question.
+2025-06-19 18:31:58,229 | INFO     | engine | Detected topic: calculus_topic_2
+2025-06-19 18:31:58,229 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,230 | INFO     | engine | Processing question for student student_g10
+2025-06-19 18:31:58,230 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,230 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,230 | INFO     | engine | Rephrased Question → A basic math question.
+2025-06-19 18:31:58,230 | INFO     | engine | Detected topic: basics
+2025-06-19 18:31:58,230 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:31:58,235 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:31:58,235 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:31:58,235 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:31:58,235 | INFO     | engine | Rephrased Question → Question for empty index.
+2025-06-19 18:31:58,235 | INFO     | engine | Detected topic: empty_index_topic
+2025-06-19 18:31:58,236 | ERROR    | engine | Error retrieving documents: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+2025-06-19 18:39:51,656 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:39:51,656 | INFO     | engine | Test INFO message
+2025-06-19 18:39:51,656 | WARNING  | engine | Test WARNING message
+2025-06-19 18:39:51,656 | ERROR    | engine | Test ERROR message
+2025-06-19 18:39:51,659 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,659 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,659 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,659 | INFO     | engine | Rephrased Question → Explain calculus in detail.
+2025-06-19 18:39:51,660 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6303641968'>
+2025-06-19 18:39:51,660 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Explain calculus in detail....'
+2025-06-19 18:39:51,660 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:39:51,667 | INFO     | engine | Processing question for student student_g12
+2025-06-19 18:39:51,667 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,667 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,667 | INFO     | engine | Rephrased Question → Explain calculus for grade 12.
+2025-06-19 18:39:51,668 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6304062768'>
+2025-06-19 18:39:51,668 | INFO     | engine | Attempting to retrieve historic Q&A for grade 12 for question: 'Explain calculus for grade 12....'
+2025-06-19 18:39:51,668 | INFO     | engine | Found and using historic answer for grade 12 question.
+2025-06-19 18:39:51,670 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,670 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,670 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,670 | INFO     | engine | Rephrased Question → A slightly different calculus question.
+2025-06-19 18:39:51,671 | INFO     | engine | Detected topic: calculus_topic
+2025-06-19 18:39:51,671 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A slightly different calculus question....'
+2025-06-19 18:39:51,671 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,683 | DEBUG    | engine | Student level for topic calculus_topic: 0
+2025-06-19 18:39:51,683 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic
+2025-06-19 18:39:51,683 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,685 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,685 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,685 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,687 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,687 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,687 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,687 | INFO     | engine | Rephrased Question → A very unique calculus question.
+2025-06-19 18:39:51,687 | INFO     | engine | Detected topic: calculus_unique
+2025-06-19 18:39:51,687 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A very unique calculus question....'
+2025-06-19 18:39:51,687 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,689 | DEBUG    | engine | Student level for topic calculus_unique: 0
+2025-06-19 18:39:51,689 | DEBUG    | engine | Found 1 relevant chunks for calculus_unique
+2025-06-19 18:39:51,689 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,689 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,689 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,689 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,692 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,692 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,692 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,692 | INFO     | engine | Rephrased Question → Calculus question for custom threshold.
+2025-06-19 18:39:51,692 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6304458576'>
+2025-06-19 18:39:51,692 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for custom threshold....'
+2025-06-19 18:39:51,692 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:39:51,695 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,695 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,695 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,695 | INFO     | engine | Rephrased Question → Calculus question for stricter threshold.
+2025-06-19 18:39:51,695 | INFO     | engine | Detected topic: calculus_strict
+2025-06-19 18:39:51,695 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for stricter threshold....'
+2025-06-19 18:39:51,695 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,697 | DEBUG    | engine | Student level for topic calculus_strict: 0
+2025-06-19 18:39:51,697 | DEBUG    | engine | Found 1 relevant chunks for calculus_strict
+2025-06-19 18:39:51,697 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,698 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,698 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,698 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,699 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,700 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,700 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,700 | INFO     | engine | Rephrased Question → Question needing DB.
+2025-06-19 18:39:51,700 | INFO     | engine | Detected topic: db_fail_topic
+2025-06-19 18:39:51,700 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question needing DB....'
+2025-06-19 18:39:51,700 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:39:51,700 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,701 | DEBUG    | engine | Student level for topic db_fail_topic: 0
+2025-06-19 18:39:51,701 | DEBUG    | engine | Found 1 relevant chunks for db_fail_topic
+2025-06-19 18:39:51,701 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,702 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,702 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,702 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,703 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,703 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,703 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,703 | INFO     | engine | Rephrased Question → Another calculus question.
+2025-06-19 18:39:51,703 | INFO     | engine | Detected topic: calculus_topic_2
+2025-06-19 18:39:51,703 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Another calculus question....'
+2025-06-19 18:39:51,704 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:39:51,704 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,705 | DEBUG    | engine | Student level for topic calculus_topic_2: 0
+2025-06-19 18:39:51,705 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic_2
+2025-06-19 18:39:51,705 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,705 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,706 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,706 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,707 | INFO     | engine | Processing question for student student_g10
+2025-06-19 18:39:51,707 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,707 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,707 | INFO     | engine | Rephrased Question → A basic math question.
+2025-06-19 18:39:51,707 | INFO     | engine | Detected topic: basics
+2025-06-19 18:39:51,707 | INFO     | engine | Did not find a similar question asked for grade 10
+2025-06-19 18:39:51,708 | DEBUG    | engine | Student level for topic basics: 0
+2025-06-19 18:39:51,708 | DEBUG    | engine | Found 1 relevant chunks for basics
+2025-06-19 18:39:51,708 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,708 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,708 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,709 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:39:51,715 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:39:51,716 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:39:51,716 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:39:51,716 | INFO     | engine | Rephrased Question → Question for empty index.
+2025-06-19 18:39:51,716 | INFO     | engine | Detected topic: empty_index_topic
+2025-06-19 18:39:51,716 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question for empty index....'
+2025-06-19 18:39:51,716 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:39:51,718 | DEBUG    | engine | Student level for topic empty_index_topic: 0
+2025-06-19 18:39:51,718 | DEBUG    | engine | Found 1 relevant chunks for empty_index_topic
+2025-06-19 18:39:51,718 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:39:51,718 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:39:51,718 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:39:51,718 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,576 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:42:30,576 | INFO     | engine | Test INFO message
+2025-06-19 18:42:30,576 | WARNING  | engine | Test WARNING message
+2025-06-19 18:42:30,577 | ERROR    | engine | Test ERROR message
+2025-06-19 18:42:30,581 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,581 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,581 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,581 | INFO     | engine | Rephrased Question → Explain calculus in detail.
+2025-06-19 18:42:30,582 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6267018160'>
+2025-06-19 18:42:30,582 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Explain calculus in detail....'
+2025-06-19 18:42:30,582 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:42:30,585 | INFO     | engine | Processing question for student student_g12
+2025-06-19 18:42:30,585 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,585 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,585 | INFO     | engine | Rephrased Question → Explain calculus for grade 12.
+2025-06-19 18:42:30,586 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6267406000'>
+2025-06-19 18:42:30,586 | INFO     | engine | Attempting to retrieve historic Q&A for grade 12 for question: 'Explain calculus for grade 12....'
+2025-06-19 18:42:30,586 | INFO     | engine | Found and using historic answer for grade 12 question.
+2025-06-19 18:42:30,588 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,588 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,588 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,588 | INFO     | engine | Rephrased Question → A slightly different calculus question.
+2025-06-19 18:42:30,588 | INFO     | engine | Detected topic: calculus_topic
+2025-06-19 18:42:30,588 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A slightly different calculus question....'
+2025-06-19 18:42:30,589 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,600 | DEBUG    | engine | Student level for topic calculus_topic: 0
+2025-06-19 18:42:30,600 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic
+2025-06-19 18:42:30,601 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,602 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,602 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,602 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,604 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,604 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,604 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,604 | INFO     | engine | Rephrased Question → A very unique calculus question.
+2025-06-19 18:42:30,604 | INFO     | engine | Detected topic: calculus_unique
+2025-06-19 18:42:30,604 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A very unique calculus question....'
+2025-06-19 18:42:30,605 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,606 | DEBUG    | engine | Student level for topic calculus_unique: 0
+2025-06-19 18:42:30,606 | DEBUG    | engine | Found 1 relevant chunks for calculus_unique
+2025-06-19 18:42:30,606 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,606 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,607 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,607 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,609 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,609 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,609 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,609 | INFO     | engine | Rephrased Question → Calculus question for custom threshold.
+2025-06-19 18:42:30,609 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6267727472'>
+2025-06-19 18:42:30,610 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for custom threshold....'
+2025-06-19 18:42:30,610 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:42:30,612 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,612 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,612 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,612 | INFO     | engine | Rephrased Question → Calculus question for stricter threshold.
+2025-06-19 18:42:30,612 | INFO     | engine | Detected topic: calculus_strict
+2025-06-19 18:42:30,612 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for stricter threshold....'
+2025-06-19 18:42:30,612 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,614 | DEBUG    | engine | Student level for topic calculus_strict: 0
+2025-06-19 18:42:30,615 | DEBUG    | engine | Found 1 relevant chunks for calculus_strict
+2025-06-19 18:42:30,615 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,615 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,615 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,615 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,616 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,616 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,616 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,616 | INFO     | engine | Rephrased Question → Question needing DB.
+2025-06-19 18:42:30,616 | INFO     | engine | Detected topic: db_fail_topic
+2025-06-19 18:42:30,616 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question needing DB....'
+2025-06-19 18:42:30,617 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:42:30,617 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,618 | DEBUG    | engine | Student level for topic db_fail_topic: 0
+2025-06-19 18:42:30,618 | DEBUG    | engine | Found 1 relevant chunks for db_fail_topic
+2025-06-19 18:42:30,618 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,618 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,618 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,619 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,620 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,620 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,620 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,620 | INFO     | engine | Rephrased Question → Another calculus question.
+2025-06-19 18:42:30,620 | INFO     | engine | Detected topic: calculus_topic_2
+2025-06-19 18:42:30,620 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Another calculus question....'
+2025-06-19 18:42:30,620 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:42:30,620 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,622 | DEBUG    | engine | Student level for topic calculus_topic_2: 0
+2025-06-19 18:42:30,622 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic_2
+2025-06-19 18:42:30,622 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,622 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,622 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,622 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,623 | INFO     | engine | Processing question for student student_g10
+2025-06-19 18:42:30,623 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,623 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,623 | INFO     | engine | Rephrased Question → A basic math question.
+2025-06-19 18:42:30,623 | INFO     | engine | Detected topic: basics
+2025-06-19 18:42:30,624 | INFO     | engine | Did not find a similar question asked for grade 10
+2025-06-19 18:42:30,625 | DEBUG    | engine | Student level for topic basics: 0
+2025-06-19 18:42:30,625 | DEBUG    | engine | Found 1 relevant chunks for basics
+2025-06-19 18:42:30,625 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,625 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,625 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,625 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:42:30,639 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:42:30,639 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:42:30,639 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:42:30,639 | INFO     | engine | Rephrased Question → Question for empty index.
+2025-06-19 18:42:30,639 | INFO     | engine | Detected topic: empty_index_topic
+2025-06-19 18:42:30,639 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question for empty index....'
+2025-06-19 18:42:30,639 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:42:30,641 | DEBUG    | engine | Student level for topic empty_index_topic: 0
+2025-06-19 18:42:30,641 | DEBUG    | engine | Found 1 relevant chunks for empty_index_topic
+2025-06-19 18:42:30,641 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:42:30,641 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:42:30,641 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:42:30,641 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,858 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:44:56,858 | INFO     | engine | Test INFO message
+2025-06-19 18:44:56,858 | WARNING  | engine | Test WARNING message
+2025-06-19 18:44:56,858 | ERROR    | engine | Test ERROR message
+2025-06-19 18:44:56,863 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,863 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,863 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,863 | INFO     | engine | Rephrased Question → Explain calculus in detail.
+2025-06-19 18:44:56,864 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6275291888'>
+2025-06-19 18:44:56,864 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Explain calculus in detail....'
+2025-06-19 18:44:56,864 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:44:56,867 | INFO     | engine | Processing question for student student_g12
+2025-06-19 18:44:56,867 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,867 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,867 | INFO     | engine | Rephrased Question → Explain calculus for grade 12.
+2025-06-19 18:44:56,868 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6275679728'>
+2025-06-19 18:44:56,868 | INFO     | engine | Attempting to retrieve historic Q&A for grade 12 for question: 'Explain calculus for grade 12....'
+2025-06-19 18:44:56,868 | INFO     | engine | Found and using historic answer for grade 12 question.
+2025-06-19 18:44:56,870 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,870 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,870 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,870 | INFO     | engine | Rephrased Question → A slightly different calculus question.
+2025-06-19 18:44:56,870 | INFO     | engine | Detected topic: calculus_topic
+2025-06-19 18:44:56,871 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A slightly different calculus question....'
+2025-06-19 18:44:56,871 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,883 | DEBUG    | engine | Student level for topic calculus_topic: 0
+2025-06-19 18:44:56,883 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic
+2025-06-19 18:44:56,883 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,884 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,884 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,885 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,886 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,886 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,886 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,886 | INFO     | engine | Rephrased Question → A very unique calculus question.
+2025-06-19 18:44:56,886 | INFO     | engine | Detected topic: calculus_unique
+2025-06-19 18:44:56,886 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'A very unique calculus question....'
+2025-06-19 18:44:56,887 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,888 | DEBUG    | engine | Student level for topic calculus_unique: 0
+2025-06-19 18:44:56,888 | DEBUG    | engine | Found 1 relevant chunks for calculus_unique
+2025-06-19 18:44:56,888 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,889 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,889 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,889 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,891 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,891 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,891 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,891 | INFO     | engine | Rephrased Question → Calculus question for custom threshold.
+2025-06-19 18:44:56,891 | INFO     | engine | Detected topic: <MagicMock name='get_topic()' id='6276000720'>
+2025-06-19 18:44:56,892 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for custom threshold....'
+2025-06-19 18:44:56,892 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:44:56,895 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,895 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,895 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,895 | INFO     | engine | Rephrased Question → Calculus question for stricter threshold.
+2025-06-19 18:44:56,895 | INFO     | engine | Detected topic: calculus_strict
+2025-06-19 18:44:56,895 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Calculus question for stricter threshold....'
+2025-06-19 18:44:56,896 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,897 | DEBUG    | engine | Student level for topic calculus_strict: 0
+2025-06-19 18:44:56,897 | DEBUG    | engine | Found 1 relevant chunks for calculus_strict
+2025-06-19 18:44:56,898 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,898 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,898 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,898 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,899 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,899 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,899 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,899 | INFO     | engine | Rephrased Question → Question needing DB.
+2025-06-19 18:44:56,899 | INFO     | engine | Detected topic: db_fail_topic
+2025-06-19 18:44:56,899 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question needing DB....'
+2025-06-19 18:44:56,900 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:44:56,900 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,901 | DEBUG    | engine | Student level for topic db_fail_topic: 0
+2025-06-19 18:44:56,901 | DEBUG    | engine | Found 1 relevant chunks for db_fail_topic
+2025-06-19 18:44:56,901 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,901 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,901 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,901 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,903 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,903 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,903 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,903 | INFO     | engine | Rephrased Question → Another calculus question.
+2025-06-19 18:44:56,903 | INFO     | engine | Detected topic: calculus_topic_2
+2025-06-19 18:44:56,903 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Another calculus question....'
+2025-06-19 18:44:56,903 | DEBUG    | engine | Could not load historic Q&A resources for grade 11. Proceeding with normal generation.
+2025-06-19 18:44:56,903 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,904 | DEBUG    | engine | Student level for topic calculus_topic_2: 0
+2025-06-19 18:44:56,904 | DEBUG    | engine | Found 1 relevant chunks for calculus_topic_2
+2025-06-19 18:44:56,905 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,905 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,905 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,905 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,906 | INFO     | engine | Processing question for student student_g10
+2025-06-19 18:44:56,906 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,906 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,906 | INFO     | engine | Rephrased Question → A basic math question.
+2025-06-19 18:44:56,906 | INFO     | engine | Detected topic: basics
+2025-06-19 18:44:56,906 | INFO     | engine | Did not find a similar question asked for grade 10
+2025-06-19 18:44:56,908 | DEBUG    | engine | Student level for topic basics: 0
+2025-06-19 18:44:56,908 | DEBUG    | engine | Found 1 relevant chunks for basics
+2025-06-19 18:44:56,908 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,908 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,908 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,908 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:44:56,915 | INFO     | engine | Processing question for student student_g11
+2025-06-19 18:44:56,915 | DEBUG    | engine | Original question: What is calculus?
+2025-06-19 18:44:56,915 | DEBUG    | engine | History length: 0 words
+2025-06-19 18:44:56,915 | INFO     | engine | Rephrased Question → Question for empty index.
+2025-06-19 18:44:56,915 | INFO     | engine | Detected topic: empty_index_topic
+2025-06-19 18:44:56,915 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Question for empty index....'
+2025-06-19 18:44:56,916 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:44:56,917 | DEBUG    | engine | Student level for topic empty_index_topic: 0
+2025-06-19 18:44:56,917 | DEBUG    | engine | Found 1 relevant chunks for empty_index_topic
+2025-06-19 18:44:56,917 | DEBUG    | engine | Selected 1 most relevant chunks
+2025-06-19 18:44:56,917 | DEBUG    | engine | Coverage answer: This is a new answer about calculus.
+2025-06-19 18:44:56,918 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:44:56,918 | INFO     | engine | Final Answer for topic-based question → This is a new answer about calculus.
+2025-06-19 18:45:26,949 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:45:26,950 | INFO     | engine | Test INFO message
+2025-06-19 18:45:26,950 | WARNING  | engine | Test WARNING message
+2025-06-19 18:45:26,950 | ERROR    | engine | Test ERROR message
+-----------------------------------------------MANUAL--------------------------------------------------2025-06-19 18:50:07,007 | INFO     | engine | Processing question for student ywa3324
+2025-06-19 18:50:07,007 | DEBUG    | engine | Original question: How do I know when two angles are congruent?
+2025-06-19 18:50:07,007 | DEBUG    | engine | History length: 10 words
+2025-06-19 18:50:08,350 | INFO     | engine | Rephrased Question → Reformulated: "How do I know when two angles are congruent?"
+2025-06-19 18:50:09,040 | INFO     | engine | Detected topic: geometry
+2025-06-19 18:50:09,097 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Reformulated: "How do I know when two angles are c...'
+2025-06-19 18:50:10,134 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:50:40,459 | INFO     | engine | Processing question for student ywa3324
+2025-06-19 18:50:40,459 | DEBUG    | engine | Original question: what is a circle
+2025-06-19 18:50:40,459 | DEBUG    | engine | History length: 43 words
+2025-06-19 18:50:41,575 | INFO     | engine | Rephrased Question → Original: "what is a circle"
+Reformulated: "Can you explain what a circle is?"
+2025-06-19 18:50:42,732 | INFO     | engine | Detected topic: basics
+2025-06-19 18:50:42,778 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Original: "what is a circle"
+Reformulated: "Can yo...'
+2025-06-19 18:50:43,657 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:51:26,727 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:51:26,727 | INFO     | engine | Test INFO message
+2025-06-19 18:51:26,727 | WARNING  | engine | Test WARNING message
+2025-06-19 18:51:26,727 | ERROR    | engine | Test ERROR message
+2025-06-19 18:51:26,766 | INFO     | engine | Processing question for student ywa3324
+2025-06-19 18:51:26,766 | DEBUG    | engine | Original question: How do I know when two angles are congruent?
+2025-06-19 18:51:26,766 | DEBUG    | engine | History length: 78 words
+2025-06-19 18:51:27,323 | INFO     | engine | Rephrased Question → Reformulated: "How can I determine when two angles are congruent?"
+2025-06-19 18:51:27,739 | INFO     | engine | Detected topic: basics
+2025-06-19 18:51:27,792 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Reformulated: "How can I determine when two angles...'
+2025-06-19 18:51:28,082 | INFO     | engine | Found and using historic answer for grade 11 question.
+2025-06-19 18:57:58,366 | DEBUG    | engine | Test DEBUG message
+2025-06-19 18:57:58,366 | INFO     | engine | Test INFO message
+2025-06-19 18:57:58,366 | WARNING  | engine | Test WARNING message
+2025-06-19 18:57:58,368 | ERROR    | engine | Test ERROR message
+2025-06-19 18:57:58,403 | INFO     | engine | Processing question for student ywa3324
+2025-06-19 18:57:58,403 | DEBUG    | engine | Original question: how do I know when two angles are congruent?
+2025-06-19 18:57:58,403 | DEBUG    | engine | History length: 116 words
+2025-06-19 18:57:58,918 | INFO     | engine | Rephrased Question → Reformulated: "How do I know when two angles are congruent in a geometric context?"
+2025-06-19 18:57:59,430 | INFO     | engine | Detected topic: geometry
+2025-06-19 18:57:59,459 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Reformulated: "How do I know when two angles are c...'
+2025-06-19 18:57:59,824 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:57:59,828 | DEBUG    | engine | Student level for topic geometry: 1
+2025-06-19 18:58:01,326 | DEBUG    | engine | Found 5 relevant chunks for geometry
+2025-06-19 18:58:01,326 | DEBUG    | engine | Selected 5 most relevant chunks
+2025-06-19 18:58:02,433 | DEBUG    | engine | Coverage answer: Yes
+2025-06-19 18:58:02,434 | INFO     | engine | Generating answer for topic-based question
+2025-06-19 18:58:03,310 | INFO     | engine | Final Answer for topic-based question → - - -
+
+**Confidence Level 1 (Beginner):**
+Two angles are congruent in geometry when they have the same measure. This means that they are equal in size. Just like two triangles are congruent when their sides and angles match up, two angles are congruent when they have the same measurement. So, if two angles have the same number of degrees, they are congruent.
+
+- - -
+2025-06-19 18:59:29,988 | INFO     | engine | Processing question for student ywa3324
+2025-06-19 18:59:29,988 | DEBUG    | engine | Original question: how do I know when two angles are congruent
+2025-06-19 18:59:29,989 | DEBUG    | engine | History length: 193 words
+2025-06-19 18:59:30,812 | INFO     | engine | Rephrased Question → Follow-up question:
+How can I determine if two angles are congruent in a geometric context?
+2025-06-19 18:59:31,218 | INFO     | engine | Detected topic: geometry
+2025-06-19 18:59:31,263 | INFO     | engine | Attempting to retrieve historic Q&A for grade 11 for question: 'Follow-up question:
+How can I determine if two ang...'
+2025-06-19 18:59:31,549 | INFO     | engine | Did not find a similar question asked for grade 11
+2025-06-19 18:59:31,553 | DEBUG    | engine | Student level for topic geometry: 1
+2025-06-19 18:59:32,040 | DEBUG    | engine | Found 5 relevant chunks for geometry
+2025-06-19 18:59:32,041 | DEBUG    | engine | Selected 5 most relevant chunks
+2025-06-19 18:59:32,687 | DEBUG    | engine | Coverage answer: No

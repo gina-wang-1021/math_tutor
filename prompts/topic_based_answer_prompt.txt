@@ -3,8 +3,6 @@
 
                 Below is the student question, the relevant textbook excerpts, and the student's self-rated confidence on this topic (from 1 to 5):
 
-                ---
-
                 **Student Question:**
                 {student_question}
 
@@ -16,8 +14,6 @@
 
                 **Student Confidence Level (1–5):**
                 {confidence_level}
-
-                ---
 
                 Please answer the student's question **based on the textbook content and their confidence level**. 
 

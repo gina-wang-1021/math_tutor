@@ -1,0 +1,70 @@
+2025-06-19 18:31:58,233 | WARNING  | utilities.qa_utils | FAISS index file not found for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index
+2025-06-19 18:31:58,239 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:31:58,239 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:31:58,239 | WARNING  | utilities.qa_utils | Historic answer not found in DB for ID 123, though FAISS match found.
+2025-06-19 18:31:58,240 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[1.2]], ids=[[123]]
+2025-06-19 18:31:58,240 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 1.2000 (Threshold: < 0.6).
+2025-06-19 18:31:58,241 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[], ids=[]
+2025-06-19 18:31:58,241 | INFO     | utilities.qa_utils | No similar historic question found (FAISS ID -1 or empty results).
+2025-06-19 18:39:51,710 | ERROR    | utilities.qa_utils | Failed to load FAISS index for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index: FAISS load error
+2025-06-19 18:39:51,711 | WARNING  | utilities.qa_utils | FAISS index file not found for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index
+2025-06-19 18:39:51,720 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:39:51,720 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:39:51,721 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 123.
+2025-06-19 18:39:51,722 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:39:51,722 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:39:51,722 | WARNING  | utilities.qa_utils | Historic answer not found in DB for ID 123, though FAISS match found.
+2025-06-19 18:39:51,723 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[1.2]], ids=[[123]]
+2025-06-19 18:39:51,723 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 1.2000 (Threshold: < 0.6).
+2025-06-19 18:39:51,723 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[], ids=[]
+2025-06-19 18:39:51,724 | INFO     | utilities.qa_utils | No similar historic question found (FAISS ID -1 or empty results).
+2025-06-19 18:42:30,631 | ERROR    | utilities.qa_utils | Failed to load FAISS index for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index: FAISS load error
+2025-06-19 18:42:30,632 | WARNING  | utilities.qa_utils | FAISS index file not found for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index
+2025-06-19 18:42:30,643 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:42:30,643 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:42:30,643 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 123.
+2025-06-19 18:42:30,645 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:42:30,645 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:42:30,645 | WARNING  | utilities.qa_utils | Historic answer not found in DB for ID 123, though FAISS match found.
+2025-06-19 18:42:30,646 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[1.2]], ids=[[123]]
+2025-06-19 18:42:30,646 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 1.2000 (Threshold: < 0.6).
+2025-06-19 18:42:30,646 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[], ids=[]
+2025-06-19 18:42:30,647 | INFO     | utilities.qa_utils | No similar historic question found (FAISS ID -1 or empty results).
+2025-06-19 18:44:56,909 | WARNING  | utilities.qa_utils | SQLite DB file not found for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:44:56,912 | ERROR    | utilities.qa_utils | Failed to load FAISS index for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index: FAISS load error
+2025-06-19 18:44:56,912 | WARNING  | utilities.qa_utils | FAISS index file not found for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index
+2025-06-19 18:44:56,913 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: <MagicMock name='FaissIndexInstance.ntotal' id='6276212848'>
+2025-06-19 18:44:56,913 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:44:56,919 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:44:56,919 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:44:56,919 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 123.
+2025-06-19 18:44:56,920 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.3]], ids=[[123]]
+2025-06-19 18:44:56,920 | INFO     | utilities.qa_utils | Found similar historic question with ID 123, distance 0.3000 (Threshold: < 0.6).
+2025-06-19 18:44:56,921 | WARNING  | utilities.qa_utils | Historic answer not found in DB for ID 123, though FAISS match found.
+2025-06-19 18:44:56,921 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[1.2]], ids=[[123]]
+2025-06-19 18:44:56,921 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 1.2000 (Threshold: < 0.6).
+2025-06-19 18:44:56,922 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[], ids=[]
+2025-06-19 18:44:56,922 | INFO     | utilities.qa_utils | No similar historic question found (FAISS ID -1 or empty results).
+-----------------------------------------------MANUAL--------------------------------------------------2025-06-19 18:50:10,117 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: 3
+2025-06-19 18:50:10,121 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:50:10,127 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.34436443]], ids=[[1]]
+2025-06-19 18:50:10,128 | INFO     | utilities.qa_utils | Found similar historic question with ID 1, distance 0.3444 (Threshold: < 0.6).
+2025-06-19 18:50:10,134 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 1.
+2025-06-19 18:50:43,653 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: 3
+2025-06-19 18:50:43,655 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:50:43,656 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.4043039]], ids=[[2]]
+2025-06-19 18:50:43,656 | INFO     | utilities.qa_utils | Found similar historic question with ID 2, distance 0.4043 (Threshold: < 0.6).
+2025-06-19 18:50:43,657 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 2.
+2025-06-19 18:51:28,078 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: 3
+2025-06-19 18:51:28,079 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:51:28,081 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.35371125]], ids=[[1]]
+2025-06-19 18:51:28,081 | INFO     | utilities.qa_utils | Found similar historic question with ID 1, distance 0.3537 (Threshold: < 0.9).
+2025-06-19 18:51:28,082 | INFO     | utilities.qa_utils | Retrieved historic answer for ID 1.
+2025-06-19 18:57:59,820 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: 3
+2025-06-19 18:57:59,821 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:57:59,823 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.33327132]], ids=[[1]]
+2025-06-19 18:57:59,823 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 0.3333 (Threshold: < 0.2).
+2025-06-19 18:59:31,545 | INFO     | utilities.qa_utils | FAISS index loaded for grade 11 from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11.index. Index size: 3
+2025-06-19 18:59:31,546 | INFO     | utilities.qa_utils | SQLite DB connection established for grade 11 at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade11_historic.db
+2025-06-19 18:59:31,548 | DEBUG    | utilities.qa_utils | FAISS search results: distances=[[0.36851743]], ids=[[1]]
+2025-06-19 18:59:31,548 | INFO     | utilities.qa_utils | No sufficiently similar historic question found. Closest distance 0.3685 (Threshold: < 0.2).

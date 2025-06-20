@@ -38,7 +38,7 @@ GRADE_DBS_FILES = {
     11: os.path.join(HISTORIC_QA_DIR, "grade11_historic.db"),
     12: os.path.join(HISTORIC_QA_DIR, "grade12_historic.db")
 }
-MAX_L2_DISTANCE_THRESHOLD = 0.6 
+MAX_L2_DISTANCE_THRESHOLD = 0.2 
 HISTORIC_QA_K_NEIGHBORS = 1
 
 def load_historic_qa_resources(grade: int):

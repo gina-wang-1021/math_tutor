@@ -1,0 +1,46 @@
+2025-06-19 18:39:51,671 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic
+2025-06-19 18:39:51,683 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,687 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_unique
+2025-06-19 18:39:51,689 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,695 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_strict
+2025-06-19 18:39:51,697 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,700 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic db_fail_topic
+2025-06-19 18:39:51,701 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,704 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic_2
+2025-06-19 18:39:51,705 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,707 | INFO     | utilities.student_utils | Getting level for student student_g10 in topic basics
+2025-06-19 18:39:51,708 | WARNING  | utilities.student_utils | Student student_g10 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:39:51,716 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic empty_index_topic
+2025-06-19 18:39:51,718 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,589 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic
+2025-06-19 18:42:30,600 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,605 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_unique
+2025-06-19 18:42:30,606 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,612 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_strict
+2025-06-19 18:42:30,614 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,617 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic db_fail_topic
+2025-06-19 18:42:30,618 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,621 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic_2
+2025-06-19 18:42:30,622 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,624 | INFO     | utilities.student_utils | Getting level for student student_g10 in topic basics
+2025-06-19 18:42:30,625 | WARNING  | utilities.student_utils | Student student_g10 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:42:30,640 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic empty_index_topic
+2025-06-19 18:42:30,641 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,871 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic
+2025-06-19 18:44:56,882 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,887 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_unique
+2025-06-19 18:44:56,888 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,896 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_strict
+2025-06-19 18:44:56,897 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,900 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic db_fail_topic
+2025-06-19 18:44:56,901 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,903 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic calculus_topic_2
+2025-06-19 18:44:56,904 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,906 | INFO     | utilities.student_utils | Getting level for student student_g10 in topic basics
+2025-06-19 18:44:56,908 | WARNING  | utilities.student_utils | Student student_g10 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+2025-06-19 18:44:56,916 | INFO     | utilities.student_utils | Getting level for student student_g11 in topic empty_index_topic
+2025-06-19 18:44:56,917 | WARNING  | utilities.student_utils | Student student_g11 not found in database (/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv)
+-----------------------------------------------MANUAL--------------------------------------------------2025-06-19 18:57:59,824 | INFO     | utilities.student_utils | Getting level for student ywa3324 in topic geometry
+2025-06-19 18:57:59,828 | INFO     | utilities.student_utils | Student ywa3324 is at 1 level for geometry
+2025-06-19 18:59:31,549 | INFO     | utilities.student_utils | Getting level for student ywa3324 in topic geometry
+2025-06-19 18:59:31,553 | INFO     | utilities.student_utils | Student ywa3324 is at 1 level for geometry
