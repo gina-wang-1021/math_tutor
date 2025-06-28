@@ -1,0 +1,23 @@
+
+            Analyze if the following question is:
+            A) A regular math calculation/arithmetic (e.g., "what is 2+2", "calculate 15% of 80", "solve 3x + 5 = 11")
+            B) A general inquiry about capabilities (e.g., "what can you teach me", "what topics do you cover", "what can I learn from you")
+            C) A question about specific math topics/concepts that requires explanation
+
+            If it's type A, respond with exactly: "calculation"
+            If it's type B, respond with exactly: "overview"
+            If it's type C, classify it into one of these topics that is the most relevant:
+
+            - algebra: Linear equations, inequalities, binomial theorem
+            - basics: Numbers, polynomials, coordinate geometry, real numbers, pair of linear equations, quadratic equations, complex numbers
+            - geometry: Coordinate geometry, trigonometry, circles, surface areas, volumes, conic sections, three dimensional geometry
+            - miscellaneous: Arithmetic progression, infinite series, sets, relations and functions, permutations and combinations, sequences and series
+            - modelling: Mathematical modeling and applications
+            - probability: Probability theory and applications
+            - statistics: Data analysis, statistical methods, measures of central tendency
+
+            Question: {question}
+
+            For type C, respond with the **exact** topic name from the list above.
+            e.g. "algebra" or "geometry"
+        

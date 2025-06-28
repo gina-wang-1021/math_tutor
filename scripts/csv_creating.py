@@ -2,7 +2,13 @@
 
 import csv
 
-filename = "student_data.csv"
+import os
+
+# Get the project root directory
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Path to the database directory
+filename = os.path.join(project_root, "database", "student_data.csv")
 
 headers = ["student_id", "student_fname", "student_lname", "basics", "algebra", "geometry", "miscellaneous", "modelling", "probability", "statistics"]
 

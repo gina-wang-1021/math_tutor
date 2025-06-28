@@ -3,5 +3,6 @@ notes.md
 docs.txt
 .streamlit/
 __pycache__/
-indexes/
+database/
 logs/
+sorted_docs/

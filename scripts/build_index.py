@@ -24,7 +24,7 @@ def build_index_for_folder(base_folder, topic):
     """
     all_docs = []
     topic_folder = os.path.join(base_folder, topic)
-    persist_path = os.path.join('indexes', topic)
+    persist_path = os.path.join(indexes_folder, topic)
     
     # Clear existing index if it exists
     if os.path.exists(persist_path):
@@ -76,10 +76,12 @@ def build_index_for_folder(base_folder, topic):
 
 if __name__ == "__main__":
     load_dotenv()
-    base_folder = "sorted_docs"
+    # Use the new paths in LocalData/chromadb
+    base_folder = "/Users/wangyichi/LocalData/chromadb/sorted_docs"
+    indexes_folder = "/Users/wangyichi/LocalData/chromadb/indexes"
     
     # Create indexes directory if it doesn't exist
-    os.makedirs("indexes", exist_ok=True)
+    os.makedirs(indexes_folder, exist_ok=True)
     
     # Process each topic subdirectory
     for topic in os.listdir(base_folder):
