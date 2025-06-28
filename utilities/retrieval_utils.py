@@ -2,95 +2,113 @@ import os
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
+from utilities.prompt_utils import load_prompt
 from langchain.chains import LLMChain
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
-# Path to the prompts directory
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROMPT_DIR = os.path.join(PROJECT_ROOT, "prompts")
-
-def load_prompt(prompt_name: str) -> str:
-    """Loads a prompt string from a file in the PROMPT_DIR."""
-    prompt_file_path = os.path.join(PROMPT_DIR, prompt_name)
-    try:
-        with open(prompt_file_path, "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        logger.error(f"Prompt file not found: {prompt_file_path}")
-        raise
-    except Exception as e:
-        logger.error(f"Error reading prompt file {prompt_file_path}: {e}")
-        raise
-
-# Determine the project root (PROJECT_ROOT is defined above with PROMPT_DIR)
 INDEXES_DIR_NAME = "indexes"
 
-def get_relevant_chunks(topic, year, query):
-    """Get relevant chunks for a topic up to and including the specified year level.
-    
+def get_chunks_for_current_year(topic, year, query):
+    """Get relevant chunks for a topic at the specified year level.
+
     Args:
-        topic (str): The topic to search for
-        year (str): The maximum year level ('beginner', 'intermediate', 'advanced')
-        query (str): The search query
-        
+        topic (str): The topic to search for.
+        year (str): The year level ('beginner', 'intermediate', 'advanced').
+        query (str): The search query.
+
     Returns:
-        list: Combined list of relevant chunks from all applicable levels
+        list: A list of relevant chunks from the specified level.
     """
-    logger.info(f"Retrieving chunks for topic {topic} up to level {year} using query: '{query[:50]}...' ")
+    logger.info(f"Retrieving chunks for topic '{topic}' at level '{year}' with query: '{query[:50]}...'")
     
     level_order = ['beginner', 'intermediate', 'advanced']
     if year not in level_order:
-        logger.warning(f"Invalid level {year}, defaulting to beginner")
+        logger.warning(f"Invalid level '{year}', defaulting to 'beginner'.")
         year = 'beginner'
-    max_level_idx = level_order.index(year)
-    
+
     try:
         index_path = os.path.join(PROJECT_ROOT, INDEXES_DIR_NAME, topic)
         if not os.path.exists(index_path):
-            logger.error(f"No index found for topic {topic} at {index_path}")
-            available_indexes_dir = os.path.join(PROJECT_ROOT, INDEXES_DIR_NAME)
-            logger.debug(f"Available indexes in '{available_indexes_dir}': {os.listdir(available_indexes_dir) if os.path.exists(available_indexes_dir) else 'directory not found'}")
+            logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
             return []
-            
+
         db = Chroma(persist_directory=index_path, embedding_function=OpenAIEmbeddings())
         
-        all_chunks = []
+        chunks = db.similarity_search(query, k=3, filter={"level": year})
         
-        for current_processing_level in level_order[:max_level_idx + 1]:
-            # Get more results from the student's actual current level, fewer from prior levels.
-            k_value = 3 if current_processing_level == year else 2 
+        if chunks:
+            logger.debug(f"Found {len(chunks)} chunks for level '{year}' in topic '{topic}'.")
+            for chunk in chunks:
+                if 'score' not in chunk.metadata:
+                    chunk.metadata['score'] = 0.0
+        else:
+            logger.debug(f"No chunks found for level '{year}' in topic '{topic}'.")
             
+        return chunks
+
+    except Exception as e:
+        logger.error(f"Error retrieving chunks for topic '{topic}' at level '{year}': {e}")
+        return []
+
+def get_chunks_from_prior_years(topic, year, query):
+    """Get relevant chunks for a topic from levels below the specified year.
+
+    Args:
+        topic (str): The topic to search for.
+        year (str): The current year level ('beginner', 'intermediate', 'advanced').
+        query (str): The search query.
+
+    Returns:
+        list: A combined list of relevant chunks from all prior levels.
+    """
+    logger.info(f"Retrieving prior-year chunks for topic '{topic}' up to (but not including) level '{year}'.")
+
+    level_order = ['beginner', 'intermediate', 'advanced']
+    if year not in level_order:
+        logger.warning(f"Invalid level '{year}', no prior levels to fetch.")
+        return []
+
+    max_level_idx = level_order.index(year)
+    if max_level_idx == 0:
+        logger.info(f"No prior levels to retrieve for the lowest level '{year}'.")
+        return []
+
+    try:
+        index_path = os.path.join(PROJECT_ROOT, INDEXES_DIR_NAME, topic)
+        if not os.path.exists(index_path):
+            logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
+            return []
+
+        db = Chroma(persist_directory=index_path, embedding_function=OpenAIEmbeddings())
+        all_chunks = []
+
+        for current_level in level_order[:max_level_idx]:
             try:
-                chunks = db.similarity_search(
-                    query,
-                    k=k_value,
-                    filter={"level": current_processing_level}
-                )
-                
+                chunks = db.similarity_search(query, k=2, filter={"level": current_level})
                 if chunks:
-                    logger.debug(f"Found {len(chunks)} chunks for level {current_processing_level} in topic {topic}")
+                    logger.debug(f"Found {len(chunks)} chunks for level '{current_level}' in topic '{topic}'.")
                     for chunk in chunks:
-                        if 'score' not in chunk.metadata: # Chroma might not add score by default
-                            chunk.metadata['score'] = 0.0 # Placeholder if not present
+                        if 'score' not in chunk.metadata:
+                            chunk.metadata['score'] = 0.0
                     all_chunks.extend(chunks)
                 else:
-                    logger.debug(f"No chunks found for level {current_processing_level} in topic {topic}")
-                    
+                    logger.debug(f"No chunks found for level '{current_level}' in topic '{topic}'.")
             except Exception as e:
-                logger.warning(f"Error retrieving chunks for topic {topic}, level {current_processing_level}: {str(e)}")
+                logger.warning(f"Error retrieving chunks for topic '{topic}', level '{current_level}': {e}")
                 continue
         
-        logger.info(f"Retrieved total of {len(all_chunks)} chunks for topic {topic} up to level {year}")
+        logger.info(f"Retrieved a total of {len(all_chunks)} chunks from prior years for topic '{topic}'.")
         return all_chunks
-        
+
     except Exception as e:
-        logger.error(f"Error retrieving chunks for topic {topic}: {str(e)}")
+        logger.error(f"Error retrieving prior-year chunks for topic '{topic}': {e}")
         return []
 
 def get_topic(question):
-    """Determine the math topics based on the question. 
+    """Determine the math topic based on the question. 
     Returns:
         - None if it's a calculation question
         - 'overview' if it's asking about general capabilities

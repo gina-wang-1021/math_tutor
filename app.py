@@ -1,14 +1,15 @@
 import streamlit as st
 import numpy as np
+import os
 from openai import OpenAI
 from engine import pipeline
 import pandas as pd
-from logger_config import setup_logger
+from scripts.logger_config import setup_logger
 
 # Initialize logger
 logger = setup_logger('app')
 
-df = pd.read_csv("student_data.csv")
+df = pd.read_csv(os.path.join("database", "student_db.csv"))
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -32,7 +33,7 @@ if not st.session_state.login_success:
         st.error("Invalid student ID")
     
     if st.button("Start Learning"):
-        if student_id in df["student_id"].values:
+        if student_id in df["Student ID"].values:
             logger.info(f"Successful login for student {student_id}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
@@ -46,7 +47,7 @@ if not st.session_state.login_success:
 
 # Main Chatting Page
 else:
-    student_name = df[df["student_id"] == st.session_state.student_id]["student_fname"].values[0]
+    student_name = df[df["Student ID"] == st.session_state.student_id]["Student Name"].values[0]
     st.title(f"Hi {student_name}, let's learn math today!")
 
     for message in st.session_state.messages:

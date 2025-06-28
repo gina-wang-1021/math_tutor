@@ -2,31 +2,15 @@ import os
 import faiss
 import sqlite3
 import numpy as np
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import PromptTemplate
+from utilities.prompt_utils import load_prompt
 from langchain.chains import LLMChain
-from logger_config import setup_logger
+from scripts.logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
-# Path to the prompts directory
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROMPT_DIR = os.path.join(PROJECT_ROOT, "prompts")
-
-def load_prompt(prompt_name: str) -> str:
-    """Loads a prompt string from a file in the PROMPT_DIR."""
-    prompt_file_path = os.path.join(PROMPT_DIR, prompt_name)
-    try:
-        with open(prompt_file_path, "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        logger.error(f"Prompt file not found: {prompt_file_path}")
-        raise
-    except Exception as e:
-        logger.error(f"Error reading prompt file {prompt_file_path}: {e}")
-        raise
-
-# Determine the project root (PROJECT_ROOT is defined above with PROMPT_DIR)
 HISTORIC_QA_DIR_NAME = "historic_qa_data"
 HISTORIC_QA_DIR = os.path.join(PROJECT_ROOT, HISTORIC_QA_DIR_NAME)
 
@@ -111,6 +95,44 @@ def search_historic_qa(question_embedding: np.ndarray, faiss_index, db_conn, k: 
     except Exception as e:
         logger.error(f"Error during historic Q&A search: {e}")
         return None
+
+def get_historic_answer(grade, question, max_distance_threshold):
+    """Attempt to find a similar question in the historic Q&A and return its answer."""
+    if grade not in [11, 12]:
+        return None
+
+    logger.info(f"Attempting to retrieve historic Q&A for grade {grade} for question: '{question[:50]}...'")
+    historic_faiss_index = None
+    historic_db_conn = None
+    try:
+        embeddings_model_instance = OpenAIEmbeddings()
+        current_question_embedding_list = embeddings_model_instance.embed_query(question)
+        current_question_embedding = np.array([current_question_embedding_list], dtype='float32')
+
+        historic_faiss_index, historic_db_conn = load_historic_qa_resources(grade)
+
+        if historic_faiss_index and historic_db_conn:
+            historic_answer = search_historic_qa(
+                current_question_embedding,
+                historic_faiss_index,
+                historic_db_conn,
+                k=1,
+                max_distance_threshold=max_distance_threshold
+            )
+            if historic_answer:
+                logger.info(f"Found and using historic answer for grade {grade} question.")
+                return historic_answer
+        else:
+            logger.debug(f"Could not load historic Q&A resources for grade {grade}. Proceeding with normal generation.")
+    
+    except Exception as e:
+        logger.error(f"Error during historic Q&A retrieval attempt for grade {grade}: {e}")
+    finally:
+        if historic_db_conn:
+            historic_db_conn.close()
+    
+    logger.info(f"Did not find a similar question asked for grade {grade}")
+    return None
 
 def rephrase_question(user_question: str, history: str) -> str:
     """Generate a standalone version of a follow-up question using chat history.

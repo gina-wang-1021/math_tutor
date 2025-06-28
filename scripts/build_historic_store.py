@@ -9,7 +9,7 @@ _PROJECT_ROOT = os.path.abspath(os.path.join(_CURRENT_DIR, '..')) # This will po
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from logger_config import setup_logger
+from .logger_config import setup_logger
 
 logger = setup_logger('build_historic_store')
 

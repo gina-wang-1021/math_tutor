@@ -1,31 +1,14 @@
+import os
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.callbacks.base import BaseCallbackHandler
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-# Removed: from langchain_chroma import Chroma (now in retrieval_utils)
-from langchain_core.prompts import PromptTemplate
-from langchain.chains import LLMChain
-from langchain.callbacks.base import BaseCallbackHandler
-# Removed: import pandas as pd (now in student_utils)
-import os
 from logger_config import setup_logger
-# Removed: import faiss (now in qa_utils)
-# Removed: import sqlite3 (now in qa_utils)
-import numpy as np
-
-# Import from new utility modules
-from utilities.student_utils import get_student_level, get_student_topic_level
-from utilities.qa_utils import (
-    load_historic_qa_resources, 
-    search_historic_qa, 
-    rephrase_question,
-    MAX_L2_DISTANCE_THRESHOLD, # Constant used by pipeline
-    HISTORIC_QA_K_NEIGHBORS # Constant used by pipeline
-)
-from utilities.retrieval_utils import get_relevant_chunks, get_topic
-
+from utilities.student_utils import get_student_level, get_confidence_level_and_score, check_confidence_and_score
+from utilities.prompt_utils import load_prompt
+from utilities.qa_utils import get_historic_answer, rephrase_question, MAX_L2_DISTANCE_THRESHOLD, HISTORIC_QA_K_NEIGHBORS
+from utilities.retrieval_utils import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
 
 class StreamingCallbackHandler(BaseCallbackHandler):
     """Callback handler for streaming LLM responses."""
@@ -46,36 +29,11 @@ class StreamingCallbackHandler(BaseCallbackHandler):
 # Initialize logger
 logger = setup_logger('engine')
 
-# Path to the prompts directory
-# Assuming engine.py is in the project root directory
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-PROMPT_DIR = os.path.join(PROJECT_ROOT, "prompts")
-
-def load_prompt(prompt_name: str) -> str:
-    """Loads a prompt string from a file in the PROMPT_DIR."""
-    prompt_file_path = os.path.join(PROMPT_DIR, prompt_name)
-    try:
-        with open(prompt_file_path, "r", encoding="utf-8") as f:
-            return f.read()
-    except FileNotFoundError:
-        logger.error(f"Prompt file not found: {prompt_file_path}")
-        raise
-    except Exception as e:
-        logger.error(f"Error reading prompt file {prompt_file_path}: {e}")
-        raise
-
-# Constants for Historic Q&A are now in utilities.qa_utils
-# MAX_L2_DISTANCE_THRESHOLD and HISTORIC_QA_K_NEIGHBORS are imported from qa_utils
-
 # Test all log levels (can be kept here or removed if not essential for engine.py's direct operation)
 logger.debug('Test DEBUG message')
 logger.info('Test INFO message')
 logger.warning('Test WARNING message')
 logger.error('Test ERROR message')
-
-# All helper functions (get_student_level, load_historic_qa_resources, 
-# search_historic_qa, get_student_topic_level, get_relevant_chunks, 
-# get_topic, rephrase_question) have been moved to their respective utility files.
 
 def pipeline(student_id, user_question, history, stream_handler=None, historic_qa_l2_threshold=MAX_L2_DISTANCE_THRESHOLD):
     """Process a question and return an answer.
@@ -133,92 +91,39 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             # Determine student's overall grade-based level (mapped from grade 11/12)
             grade_based_level, numeric_grade = get_student_level(student_id)
             if grade_based_level is None and numeric_grade is None: # student_id not found or other error in get_student_level
-                grade_based_level = "beginner" # Default level string
-                # numeric_grade remains None, historic Q&A will be skipped.
+                grade_based_level = "beginner"
                 logger.info(f"Student {student_id}: Grade Based Level: {grade_based_level}, Numeric Grade: {numeric_grade}")
 
             # Detect whether a similar question had been asked before
-            if numeric_grade in [11, 12]:
-                logger.info(f"Attempting to retrieve historic Q&A for grade {numeric_grade} for question: '{standalone_question[:50]}...'")
-                historic_faiss_index = None # Ensure it's defined for finally block
-                historic_db_conn = None   # Ensure it's defined for finally block
-                try:
-                    # Initialize embeddings model here if not already available globally or passed in.
-                    # This assumes OPENAI_API_KEY is set in the environment.
-                    embeddings_model_instance = OpenAIEmbeddings()
-                    current_question_embedding_list = embeddings_model_instance.embed_query(standalone_question)
-                    # FAISS expects a 2D array for searching (batch of 1 embedding)
-                    current_question_embedding = np.array([current_question_embedding_list], dtype='float32')
+            historic_answer = get_historic_answer(numeric_grade, standalone_question, historic_qa_l2_threshold)
+            if historic_answer:
+                return historic_answer
 
-                    historic_faiss_index, historic_db_conn = load_historic_qa_resources(numeric_grade)
-
-                    if historic_faiss_index and historic_db_conn:
-                        historic_answer = search_historic_qa(
-                            current_question_embedding,
-                            historic_faiss_index,
-                            historic_db_conn,
-                            k=HISTORIC_QA_K_NEIGHBORS,
-                            max_distance_threshold=historic_qa_l2_threshold
-                        )
-                        if historic_answer:
-                            logger.info(f"Found and using historic answer for grade {numeric_grade} question.")
-                            return historic_answer
-                    else:
-                        logger.debug(f"Could not load historic Q&A resources for grade {numeric_grade}. Proceeding with normal generation.")
-                
-                except Exception as e:
-                    logger.error(f"Error during historic Q&A retrieval attempt for grade {numeric_grade}: {e}")
-                finally:
-                    if historic_db_conn:
-                        historic_db_conn.close()
-
-            logger.info(f"Did not find a similar question asked for grade {numeric_grade}")
-
-            # For topic-based questions, first get all student levels
-            topic_level = get_student_topic_level(student_id, detected_topic)
-            student_level_info = f"- {detected_topic}: {topic_level}"
-            logger.debug(f"Student level for topic {detected_topic}: {topic_level}")
+            # For topic-based questions, get the confidence level and scores for the topic
+            topic_level, topic_scores = get_confidence_level_and_score(student_id, detected_topic)
+            logger.debug(f"Student confidence level and score for topic {detected_topic}: {topic_level}, {topic_scores}")
             
-            # Retrieve relevant documents for each topic up to the student's level
-            all_docs = []
             try:
-                docs = get_relevant_chunks(detected_topic, grade_based_level, standalone_question)
-                if docs:
-                    logger.debug(f"Found {len(docs)} relevant chunks for {detected_topic}")
-                    all_docs.extend(docs)
+                # Retrieve chunks for the current year
+                current_year_chunks = get_chunks_for_current_year(detected_topic, grade_based_level, standalone_question)
+
+                if current_year_chunks:
+                    logger.debug(f"Found {len(current_year_chunks)} relevant chunks for {detected_topic}")
                 else:
-                    logger.warning(f"No relevant chunks found for {detected_topic} up to level {grade_based_level}")
+                    logger.warning(f"No relevant chunks found for {detected_topic} at level {grade_based_level}")                           
             except Exception as e:
                 logger.error(f"Error getting chunks for {detected_topic}: {str(e)}")
-            
-            # Sort documents by score
-            selected_docs = sorted(
-                all_docs,
-                key=lambda x: float(x.metadata.get('score', 0)),
-                reverse=True
-            )[:5]  # Get top 5 chunks
-            
-            # TODO:
-            # implement similarity score threshold
-            # if no chunks are above the threshold, return "This topic is not covered in your textbook yet."
-
-            logger.debug(f"Selected {len(selected_docs)} most relevant chunks")
-            
-            chunks = []
-            for doc in selected_docs:
-                level = doc.metadata.get('level', 'beginner')
-                chunks.append(f"[{level.title()}] {doc.page_content}")
                 
-            chunks = "\n\n".join(chunks)
+            processed_chunks = "\n\n".join(current_year_chunks)
 
             # Determine if student's question is covered in the retrieved chunks
             chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
             chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
-            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
-            coverage_answer_chain = LLMChain(llm=llm, prompt=chunk_coverage_prompt)
+            llm_decision = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+            coverage_answer_chain = LLMChain(llm=llm_decision, prompt=chunk_coverage_prompt)
             coverage_answer = coverage_answer_chain.run({
                 "student_question": standalone_question,
-                "retrieved_chunks": chunks
+                "retrieved_chunks": processed_chunks
             }).strip()
             logger.debug(f"Coverage answer: {coverage_answer}")
 
@@ -234,23 +139,70 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 answer_chain = LLMChain(llm=llm_answer, prompt=topic_prompt)
                 logger.info("Generating answer for topic-based question")
 
-                response = answer_chain.run({
-                    "retrieved_chunks": chunks,
+                first_response = answer_chain.run({
+                    "retrieved_chunks": processed_chunks,
                     "topic": detected_topic,
                     "student_question": standalone_question,
-                    "confidence_level": student_level_info
+                    "confidence_level": topic_level,
+                    "topic_scores": topic_scores
                 })
-                logger.info(f"Final Answer for topic-based question → {response}")
-
-                # TODO:
-                # Save generated answer and the student's question to both databases
-
-                return response
+                logger.info(f"First Pass Answer for topic-based question → {first_response}")
                 
             except Exception as e:
                 logger.error(f"Error generating answer: {str(e)}")
                 return "I'm sorry, I encountered an error while generating an answer. Please try again."
+
+            # Check confidence level and topic scores to see if second pass is needed
+            if check_confidence_and_score(topic_level, topic_scores):
+
+                # TODO: Save generated answer and the student's question to both databases
                 
+                return first_response
+            
+            # Second pass
+            try:
+                lower_years_chunk = get_chunks_from_prior_years(detected_topic, grade_based_level, standalone_question)
+            
+                if lower_years_chunk:
+                    logger.debug(f"Found {len(lower_years_chunk)} relevant chunks for {detected_topic}")
+                else:
+                    logger.warning(f"No relevant chunks found for {detected_topic} at level {grade_based_level}")  
+            except Exception as e:
+                logger.error(f"Error getting chunks from prior years: {str(e)}")
+
+                # TODO: Save generated answer and the student's question to both databases
+
+                return first_response
+            
+            processed_chunks = "\n\n".join(lower_years_chunk)
+            
+            explain_prompt_text = load_prompt("explain_prompt.txt")
+            explain_prompt = PromptTemplate.from_template(explain_prompt_text)
+            answer_chain = LLMChain(llm=llm_answer, prompt=explain_prompt)
+            logger.info("Generating detail explanation for topic-based question")
+
+            second_response = answer_chain.run({
+                "retrieved_chunks": processed_chunks,
+                "first_pass_answer": first_response,
+                "student_question": standalone_question
+            })
+            logger.info(f"Second Pass Answer for topic-based question → {second_response}")
+
+            # TODO: Save generated answer and the student's question to both databases
+            
+            compare_prompt_text = load_prompt("compare_prompt.txt")
+            compare_prompt = PromptTemplate.from_template(compare_prompt_text)
+            compare_chain = LLMChain(llm=llm_decision, prompt=compare_prompt)
+            compare_answer = compare_chain.run({
+                "first_pass_answer": first_response,
+                "second_pass_answer": second_response,
+                "student_question": standalone_question
+            })
+            logger.debug(f"Compare answer: {compare_answer}")
+            
+            # TODO: Save generated answer and the student's question to both databases
+            return compare_answer
+
         except Exception as e:
             logger.error(f"Error retrieving documents: {str(e)}")
             return "I'm having trouble accessing the learning materials. Please try again later."
