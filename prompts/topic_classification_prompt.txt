@@ -9,7 +9,7 @@
             If it's type C, classify it into one of these topics that is the most relevant:
 
             - algebra: Linear equations, inequalities, binomial theorem
-            - basics: Numbers, polynomials, coordinate geometry, real numbers, pair of linear equations, quadratic equations, complex numbers
+            - basics: Numbers, polynomials, real numbers, pair of linear equations, quadratic equations, complex numbers
             - geometry: Coordinate geometry, trigonometry, circles, surface areas, volumes, conic sections, three dimensional geometry
             - miscellaneous: Arithmetic progression, infinite series, sets, relations and functions, permutations and combinations, sequences and series
             - modelling: Mathematical modeling and applications
@@ -18,6 +18,6 @@
 
             Question: {question}
 
-            For type C, respond with the **exact** topic name from the list above.
-            e.g. "algebra" or "geometry"
+            For type C, respond with the **exact**  and **just** the topic name from the list above.
+            Example: "algebra" or "geometry"
         

@@ -5,4 +5,3 @@ docs.txt
 __pycache__/
 database/
 logs/
-sorted_docs/

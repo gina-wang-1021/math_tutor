@@ -9,7 +9,8 @@ from logger_config import setup_logger
 logger = setup_logger(__name__)
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INDEXES_DIR_NAME = "indexes"
+# Path to ChromaDB indexes
+INDEXES_DIR = "/Users/wangyichi/LocalData/chromadb/indexes"
 
 def get_chunks_for_current_year(topic, year, query):
     """Get relevant chunks for a topic at the specified year level.
@@ -30,7 +31,7 @@ def get_chunks_for_current_year(topic, year, query):
         year = 'beginner'
 
     try:
-        index_path = os.path.join(PROJECT_ROOT, INDEXES_DIR_NAME, topic)
+        index_path = os.path.join(INDEXES_DIR, topic)
         if not os.path.exists(index_path):
             logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
             return []
@@ -77,7 +78,7 @@ def get_chunks_from_prior_years(topic, year, query):
         return []
 
     try:
-        index_path = os.path.join(PROJECT_ROOT, INDEXES_DIR_NAME, topic)
+        index_path = os.path.join(INDEXES_DIR, topic)
         if not os.path.exists(index_path):
             logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
             return []
@@ -119,8 +120,10 @@ def get_topic(question):
         topic_prompt_text = load_prompt("topic_classification_prompt.txt")
         topic_prompt = PromptTemplate.from_template(topic_prompt_text)
         
-        topic_chain = LLMChain(llm=llm, prompt=topic_prompt)
-        response = topic_chain.run({"question": question}).strip().lower()
+        topic_chain = topic_prompt | llm
+        response = topic_chain.invoke({"question": question}).content.strip()
+        # topic_chain = LLMChain(llm=llm, prompt=topic_prompt)
+        # response = topic_chain.run({"question": question}).strip().lower()
         
         if response == "calculation":
             logger.info(f"Question classified as 'calculation': '{question[:50]}...' ")

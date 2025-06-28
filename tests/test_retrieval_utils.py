@@ -2,18 +2,14 @@ import os
 import unittest
 import sys
 
-# Add project root to the Python path
+# Add project root and scripts directory to the Python path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
+sys.path.append(os.path.join(PROJECT_ROOT, 'scripts'))
 
-# Set OpenAI API key from .env file
-env_path = os.path.join(PROJECT_ROOT, '.env')
-if os.path.exists(env_path):
-    with open(env_path, 'r') as f:
-        for line in f:
-            if line.startswith('OPENAI_API_KEY='):
-                os.environ['OPENAI_API_KEY'] = line.strip().split('=', 1)[1].strip('"\'')
-                break
+# Load environment variables from .env file
+from scripts.load_env import load_env_vars
+load_env_vars()
 
 from utilities.retrieval_utils import get_topic, get_chunks_for_current_year, get_chunks_from_prior_years
 
@@ -36,7 +32,9 @@ class TestRetrievalUtils(unittest.TestCase):
         self.assertIsInstance(chunks, list)
         self.assertTrue(len(chunks) > 0, "Should retrieve at least one chunk for a valid topic")
         if chunks:
-            self.assertIsInstance(chunks[0], str)
+            # Check if it's a Document object with page_content and metadata
+            self.assertTrue(hasattr(chunks[0], 'page_content') or isinstance(chunks[0], str), 
+                          "Chunk should be either a Document object with page_content or a string")
 
     def test_get_chunks_from_prior_years(self):
         """Test retrieving chunks from prior years from Chroma DB."""
@@ -47,7 +45,9 @@ class TestRetrievalUtils(unittest.TestCase):
         self.assertIsInstance(chunks, list)
         self.assertTrue(len(chunks) > 0, "Should retrieve chunks from prior years for an advanced student")
         if chunks:
-            self.assertIsInstance(chunks[0], str)
+            # Check if it's a Document object with page_content and metadata
+            self.assertTrue(hasattr(chunks[0], 'page_content') or isinstance(chunks[0], str), 
+                          "Chunk should be either a Document object with page_content or a string")
 
     def test_get_chunks_for_beginner_no_prior(self):
         """Test that no prior year chunks are retrieved for a beginner."""

@@ -2,9 +2,14 @@ import os
 import unittest
 import sys
 
-# Add project root to the Python path
+# Add project root and scripts directory to the Python path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
+sys.path.append(os.path.join(PROJECT_ROOT, 'scripts'))
+
+# Load environment variables from .env file
+from scripts.load_env import load_env_vars
+load_env_vars()
 
 from utilities.qa_utils import get_historic_answer, rephrase_question, MAX_L2_DISTANCE_THRESHOLD
 

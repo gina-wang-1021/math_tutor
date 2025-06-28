@@ -148,8 +148,9 @@ def rephrase_question(user_question: str, history: str) -> str:
         llm_rephrase = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
         rephrase_prompt_text = load_prompt("rephrase_question_prompt.txt")
         rephrase_prompt = PromptTemplate.from_template(rephrase_prompt_text)
-        llm_chain = LLMChain(llm=llm_rephrase, prompt=rephrase_prompt)
-        return llm_chain.run({"user_question": user_question, "history": history}).strip()
+        llm_chain = rephrase_prompt | llm_rephrase
+        response = llm_chain.invoke({"user_question": user_question, "history": history})
+        return response.content.strip()
     except Exception as e:
         logger.error(f"Error rephrasing question: {str(e)}")
         return user_question

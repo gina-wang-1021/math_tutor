@@ -2,9 +2,14 @@ import os
 import unittest
 import sys
 
-# Add project root to the Python path
+# Add project root and scripts directory to the Python path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
+sys.path.append(os.path.join(PROJECT_ROOT, 'scripts'))
+
+# Load environment variables from .env file
+from scripts.load_env import load_env_vars
+load_env_vars()
 
 from utilities.prompt_utils import load_prompt
 
@@ -14,7 +19,7 @@ class TestPromptUtils(unittest.TestCase):
         """Test loading an existing prompt file."""
         prompt_content = load_prompt("compare_prompt.txt")
         self.assertIsInstance(prompt_content, str)
-        self.assertIn("Compare the two answers", prompt_content)
+        self.assertIn("If the 'Second Pass Answer' is clear, correct, and fully", prompt_content)
 
     def test_load_nonexistent_prompt(self):
         """Test loading a nonexistent prompt file raises an error."""
