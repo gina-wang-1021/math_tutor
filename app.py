@@ -33,16 +33,14 @@ if not st.session_state.login_success:
         st.error("Invalid student ID")
     
     if st.button("Start Learning"):
-        # Convert input student_id to string
         student_id_str = str(student_id).strip()
-        # Convert all Student ID values in dataframe to strings for comparison
         student_ids_in_df = [str(id).strip() for id in df["Student ID"].values]
         
         if student_id_str in student_ids_in_df:
             logger.info(f"Successful login for student {student_id_str}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
-            st.session_state.student_id = student_id_str  # Store as string
+            st.session_state.student_id = student_id_str
             st.success("Login successful!")
             st.rerun()
         else:
@@ -52,17 +50,15 @@ if not st.session_state.login_success:
 
 # Main Chatting Page
 else:
-    # Find the student in the dataframe, with proper error handling
     matching_students = df[df["Student ID"].astype(str) == str(st.session_state.student_id)]
     
     if len(matching_students) > 0:
         student_name = matching_students["Student Name"].values[0]
         st.title(f"Hi {student_name}, let's learn math today!")
     else:
-        # Handle case where student ID doesn't match any in the database
         logger.error(f"No matching student found for ID: {st.session_state.student_id}")
         st.error("Error: Student record not found. Please log out and try again.")
-        student_name = "Student"  # Default fallback
+        student_name = "Student"
         st.title(f"Hi {student_name}, let's learn math today!")
 
     for message in st.session_state.messages:
@@ -95,7 +91,7 @@ else:
             response_placeholder = st.empty()
             full_response = []
 
-            # Show generating hint with subtle styling
+            # Show generating hint
             with hint_placeholder:
                 st.markdown("<div style='color: gray; font-size: 0.9em;'>⌛ Generating response...</div>", unsafe_allow_html=True)
             

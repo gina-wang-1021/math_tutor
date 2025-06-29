@@ -131,13 +131,26 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
             llm_decision = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
             coverage_answer_chain = chunk_coverage_prompt | llm_decision
-            coverage_answer = coverage_answer_chain.invoke({
+            
+            # Get the response from the LLM
+            response_content = coverage_answer_chain.invoke({
                 "student_question": standalone_question,
                 "retrieved_chunks": processed_chunks
-            }).content.strip()
-            logger.info(f"Coverage answer: {coverage_answer}")
-
-            if coverage_answer.strip() == "No" or coverage_answer.strip() == "no":
+            }).content
+            
+            # Parse the response as a Python list
+            import ast
+            try:
+                coverage_answer = ast.literal_eval(response_content)
+                logger.info(f"Coverage answer: {coverage_answer}")
+                logger.info(f"Decision: {coverage_answer[0]}, Reasoning: {coverage_answer[1]}")
+            except (ValueError, SyntaxError) as e:
+                logger.error(f"Failed to parse coverage answer as list: {e}")
+                logger.error(f"Raw response: {response_content}")
+                # Default to Yes if parsing fails
+                coverage_answer = ["Yes", "Failed to parse response, defaulting to covered."]
+                
+            if coverage_answer[0] == "No":
                 # Create the response message
                 response_message = f"This topic is not covered in your textbook yet. I'm happy to help with other questions you have! 😊"
                 
