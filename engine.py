@@ -4,11 +4,12 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.callbacks.base import BaseCallbackHandler
-from logger_config import setup_logger
+from scripts.logger_config import setup_logger
 from utilities.student_utils import get_student_level, get_confidence_level_and_score, check_confidence_and_score
 from utilities.prompt_utils import load_prompt
 from utilities.qa_utils import get_historic_answer, rephrase_question, MAX_L2_DISTANCE_THRESHOLD, HISTORIC_QA_K_NEIGHBORS
 from utilities.retrieval_utils import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
+import time
 
 class StreamingCallbackHandler(BaseCallbackHandler):
     """Callback handler for streaming LLM responses."""
@@ -137,7 +138,19 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             logger.info(f"Coverage answer: {coverage_answer}")
 
             if coverage_answer.strip() == "No" or coverage_answer.strip() == "no":
-                return f"This topic is not covered in your textbook yet. I'm happy to help with other questions you have! 😊"
+                # Create the response message
+                response_message = f"This topic is not covered in your textbook yet. I'm happy to help with other questions you have! 😊"
+                
+                # If stream handler is provided, simulate token-by-token streaming
+                if stream_handler:
+                    tokens = response_message.split()
+                    for token in tokens:
+                        stream_handler(token + " ")
+                        time.sleep(0.05)  # Small delay between tokens
+                    return ""
+                else:
+                    # If no stream handler, return the full message as before
+                    return response_message
             
             # Topic-based answer prompt
             topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")

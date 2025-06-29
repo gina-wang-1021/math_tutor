@@ -4,7 +4,7 @@ from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
 from utilities.prompt_utils import load_prompt
 from langchain.chains import LLMChain
-from logger_config import setup_logger
+from scripts.logger_config import setup_logger
 
 logger = setup_logger(__name__)
 

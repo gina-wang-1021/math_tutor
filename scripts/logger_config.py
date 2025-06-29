@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
+# Dictionary to keep track of configured loggers
+configured_loggers = {}
+
 def setup_logger(name, log_dir=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')):
     """Set up a logger with both file and console handlers.
     
@@ -13,16 +16,24 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(os.path.dirname(__fi
     Returns:
         logging.Logger: Configured logger instance
     """
+    # Check if this logger has already been configured in this session
+    if name in configured_loggers:
+        return configured_loggers[name]
+        
     # Create logs directory if it doesn't exist
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
         
     # Create logger
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)  # Set root logger to DEBUG
+    logger.setLevel(logging.DEBUG)  # Set logger level to DEBUG
+    
+    # Prevent propagation to root logger to avoid duplicate logs
+    logger.propagate = False
     
     # Prevent adding handlers multiple times
     if logger.handlers:
+        configured_loggers[name] = logger
         return logger
         
     # Create formatters
@@ -51,5 +62,8 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(os.path.dirname(__fi
     # Add handlers to logger
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
+    
+    # Store the configured logger
+    configured_loggers[name] = logger
     
     return logger
