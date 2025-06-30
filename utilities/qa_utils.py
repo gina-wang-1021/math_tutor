@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import PromptTemplate
 from utilities.prompt_utils import load_prompt
 from langchain.chains import LLMChain
-from scripts.logger_config import setup_logger
+from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
@@ -62,11 +62,11 @@ def load_historic_qa_resources(grade: int):
     return loaded_faiss_index, db_conn
 
 def search_historic_qa(question_embedding: np.ndarray, faiss_index, db_conn, k: int, max_distance_threshold: float):
-    """Searches historic Q&A, returns answer if a sufficiently similar question is found."""
+    """Searches historic Q&A, returns answer and similarity score if a sufficiently similar question is found."""
     try:
         if not faiss_index or faiss_index.ntotal == 0:
             logger.info("Skipping FAISS search as the index is empty or not provided.")
-            return None
+            return None, None
             
         distances, ids = faiss_index.search(question_embedding, k)
         logger.debug(f"FAISS search results: distances={distances}, ids={ids}")
@@ -133,6 +133,89 @@ def get_historic_answer(grade, question, max_distance_threshold):
     
     logger.info(f"Did not find a similar question asked for grade {grade}")
     return None
+
+def store_qa_pair(grade: int, question: str, answer: str) -> bool:
+    """Store a new question-answer pair in the FAISS index and SQLite database.
+    
+    Args:
+        grade (int): The student's grade level (11 or 12)
+        question (str): The question to store
+        answer (str): The generated answer to store
+        
+    Returns:
+        bool: True if the operation was successful, False otherwise
+    """
+    if grade not in [11, 12]:
+        logger.warning(f"Cannot store Q&A pair for invalid grade {grade}. Must be 11 or 12.")
+        return False
+        
+    logger.info(f"Storing new Q&A pair for grade {grade}: '{question[:50]}...'")
+    
+    faiss_path = FAISS_INDEX_FILES[grade]
+    db_path = GRADE_DBS_FILES[grade]
+    
+    if not os.path.exists(db_path):
+        logger.error(f"SQLite DB file not found for grade {grade} at {db_path}")
+        return False
+        
+    db_conn = None
+
+    try:
+        # Generate embedding for the question
+        embeddings_model = OpenAIEmbeddings()
+        question_vector = embeddings_model.embed_query(question)
+        question_vector_np = np.array([question_vector], dtype='float32')
+        
+        # Connect to SQLite database
+        db_conn = sqlite3.connect(db_path)
+        cursor = db_conn.cursor()
+        
+        try:
+            cursor.execute("INSERT INTO qa_pairs (question_text, answer_text) VALUES (?, ?)", 
+                          (question, answer))
+            db_conn.commit()
+            last_id = cursor.lastrowid
+            logger.info(f"Inserted Q&A pair with ID {last_id} into SQLite database for grade {grade}")
+        
+        # Handle duplicate questions
+        except sqlite3.IntegrityError:
+            logger.warning(f"Question already exists in database for grade {grade}: '{question[:50]}...'")
+            cursor.execute("SELECT id FROM qa_pairs WHERE question_text = ?", (question,))
+            result = cursor.fetchone()
+            if result:
+                last_id = result[0]
+                logger.info(f"Using existing question ID {last_id} for grade {grade}")
+            else:
+                logger.error(f"Failed to find existing question ID for grade {grade}")
+                return False
+        
+        # Load and update FAISS index
+        try:
+            if os.path.exists(faiss_path):
+                faiss_index = faiss.read_index(faiss_path)
+                logger.info(f"Loaded existing FAISS index for grade {grade} with {faiss_index.ntotal} entries")
+            else:
+                logger.warning(f"FAISS index not found for grade {grade}, creating new one")
+                return False
+            
+            faiss_index.add_with_ids(question_vector_np, np.array([last_id], dtype='int64'))
+            logger.info(f"Added vector to FAISS index for grade {grade}, new size: {faiss_index.ntotal}")
+            
+            # Save the updated FAISS index
+            faiss.write_index(faiss_index, faiss_path)
+            logger.info(f"Saved updated FAISS index for grade {grade}")
+            
+            return True
+        except Exception as e:
+            logger.error(f"Error updating FAISS index for grade {grade}: {e}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"Error storing Q&A pair for grade {grade}: {e}")
+        return False
+    finally:
+        if db_conn:
+            db_conn.close()
 
 def rephrase_question(user_question: str, history: str) -> str:
     """Generate a standalone version of a follow-up question using chat history.

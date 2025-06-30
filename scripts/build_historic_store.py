@@ -1,9 +1,7 @@
 import sqlite3
 import os
 import sys
-# Add project root to sys.path to allow importing 'logger_config'
-# This script is intended to be run from the project root as 'python scripts/build_historic_store.py'
-# after this file has been moved to the 'scripts' directory.
+
 _CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.abspath(os.path.join(_CURRENT_DIR, '..')) # This will point to project root when script is in scripts/
 if _PROJECT_ROOT not in sys.path:
@@ -16,9 +14,9 @@ logger = setup_logger('build_historic_store')
 DB_SCHEMA = """
 DROP TABLE IF EXISTS qa_pairs;
 CREATE TABLE IF NOT EXISTS qa_pairs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,      -- This ID will map to the FAISS index vector ID
-    question_text TEXT NOT NULL UNIQUE, -- Original question text
-    answer_text TEXT NOT NULL           -- Original answer text
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    question_text TEXT NOT NULL UNIQUE,
+    answer_text TEXT NOT NULL
 );
 """
 
