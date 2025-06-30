@@ -4,7 +4,7 @@ import os
 from openai import OpenAI
 from engine import pipeline
 import pandas as pd
-from scripts.logger_config import setup_logger
+from logger_config import setup_logger
 
 # Initialize logger
 logger = setup_logger('app')

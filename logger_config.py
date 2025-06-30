@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 # Dictionary to keep track of configured loggers
 configured_loggers = {}
 
-def setup_logger(name, log_dir=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')):
+def setup_logger(name, log_dir=os.path.join(os.path.dirname(__file__), 'logs')):
     """Set up a logger with both file and console handlers.
     
     Args:
@@ -45,7 +45,9 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(os.path.dirname(__fi
     )
     
     # File handler (rotating to keep log size manageable)
-    log_file = os.path.join(log_dir, f'{name}_{datetime.now().strftime("%Y%m%d")}.log')
+    # Clean up the logger name to avoid directory structure in filenames
+    simple_name = name.split('.')[-1]  # Get the last part of the name (e.g., 'qa_utils' from 'utilities.qa_utils')
+    log_file = os.path.join(log_dir, f'{simple_name}_{datetime.now().strftime("%Y%m%d")}.log')
     file_handler = RotatingFileHandler(
         log_file,
         maxBytes=10*1024*1024,  # 10MB

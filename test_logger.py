@@ -1,4 +1,4 @@
-from scripts.logger_config import setup_logger
+from logger_config import setup_logger
 
 logger = setup_logger('test_logger')
 logger.info('This is a test log message')

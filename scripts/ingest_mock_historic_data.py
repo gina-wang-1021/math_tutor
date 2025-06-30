@@ -3,7 +3,7 @@ import os
 import faiss
 import numpy as np
 from langchain_openai import OpenAIEmbeddings # Corrected import for newer Langchain
-from .logger_config import setup_logger
+from logger_config import setup_logger
 from dotenv import load_dotenv
 
 logger = setup_logger('ingest_mock_historic_data')
@@ -92,19 +92,15 @@ def ingest_data():
                     last_id = cursor.lastrowid
                     sqlite_ids.append(last_id)
                     logger.debug(f"Inserted Q: '{qa['question'][:30]}...' A: '{qa['answer'][:30]}...' with ID: {last_id} into Grade {grade} DB.")
-                except sqlite3.IntegrityError: # Handles UNIQUE constraint violation for question_text
+                except sqlite3.IntegrityError:
                     logger.warning(f"Question already exists, fetching ID: '{qa['question'][:30]}...' for Grade {grade}")
                     cursor.execute("SELECT id FROM qa_pairs WHERE question_text = ?", (qa['question'],))
                     existing_id = cursor.fetchone()
                     if existing_id:
                         sqlite_ids.append(existing_id[0])
-                        # If question exists, we might want to update its vector in FAISS or skip adding
-                        # For this mock script, we'll assume new vectors for existing IDs are not added to FAISS to keep it simple
-                        # Or, ensure mock questions are unique if this path is problematic
                     else:
                         logger.error(f"Could not fetch ID for existing question: {qa['question'][:30]}...")
-                        # Decide how to handle this - skip this entry for FAISS?
-                        continue # Skip adding this vector to FAISS if ID fetch fails
+                        continue
             
             if len(sqlite_ids) == len(question_vectors_np):
                 index.add_with_ids(question_vectors_np, np.array(sqlite_ids, dtype='int64'))

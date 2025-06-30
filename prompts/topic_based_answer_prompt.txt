@@ -14,7 +14,7 @@ Below is the student question and the relevant textbook excerpts:
 Please answer the student's question **based on the textbook content**.
 
 **Output Format:**
-Format your response using markdown with proper headings (use ## or ### instead of # for headings), lists, and emphasis to make your explanation clear and organized.
+Format your response using markdown with proper headings (use ### or #### instead of # or ## for headings), lists, and emphasis to make your explanation clear and organized.
 
 Format mathematical expressions using LaTeX notation with the $ delimiter for inline math and $$ for block equations.
 Example: \$x^2 + y^2 = z^2\$ for inline or \$\$\frac{{-b \pm \sqrt{{b^2 - 4ac}}}}{{2a}}\$\$ for equations.
