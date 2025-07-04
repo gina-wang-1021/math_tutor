@@ -196,7 +196,16 @@ def store_qa_pair(grade: int, question: str, answer: str) -> bool:
                 logger.info(f"Loaded existing FAISS index for grade {grade} with {faiss_index.ntotal} entries")
             else:
                 logger.warning(f"FAISS index not found for grade {grade}, creating new one")
-                return False
+                # Create a new FAISS index with the same dimension as the embeddings
+                dimension = len(question_vector)
+                # First create a flat index
+                base_index = faiss.IndexFlatL2(dimension)
+                # Then wrap it with IndexIDMap to support add_with_ids
+                faiss_index = faiss.IndexIDMap(base_index)
+                logger.info(f"Created new FAISS index for grade {grade} with dimension {dimension}")
+                
+                # Make sure the directory exists
+                os.makedirs(os.path.dirname(faiss_path), exist_ok=True)
             
             faiss_index.add_with_ids(question_vector_np, np.array([last_id], dtype='int64'))
             logger.info(f"Added vector to FAISS index for grade {grade}, new size: {faiss_index.ntotal}")

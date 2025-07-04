@@ -17,7 +17,7 @@ def get_chunks_for_current_year(topic, year, query):
 
     Args:
         topic (str): The topic to search for.
-        year (str): The year level ('beginner', 'intermediate', 'advanced').
+        year (str): The year level ('nine', 'ten', 'eleven', 'twelve').
         query (str): The search query.
 
     Returns:
@@ -25,12 +25,13 @@ def get_chunks_for_current_year(topic, year, query):
     """
     logger.info(f"Retrieving chunks for topic '{topic}' at level '{year}' with query: '{query[:50]}...'")
     
-    level_order = ['beginner', 'intermediate', 'advanced']
+    level_order = ['nine', 'ten', 'eleven', 'twelve']
     if year not in level_order:
-        logger.warning(f"Invalid level '{year}', defaulting to 'beginner'.")
-        year = 'beginner'
+        logger.warning(f"Invalid level '{year}', defaulting to 'twelve'.")
+        year = 'twelve'
 
     try:
+        topic = topic.replace(" ", "_")
         index_path = os.path.join(INDEXES_DIR, topic)
         if not os.path.exists(index_path):
             logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
@@ -59,7 +60,7 @@ def get_chunks_from_prior_years(topic, year, query):
 
     Args:
         topic (str): The topic to search for.
-        year (str): The current year level ('beginner', 'intermediate', 'advanced').
+        year (str): The current year level ('nine', 'ten', 'eleven', 'twelve').
         query (str): The search query.
 
     Returns:
@@ -67,7 +68,7 @@ def get_chunks_from_prior_years(topic, year, query):
     """
     logger.info(f"Retrieving prior-year chunks for topic '{topic}' up to (but not including) level '{year}'.")
 
-    level_order = ['beginner', 'intermediate', 'advanced']
+    level_order = ['nine', 'ten', 'eleven', 'twelve']
     if year not in level_order:
         logger.warning(f"Invalid level '{year}', no prior levels to fetch.")
         return []
@@ -78,6 +79,7 @@ def get_chunks_from_prior_years(topic, year, query):
         return []
 
     try:
+        topic = topic.replace(" ", "_")
         index_path = os.path.join(INDEXES_DIR, topic)
         if not os.path.exists(index_path):
             logger.error(f"No index found for topic '{topic}' at '{index_path}'.")
@@ -88,7 +90,7 @@ def get_chunks_from_prior_years(topic, year, query):
 
         for current_level in level_order[:max_level_idx]:
             try:
-                chunks = db.similarity_search(query, k=2, filter={"level": current_level})
+                chunks = db.similarity_search(query, k=3, filter={"level": current_level})
                 if chunks:
                     logger.debug(f"Found {len(chunks)} chunks for level '{current_level}' in topic '{topic}'.")
                     for chunk in chunks:
@@ -121,9 +123,7 @@ def get_topic(question):
         topic_prompt = PromptTemplate.from_template(topic_prompt_text)
         
         topic_chain = topic_prompt | llm
-        response = topic_chain.invoke({"question": question}).content.strip()
-        # topic_chain = LLMChain(llm=llm, prompt=topic_prompt)
-        # response = topic_chain.run({"question": question}).strip().lower()
+        response = topic_chain.invoke({"question": question}).content.strip().lower()
         
         if response == "calculation":
             logger.info(f"Question classified as 'calculation': '{question[:50]}...' ")
@@ -132,14 +132,14 @@ def get_topic(question):
             logger.info(f"Question classified as 'overview': '{question[:50]}...' ")
             return "overview"
         
-        valid_topics = ["algebra", "basics", "geometry", "miscellaneous", "modelling", "probability", "statistics"]
+        valid_topics = ["algebra", "basics of financial mathematics", "geometry", "calculus", "mathematical reasoning", "numbers quantification and numerical applications", "probability", "statistics", "set and functions", "surface area and volumes", "trigonometry"]
         if response in valid_topics:
             logger.info(f"Question classified under topic '{response}': '{question[:50]}...' ")
             return response
         
-        logger.warning(f"Topic detection returned an unexpected response: '{response}'. Defaulting to 'basics' for question: '{question[:50]}...' ")
-        return "basics"
+        logger.warning(f"Topic detection returned an unexpected response: '{response}'. Defaulting to 'algebra' for question: '{question[:50]}...' ")
+        return "algebra"
         
     except Exception as e:
         logger.error(f"Error detecting topics for question '{question[:50]}...': {str(e)}")
-        return "basics"
+        return "algebra"

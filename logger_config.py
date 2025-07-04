@@ -31,10 +31,13 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(__file__), 'logs')):
     # Prevent propagation to root logger to avoid duplicate logs
     logger.propagate = False
     
-    # Prevent adding handlers multiple times
+    # Clear any existing handlers to prevent duplication
     if logger.handlers:
-        configured_loggers[name] = logger
-        return logger
+        logger.handlers = []
+    
+    # Check if this logger has already been fully configured
+    if name in configured_loggers:
+        return configured_loggers[name]
         
     # Create formatters
     file_formatter = logging.Formatter(

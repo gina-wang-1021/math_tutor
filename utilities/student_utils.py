@@ -48,12 +48,12 @@ def get_student_level(student_id):
         
         grade = student_data.iloc[0]["Current Class"]
         if grade == 11:
-            return "intermediate", 11
+            return "eleven", 11
         elif grade == 12:
-            return "advanced", 12
+            return "twelve", 12
         else:
             # For grades other than 11/12, or if grade is not a number that can be 11/12
-            level = "beginner" # Default level for other grades
+            level = "ten" # Default level for other grades
             return level, None 
     except Exception as e:
         logger.error(f"Error getting student grade for {student_id}: {str(e)}")
