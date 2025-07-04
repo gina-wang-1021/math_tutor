@@ -3,10 +3,8 @@ import os
 import faiss
 import numpy as np
 from langchain_openai import OpenAIEmbeddings # Corrected import for newer Langchain
-from logger_config import setup_logger
 from dotenv import load_dotenv
 
-logger = setup_logger('ingest_mock_historic_data')
 load_dotenv()
 
 DB_DIR = "historic_qa_data"
@@ -44,33 +42,33 @@ MOCK_DATA = {
 def ingest_data():
     """Ingests mock Q&A data into SQLite and creates FAISS indexes."""
     os.makedirs(DB_DIR, exist_ok=True)
-    logger.info(f"Ensuring data directory exists at: {os.path.abspath(DB_DIR)}")
+    print(f"Ensuring data directory exists at: {os.path.abspath(DB_DIR)}")
 
     try:
         embeddings_model = OpenAIEmbeddings()
     except Exception as e:
-        logger.error(f"Failed to initialize OpenAIEmbeddings. Ensure OPENAI_API_KEY is set. Error: {e}")
+        print(f"Failed to initialize OpenAIEmbeddings. Ensure OPENAI_API_KEY is set. Error: {e}")
         return
 
     for grade, qa_list in MOCK_DATA.items():
         db_path = GRADE_DBS[grade]
         faiss_index_path = FAISS_INDEXES[grade]
-        logger.info(f"Processing Grade {grade} data...")
+        print(f"Processing Grade {grade} data...")
 
         question_texts = [qa['question'] for qa in qa_list]
         answer_texts = [qa['answer'] for qa in qa_list]
         
         if not question_texts:
-            logger.info(f"No mock data for Grade {grade}. Skipping.")
+            print(f"No mock data for Grade {grade}. Skipping.")
             continue
 
         try:
-            logger.info(f"Generating embeddings for {len(question_texts)} questions for Grade {grade}...")
+            print(f"Generating embeddings for {len(question_texts)} questions for Grade {grade}...")
             question_vectors = embeddings_model.embed_documents(question_texts)
             question_vectors_np = np.array(question_vectors, dtype='float32')
-            logger.info(f"Embeddings generated successfully for Grade {grade}.")
+            print(f"Embeddings generated successfully for Grade {grade}.")
         except Exception as e:
-            logger.error(f"Failed to generate embeddings for Grade {grade}: {e}")
+            print(f"Failed to generate embeddings for Grade {grade}: {e}")
             continue
 
         # Initialize FAISS index
@@ -82,7 +80,7 @@ def ingest_data():
         try:
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
-            logger.info(f"Connected to SQLite DB: {db_path}")
+            print(f"Connected to SQLite DB: {db_path}")
 
             for i, qa in enumerate(qa_list):
                 try:
@@ -91,34 +89,53 @@ def ingest_data():
                     conn.commit()
                     last_id = cursor.lastrowid
                     sqlite_ids.append(last_id)
-                    logger.debug(f"Inserted Q: '{qa['question'][:30]}...' A: '{qa['answer'][:30]}...' with ID: {last_id} into Grade {grade} DB.")
+                    print(f"Inserted Q: '{qa['question'][:30]}...' A: '{qa['answer'][:30]}...' with ID: {last_id} into Grade {grade} DB.")
                 except sqlite3.IntegrityError:
-                    logger.warning(f"Question already exists, fetching ID: '{qa['question'][:30]}...' for Grade {grade}")
+                    print(f"Question already exists, fetching ID: '{qa['question'][:30]}...' for Grade {grade}")
                     cursor.execute("SELECT id FROM qa_pairs WHERE question_text = ?", (qa['question'],))
                     existing_id = cursor.fetchone()
                     if existing_id:
                         sqlite_ids.append(existing_id[0])
                     else:
-                        logger.error(f"Could not fetch ID for existing question: {qa['question'][:30]}...")
+                        print(f"Could not fetch ID for existing question: {qa['question'][:30]}...")
                         continue
             
             if len(sqlite_ids) == len(question_vectors_np):
                 index.add_with_ids(question_vectors_np, np.array(sqlite_ids, dtype='int64'))
-                logger.info(f"Added {index.ntotal} vectors to FAISS index for Grade {grade}.")
+                print(f"Added {index.ntotal} vectors to FAISS index for Grade {grade}.")
                 faiss.write_index(index, faiss_index_path)
-                logger.info(f"FAISS index for Grade {grade} saved to: {faiss_index_path}")
+                print(f"FAISS index for Grade {grade} saved to: {faiss_index_path}")
             else:
-                logger.error(f"Mismatch between number of SQLite IDs ({len(sqlite_ids)}) and vectors ({len(question_vectors_np)}) for Grade {grade}. FAISS index not saved.")
+                print(f"Mismatch between number of SQLite IDs ({len(sqlite_ids)}) and vectors ({len(question_vectors_np)}) for Grade {grade}. FAISS index not saved.")
 
         except sqlite3.Error as e:
-            logger.error(f"SQLite error for Grade {grade}: {e}")
+            print(f"SQLite error for Grade {grade}: {e}")
         except Exception as e:
-            logger.error(f"General error during FAISS/SQLite processing for Grade {grade}: {e}")
+            print(f"General error during FAISS/SQLite processing for Grade {grade}: {e}")
         finally:
             if 'conn' in locals() and conn:
                 conn.close()
 
+def clean_data():
+    """Removes all historical data in both SQLite and FAISS indexes."""
+    for grade, db_path in GRADE_DBS.items():
+        try:
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM qa_pairs;")
+            conn.commit()
+            print(f"Cleared all data from Grade {grade} database.")
+        except sqlite3.Error as e:
+            print(f"SQLite error while clearing Grade {grade} database: {e}")
+        finally:
+            if conn:
+                conn.close()
+
+        faiss_index_path = FAISS_INDEXES[grade]
+        if os.path.exists(faiss_index_path):
+            os.remove(faiss_index_path)
+            print(f"Removed FAISS index for Grade {grade}.")
+
 if __name__ == "__main__":
-    logger.info("Starting mock historical Q&A data ingestion...")
-    ingest_data()
-    logger.info("Mock historical Q&A data ingestion complete.")
+    clean_data()
+    print("Historical data cleaned successfully.")

@@ -21,20 +21,20 @@
             If it's Category B, respond with exactly: "overview"
             If it's Category C, classify it into one of these specific topics:
 
-            - algebra: Linear equations, inequalities, binomial theorem, factoring, polynomials, quadratic equations
-            - geometry: Shapes, angles, coordinate geometry, trigonometry, circles, surface areas, volumes, conic sections, three dimensional geometry
-            - miscellaneous: Arithmetic progression, infinite series, sets, relations and functions, permutations and combinations, sequences and series
-            - modelling: Mathematical modeling and applications
-            - probability: Probability theory and applications
-            - statistics: Data analysis, statistical methods, measures of central tendency
-            - basics: General math concepts that don't fit clearly into the above categories, number theory, real numbers, complex numbers
-            
-            IMPORTANT: 
-            1. For questions like "what is a triangle" or other geometric concepts, classify them under "geometry" NOT "basics".
-            2. Only use "basics" as a last resort when the question doesn't fit into any of the other specific categories.
+            - Algebra: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
+            - Basics of Financial Mathematics: any math-application problems related to finance. Simple interest, compound interest, annuities, depreciation, installments, profit and loss, taxes, EMI calculations, and percentage-based financial decisions.
+            - Calculus: limits, continuity, derivatives, rules of differentiation, applications of derivatives, integration, definite and indefinite integrals, area under curves, differential equations.
+            - Geometry: lines and angles, triangles, congruence and similarity, circles, polygons, geometric constructions, coordinate geometry, and properties of geometric figures.
+            - Mathematical Reasoning: statements and logical connectives, truth tables, implications, converse and contrapositive, mathematical induction, validating mathematical arguments.
+            - Numbers Quantification and Numerical Applications: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
+            - Probability: classical and empirical probability, random experiments, outcomes and sample space, events, conditional probability, independent events, and probability of compound events.
+            - Statistics: data representation, measures of central tendency (mean, median, mode), measures of dispersion (range, variance, standard deviation), histograms, frequency distributions, and data interpretation.
+            - Set and Functions: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
+            - Surface Area and Volumes: surface area and volume of solids like cube, cuboid, cylinder, cone, sphere, and hemisphere; frustum of a cone; applications in real-life problems.
+            - Trigonometry: trigonometric ratios and identities, angles and their measure, graphs of trigonometric functions, heights and distances, inverse trigonometric functions, and solving triangles.
             
             Question: {question}
 
             For Category C, respond with ONLY the exact topic name from the list above. Do not include any explanation.
-            Example: "algebra" or "geometry"
+            Example: "Algebra" or "Numbers Quantification and Numerical Applications"
         

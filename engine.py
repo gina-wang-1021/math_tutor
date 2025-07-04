@@ -106,14 +106,24 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             # Determine student's overall grade-based level (mapped from grade 11/12)
             logger.info("Determining student's year at school...")
             grade_based_level, numeric_grade = get_student_level(student_id)
-            if grade_based_level is None and numeric_grade is None: # student_id not found or other error in get_student_level
-                grade_based_level = "beginner"
+            if grade_based_level is None and numeric_grade is None:
+                grade_based_level = "ten"
                 logger.info(f"Student {student_id}: Grade Based Level: {grade_based_level}, Numeric Grade: {numeric_grade}")
 
             # Detect whether a similar question had been asked before
             historic_answer = get_historic_answer(numeric_grade, standalone_question, historic_qa_l2_threshold)
             if historic_answer:
-                return historic_answer
+                # Stream the historic answer token by token if stream_handler is provided
+                if stream_handler:
+                    logger.info(f"Streaming historic answer for grade {numeric_grade}")
+                    # Split the answer into tokens (words or smaller chunks)
+                    for i, char in enumerate(historic_answer):
+                        stream_handler(char)
+                        # Add a small delay between tokens for a natural streaming effect
+                        time.sleep(0.02)
+                    return ""
+                else:
+                    return historic_answer
 
             # For topic-based questions, get the confidence level and scores for the topic
             logger.info("Getting student's confidence level and score for topic...")
@@ -131,9 +141,28 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                     logger.warning(f"No relevant chunks found for {detected_topic} at level {grade_based_level}")                           
             except Exception as e:
                 logger.error(f"Error getting chunks for {detected_topic}: {str(e)}")
-                
+                current_year_chunks = []
+            
+            # Get chunks from prior years
+            try:
+                lower_years_chunk = get_chunks_from_prior_years(detected_topic, grade_based_level, standalone_question)
+                if lower_years_chunk:
+                    logger.debug(f"Found {len(lower_years_chunk)} relevant chunks for {detected_topic}")
+                else:
+                    logger.warning(f"No relevant chunks found for {detected_topic} below level {grade_based_level}")      
+            except Exception as e:
+                logger.error(f"Error getting chunks from prior years for {detected_topic}: {str(e)}")
+                lower_years_chunk = []
+
             # Extract page_content from Document objects
-            processed_chunks = "\n\n".join([chunk.page_content for chunk in current_year_chunks]) if current_year_chunks else ""
+            processed_current_year_chunks = "\n\n".join([chunk.page_content for chunk in current_year_chunks]) if current_year_chunks else ""
+            processed_lower_years_chunks = "\n\n".join([chunk.page_content for chunk in lower_years_chunk]) if lower_years_chunk else ""
+            
+            # Combine both chunks into one
+            combined_chunks = processed_current_year_chunks
+            if processed_current_year_chunks and processed_lower_years_chunks:
+                combined_chunks += "\n\n"
+            combined_chunks += processed_lower_years_chunks
 
             # Determine if student's question is covered in the retrieved chunks
             logger.info("Determining if question is covered in retrieved chunks...")
@@ -145,7 +174,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             # Get the response from the LLM
             response_content = coverage_answer_chain.invoke({
                 "student_question": standalone_question,
-                "retrieved_chunks": processed_chunks
+                "retrieved_chunks": combined_chunks
             }).content
             
             # Parse the response as a Python list
@@ -177,7 +206,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
 
             # Check confidence level and topic scores to see if second pass is needed
-            if check_confidence_and_score(topic_level, topic_scores) or grade_based_level == "beginner":
+            if check_confidence_and_score(topic_level, topic_scores) or grade_based_level == "nine":
                 try:
                     # Use streaming LLM to generate direct answer
                     answer_chain = topic_prompt | llm_final
@@ -207,7 +236,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 logger.info("Generating first pass answer...")
                 first_pass_chain = topic_prompt | llm_intermediate
                 first_response = first_pass_chain.invoke({
-                    "retrieved_chunks": processed_chunks,
+                    "retrieved_chunks": processed_current_year_chunks,
                     "topic": detected_topic,
                     "student_question": standalone_question
                 }).content.strip()
@@ -217,17 +246,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 return "I'm sorry, I encountered an error while generating an answer. Please try again."
 
             # Second pass
-            try:
-                logger.info("Generating second pass answer...")
-                lower_years_chunk = get_chunks_from_prior_years(detected_topic, grade_based_level, standalone_question)
-            
-                if lower_years_chunk:
-                    logger.debug(f"Found {len(lower_years_chunk)} relevant chunks for {detected_topic}")
-                else:
-                    logger.warning(f"No relevant chunks found for {detected_topic} at level {grade_based_level}")  
-            except Exception as e:
-                logger.error(f"Error getting chunks from prior years: {str(e)}")
-                return first_response
+            logger.info("Generating second pass answer...")
             
             processed_chunks = "\n\n".join([chunk.page_content for chunk in lower_years_chunk]) if lower_years_chunk else ""
             
@@ -237,7 +256,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             answer_chain = explain_prompt | llm_intermediate
 
             second_response = answer_chain.invoke({
-                "retrieved_chunks": processed_chunks,
+                "retrieved_chunks": processed_lower_years_chunks,
                 "first_pass_answer": first_response,
                 "student_question": standalone_question
             }).content.strip()
@@ -275,6 +294,3 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
     except Exception as e:
         logger.error(f"Unexpected error in pipeline: {str(e)}")
         return "I'm sorry, something went wrong. Our team has been notified. Please try again later."
-
-if __name__ == "__main__":
-    pipeline("beginner", "basics", "what is 10+10", "")
