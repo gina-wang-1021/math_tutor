@@ -5,3 +5,4 @@ docs.txt
 __pycache__/
 database/
 historic_qa_data/
+logs/
