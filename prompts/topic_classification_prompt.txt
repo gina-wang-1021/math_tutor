@@ -6,20 +6,13 @@
             - Questions that ask to solve a specific equation with a numerical answer
             - Examples: "what is 2+2", "calculate 15% of 80", "solve 3x + 5 = 11", "find the derivative of x²"
             
-            CATEGORY B: SYSTEM CAPABILITIES (ONLY ABOUT THE TUTOR SYSTEM ITSELF)
-            - Questions that SPECIFICALLY ask about what the tutoring system can do
-            - Questions about the system's features, limitations, or available topics
-            - Examples: "what can you teach me", "what topics do you cover", "what can I learn from you", "how does this tutoring system work"
-            - NOTE: Questions about math concepts, even general ones, do NOT belong here
-            
-            CATEGORY C: MATH TOPIC QUESTIONS
+            CATEGORY B: MATH TOPIC QUESTIONS
             - ALL questions about mathematical concepts, definitions, explanations, or theory
             - ALL general questions about math that aren't direct calculations
             - Examples: "what is a triangle", "explain logarithms", "how do I factor polynomials", "what's the Pythagorean theorem"
             
             If it's Category A, respond with exactly: "calculation"
-            If it's Category B, respond with exactly: "overview"
-            If it's Category C, classify it into one of these specific topics:
+            If it's Category B, classify it into one of these specific topics:
 
             - Algebra: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
             - Basics of Financial Mathematics: any math-application problems related to finance. Simple interest, compound interest, annuities, depreciation, installments, profit and loss, taxes, EMI calculations, and percentage-based financial decisions.
@@ -35,6 +28,6 @@
             
             Question: {question}
 
-            For Category C, respond with ONLY the exact topic name from the list above. Do not include any explanation.
+            For Category B, respond with ONLY the exact topic name from the list above. Do not include any explanation.
             Example: "Algebra" or "Numbers Quantification and Numerical Applications"
         

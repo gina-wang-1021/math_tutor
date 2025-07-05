@@ -4,5 +4,4 @@ docs.txt
 .streamlit/
 __pycache__/
 database/
-logs/
 historic_qa_data/

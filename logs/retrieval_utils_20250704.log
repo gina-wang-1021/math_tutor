@@ -1,0 +1,91 @@
+2025-07-04 17:06:24,656 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:06:25,788 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:06:34,233 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:06:34,234 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:06:34,804 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:06:35,631 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:06:36,144 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:06:36,145 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 17:13:34,547 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:13:35,326 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:13:36,321 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:13:36,321 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:13:37,649 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:13:37,946 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:13:38,095 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:13:38,095 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 17:17:38,885 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:17:39,258 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:17:39,823 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:17:39,823 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:17:40,204 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:17:40,357 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:17:40,559 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:17:40,559 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 17:19:57,575 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:19:57,956 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:19:59,091 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:19:59,092 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:19:59,401 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:19:59,894 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:20:00,084 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:20:00,084 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 17:20:50,886 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:20:51,275 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:20:51,719 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:20:51,720 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:20:52,035 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:20:52,244 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:20:52,434 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:20:52,435 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 17:21:41,269 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 17:21:41,640 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 17:21:41,958 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 17:21:41,958 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 17:21:42,252 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 17:21:42,440 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 17:21:42,723 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 17:21:42,724 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 18:37:30,393 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 18:37:31,255 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 18:37:31,944 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 18:37:31,944 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 18:37:32,254 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 18:37:32,696 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 18:37:32,850 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 18:37:32,851 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 18:38:10,985 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 18:38:11,372 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'geometry' at level 'twelve' with query: 'What is the difference between a rotation and a re...'
+2025-07-04 18:38:11,683 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'geometry'.
+2025-07-04 18:38:11,683 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'geometry' up to (but not including) level 'twelve'.
+2025-07-04 18:38:12,340 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'geometry'.
+2025-07-04 18:38:12,730 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'geometry'.
+2025-07-04 18:38:13,144 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'geometry'.
+2025-07-04 18:38:13,144 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'geometry'.
+2025-07-04 18:39:55,137 | INFO     | utilities.retrieval_utils | Question classified under topic 'geometry': 'What is the difference between a rotation and a re...' 
+2025-07-04 18:40:32,298 | INFO     | utilities.retrieval_utils | Question classified as 'overview': '- Reformulated: "How do I write Python code?"...' 
+2025-07-04 18:42:08,651 | INFO     | utilities.retrieval_utils | Question classified as 'overview': 'how do I write python code...' 
+2025-07-04 18:51:18,127 | INFO     | utilities.retrieval_utils | Question classified under topic 'mathematical reasoning': '"What can you do?"...' 
+2025-07-04 18:51:18,506 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'mathematical reasoning' at level 'twelve' with query: '"What can you do?"...'
+2025-07-04 18:51:19,218 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'mathematical_reasoning'.
+2025-07-04 18:51:19,218 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'mathematical reasoning' up to (but not including) level 'twelve'.
+2025-07-04 18:51:19,556 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'mathematical_reasoning'.
+2025-07-04 18:51:19,732 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'mathematical_reasoning'.
+2025-07-04 18:51:19,931 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'mathematical_reasoning'.
+2025-07-04 18:51:19,931 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'mathematical_reasoning'.
+2025-07-04 18:52:05,331 | WARNING  | utilities.retrieval_utils | Topic detection returned an unexpected response: 'this question does not fall into either category a or category b.'. Defaulting to 'algebra' for question: '"What is the weather today"...' 
+2025-07-04 18:52:05,701 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'algebra' at level 'twelve' with query: '"What is the weather today"...'
+2025-07-04 18:52:06,160 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'algebra'.
+2025-07-04 18:52:06,161 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'algebra' up to (but not including) level 'twelve'.
+2025-07-04 18:52:06,457 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'algebra'.
+2025-07-04 18:52:06,665 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'algebra'.
+2025-07-04 18:52:06,997 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'algebra'.
+2025-07-04 18:52:06,997 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'algebra'.
+2025-07-04 18:52:39,841 | INFO     | utilities.retrieval_utils | Question classified under topic 'mathematical reasoning': 'helllllawr...' 
+2025-07-04 18:52:40,203 | INFO     | utilities.retrieval_utils | Retrieving chunks for topic 'mathematical reasoning' at level 'twelve' with query: 'helllllawr...'
+2025-07-04 18:52:40,511 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'twelve' in topic 'mathematical_reasoning'.
+2025-07-04 18:52:40,511 | INFO     | utilities.retrieval_utils | Retrieving prior-year chunks for topic 'mathematical reasoning' up to (but not including) level 'twelve'.
+2025-07-04 18:52:40,881 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'nine' in topic 'mathematical_reasoning'.
+2025-07-04 18:52:41,139 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'ten' in topic 'mathematical_reasoning'.
+2025-07-04 18:52:41,337 | DEBUG    | utilities.retrieval_utils | Found 3 chunks for level 'eleven' in topic 'mathematical_reasoning'.
+2025-07-04 18:52:41,338 | INFO     | utilities.retrieval_utils | Retrieved a total of 9 chunks from prior years for topic 'mathematical_reasoning'.

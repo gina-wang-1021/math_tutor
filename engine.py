@@ -10,6 +10,7 @@ from utilities.prompt_utils import load_prompt
 from utilities.qa_utils import get_historic_answer, rephrase_question, store_qa_pair, MAX_L2_DISTANCE_THRESHOLD, HISTORIC_QA_K_NEIGHBORS
 from utilities.retrieval_utils import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
 import time
+import ast
 
 class StreamingCallbackHandler(BaseCallbackHandler):
     """Callback handler for streaming LLM responses."""
@@ -79,56 +80,36 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 callbacks=[StreamingCallbackHandler(stream_handler, delay=0.05)] if stream_handler else None
             )
 
-            # Handle different types of questions
-            if not detected_topic:
-                # It's a calculation question
-                logger.info("Processing calculation question...")
-                calculation_prompt_text = load_prompt("calculation_answer_prompt.txt")
-                calculation_prompt = PromptTemplate.from_template(calculation_prompt_text)
-                
-                # Use the streaming-enabled LLM for direct calculations (final answer)
-                answer_chain = calculation_prompt | llm_final
-                response = answer_chain.invoke({"question": standalone_question}).content.strip()
-                logger.info(f"Final Answer for calculation question → {response}")
-                return response
-            
-            elif detected_topic == "overview":
-                # It's a general inquiry about capabilities
-                logger.info("Processing overview question...")
-                overview_prompt_text = load_prompt("overview_answer_prompt.txt")
-                overview_prompt = PromptTemplate.from_template(overview_prompt_text)
-                
-                answer_chain = overview_prompt | llm_answer
-                response = answer_chain.invoke({"question": standalone_question}).content.strip()
-                logger.info(f"Final Answer for overview question → {response}")
-                return response
-
             # Determine student's overall grade-based level (mapped from grade 11/12)
             logger.info("Determining student's year at school...")
             grade_based_level, numeric_grade = get_student_level(student_id)
             if grade_based_level is None and numeric_grade is None:
                 grade_based_level = "ten"
                 logger.info(f"Student {student_id}: Grade Based Level: {grade_based_level}, Numeric Grade: {numeric_grade}")
-
+            
+            # Get the confidence level and scores for the topic
+            logger.info("Getting student's confidence level and score for topic...")
+            topic_level, topic_scores = get_confidence_level_and_score(student_id, detected_topic)
+            logger.debug(f"Student confidence level and score for topic {detected_topic}: {topic_level}, {topic_scores}")
+            
+            # Check confidence level and topic scores once
+            no_extra_explain = check_confidence_and_score(topic_level, topic_scores)
+            logger.info(f"confidence and score check result: {no_extra_explain}")
+            
             # Detect whether a similar question had been asked before
-            historic_answer = get_historic_answer(numeric_grade, standalone_question, historic_qa_l2_threshold)
+            historic_answer, historic_answer_id = get_historic_answer(numeric_grade, standalone_question, historic_qa_l2_threshold, no_extra_explain)
             if historic_answer:
                 # Stream the historic answer token by token if stream_handler is provided
                 if stream_handler:
                     logger.info(f"Streaming historic answer for grade {numeric_grade}")
                     # Split the answer into tokens (words or smaller chunks)
-                    for i, char in enumerate(historic_answer):
+                    for _, char in enumerate(historic_answer):
                         stream_handler(char)
                         # Add a small delay between tokens for a natural streaming effect
                         time.sleep(0.02)
                     return ""
                 else:
                     return historic_answer
-
-            # For topic-based questions, get the confidence level and scores for the topic
-            logger.info("Getting student's confidence level and score for topic...")
-            topic_level, topic_scores = get_confidence_level_and_score(student_id, detected_topic)
-            logger.debug(f"Student confidence level and score for topic {detected_topic}: {topic_level}, {topic_scores}")
             
             try:
                 # Retrieve chunks for the current year
@@ -178,7 +159,6 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             }).content
             
             # Parse the response as a Python list
-            import ast
             try:
                 coverage_answer = ast.literal_eval(response_content)
                 logger.info(f"Coverage answer: {coverage_answer}")
@@ -190,7 +170,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 coverage_answer = ["Yes", "Failed to parse response, defaulting to covered."]
                 
             if coverage_answer[0] == "No":
-                response_message = f"This topic is not covered in your textbook yet. I'm happy to help with other questions you have! 😊"
+                response_message = f"This question is not covered in your textbook yet. I can only answer math questions related to your textbook content - happy to help with those! 😊"
 
                 if stream_handler:
                     tokens = response_message.split()
@@ -201,26 +181,38 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
                 else:
                     return response_message
             
+            # It's a calculation question
+            if not detected_topic:
+                logger.info("Processing calculation question...")
+                calculation_prompt_text = load_prompt("calculation_answer_prompt.txt")
+                calculation_prompt = PromptTemplate.from_template(calculation_prompt_text)
+                
+                # Use the streaming-enabled LLM for direct calculations (final answer)
+                answer_chain = calculation_prompt | llm_final
+                response = answer_chain.invoke({"question": standalone_question}).content.strip()
+                logger.info(f"Final Answer for calculation question → {response}")
+                return response
+
             # Topic-based answer prompt
             topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
             topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
 
-            # Check confidence level and topic scores to see if second pass is needed
-            if check_confidence_and_score(topic_level, topic_scores) or grade_based_level == "nine":
+            # Check if we should use a single pass based on the previously calculated confidence check
+            if no_extra_explain or grade_based_level == "nine":
                 try:
                     # Use streaming LLM to generate direct answer
                     answer_chain = topic_prompt | llm_final
                     logger.info("Generating single pass answer...")
 
                     final_answer = answer_chain.invoke({
-                        "retrieved_chunks": processed_chunks,
+                        "retrieved_chunks": processed_current_year_chunks,
                         "topic": detected_topic,
                         "student_question": standalone_question,
                     }).content.strip()
                     logger.info(f"Final Answer for topic-based question → {final_answer}")
 
                     if numeric_grade in [11, 12]:
-                        store_success = store_qa_pair(numeric_grade, standalone_question, final_answer)
+                        store_success = store_qa_pair(numeric_grade, standalone_question, final_answer, historic_answer_id, no_extra_explain)
                         if store_success:
                             logger.info(f"Successfully stored Q&A pair for grade {numeric_grade} (single pass)")
                         else:
@@ -248,8 +240,6 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             # Second pass
             logger.info("Generating second pass answer...")
             
-            processed_chunks = "\n\n".join([chunk.page_content for chunk in lower_years_chunk]) if lower_years_chunk else ""
-            
             logger.info("Generating detail explanation for topic-based question...")
             explain_prompt_text = load_prompt("explain_prompt.txt")
             explain_prompt = PromptTemplate.from_template(explain_prompt_text)
@@ -275,7 +265,7 @@ def pipeline(student_id, user_question, history, stream_handler=None, historic_q
             
             # Save generated answer and the student's question to both databases
             if numeric_grade in [11, 12]:
-                store_success = store_qa_pair(numeric_grade, standalone_question, compare_answer)
+                store_success = store_qa_pair(numeric_grade, standalone_question, compare_answer, historic_answer_id, no_extra_explain)
                 if store_success:
                     logger.info(f"Successfully stored Q&A pair for grade {numeric_grade} (two-pass)")
                 else:

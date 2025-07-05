@@ -4,6 +4,8 @@ langchain_chroma==0.2.4
 langchain_openai==0.3.21
 numpy==2.3.0
 openai==1.84.0
+pinecone-client==3.2.2
+faiss-cpu==1.7.4
 pandas==2.3.0
 python-dotenv==1.1.0
 PyMuPDF==1.26.1

@@ -1,0 +1,4 @@
+2025-07-04 19:44:40,310 | ERROR    | migrate_faiss_to_pinecone | Missing required environment variables: PINECONE_ENV
+2025-07-04 19:46:56,968 | INFO     | migrate_faiss_to_pinecone | Loading FAISS index from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade12.index
+2025-07-04 19:46:56,970 | ERROR    | migrate_faiss_to_pinecone | FAISS index at /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade12.index must be IndexIDMap2 with explicit IDs.
+2025-07-04 19:53:29,641 | INFO     | migrate_faiss_to_pinecone | Loading FAISS index from /Users/wangyichi/Documents/Projects/math_tutor/historic_qa_data/grade12.index

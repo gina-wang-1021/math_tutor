@@ -7,7 +7,7 @@ _PROJECT_ROOT = os.path.abspath(os.path.join(_CURRENT_DIR, '..'))
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from .logger_config import setup_logger
+from logger_config import setup_logger
 
 logger = setup_logger('build_historic_store')
 
@@ -16,7 +16,8 @@ DROP TABLE IF EXISTS qa_pairs;
 CREATE TABLE IF NOT EXISTS qa_pairs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question_text TEXT NOT NULL UNIQUE,
-    answer_text TEXT NOT NULL
+    ans_low_con TEXT,
+    ans_high_con TEXT
 );
 """
 

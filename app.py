@@ -37,7 +37,9 @@ if not st.session_state.login_success:
         student_ids_in_df = [str(id).strip() for id in df["Student ID"].values]
         
         if student_id_str in student_ids_in_df:
-            logger.info(f"Successful login for student {student_id_str}")
+            # Only log if this is the initial login, not during reruns
+            if not st.session_state.login_success:
+                logger.info(f"Successful login for student {student_id_str}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
             st.session_state.student_id = student_id_str
