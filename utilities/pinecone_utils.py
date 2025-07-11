@@ -6,26 +6,14 @@ import sys, pathlib
 project_root = pathlib.Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
-from load_env import load_env_vars
+
+from utilities.load_env import load_env_vars
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 load_env_vars()
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
-
-index_id = 0
-
-def create_index():
-    pc = Pinecone(
-        api_key=os.environ["PINECONE_API_KEY"],
-    )
-    pc.create_index(
-        name="math-tutor",
-        dimension=1536,
-        metric="cosine",
-        spec=ServerlessSpec(
-            cloud="aws",
-            region="us-east-1"
-        )
-    )
 
 def embed(docs: list[str]) -> list[list[float]]:
     res = openai.embeddings.create(
@@ -33,43 +21,38 @@ def embed(docs: list[str]) -> list[list[float]]:
         model="text-embedding-3-small"
     )
     doc_embeds = [r.embedding for r in res.data] 
+    logger.info(f"Embedded generated response")
     return doc_embeds 
 
-def add_to_index(docs: list[str]):
+def add_to_index(docs: list[str], id: int, database_name: str):
     x = embed(docs)
     vectors = []
     for vec in x:
-        # TODO: switch this to base on the last inserted SQLite database entry
-        global index_id
         vectors.append({
-            "id": str(index_id),
+            "id": str(id),
             "values": vec
         })
-        index_id += 1
 
     pc = Pinecone(
         api_key=os.environ["PINECONE_API_KEY"],
     )
-    index = pc.Index("math-tutor")
+    index = pc.Index(database_name)
     index.upsert(
-        vectors=vectors,
-        namespace="math-tutor"
+        vectors=vectors
     )
-    print("Added to index")
+    logger.info(f"Stored generated response to index with id {id}")
     return
-        
 
-def search_index(query: str):
+def search_index(query: str, database_name: str):
     try:
         pc = Pinecone(
             api_key=os.environ["PINECONE_API_KEY"],
         )
-        index = pc.Index("math-tutor")
+        index = pc.Index(database_name)
 
         x = embed([query])
 
         results = index.query(
-            namespace="math-tutor",
             vector=x[0],
             top_k=1,
             include_values=False,
@@ -79,12 +62,13 @@ def search_index(query: str):
         logger.error(f"Error searching index: {str(e)}")
         return None
 
-    if float(results["score"]) >= 0.95:
+    if float(results["score"]) >= 0.85:
+        logger.info(f"Found historic answer for query: {query} with id: {results['id']} in {database_name} and score: {round(results['score'], 4)}")
         return results["id"]
     else:
+        logger.info(f"No historic answer found for query: {query} with score: {round(results['score'], 4)} in {database_name}")
         return None
 
 if __name__ == "__main__":
-    # add_to_index(["What is 2+2?"])
-    print(bool(search_index("What is 2+2?")))
-    print(bool(search_index("how do I write code")))
+    # add_to_index(["What is 2+2?"], 1, "grade-eleven-math")
+    print(search_index("What is 2+2?", "grade-eleven-math"))

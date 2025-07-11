@@ -3,6 +3,6 @@ notes.md
 docs.txt
 .streamlit/
 __pycache__/
-database/
 historic_qa_data/
 logs/
+official_db.csv
