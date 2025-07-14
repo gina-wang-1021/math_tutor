@@ -12,17 +12,25 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Path to ChromaDB indexes
 INDEXES_DIR = "/Users/wangyichi/LocalData/chromadb/indexes"
 
-def get_chunks_for_current_year(topic, year, query):
+def get_chunks_for_current_year(topic: str, year: int, query: str):
     """Get relevant chunks for a topic at the specified year level.
 
     Args:
         topic (str): The topic to search for.
-        year (str): The year level ('nine', 'ten', 'eleven', 'twelve').
+        year (int): The year level (11 or 12).
         query (str): The search query.
 
     Returns:
         list: A list of relevant chunks from the specified level.
     """
+
+    int_str_year_mapping = {
+        9: "nine",
+        10: "ten",
+        11: "eleven",
+        12: "twelve"
+    }
+    year = int_str_year_mapping[year]
     logger.info(f"Retrieving chunks for topic '{topic}' at level '{year}' with query: '{query[:50]}...'")
     
     level_order = ['nine', 'ten', 'eleven', 'twelve']
@@ -66,6 +74,14 @@ def get_chunks_from_prior_years(topic, year, query):
     Returns:
         list: A combined list of relevant chunks from all prior levels.
     """
+    year_mapping = {
+        9: 'nine',
+        10: 'ten',
+        11: 'eleven',
+        12: 'twelve'
+    }
+
+    year = year_mapping.get(year, 'eleven')
     logger.info(f"Retrieving prior-year chunks for topic '{topic}' up to (but not including) level '{year}'.")
 
     level_order = ['nine', 'ten', 'eleven', 'twelve']
@@ -113,8 +129,7 @@ def get_chunks_from_prior_years(topic, year, query):
 def get_topic(question):
     """Determine the math topic based on the question. 
     Returns:
-        - None if it's a calculation question
-        - 'overview' if it's asking about general capabilities
+        - 'calculation' if it's a calculation question
         - The most relevant topic otherwise
     """
     try:
@@ -127,10 +142,7 @@ def get_topic(question):
         
         if response == "calculation":
             logger.info(f"Question classified as 'calculation': '{question[:50]}...' ")
-            return None
-        elif response == "overview":
-            logger.info(f"Question classified as 'overview': '{question[:50]}...' ")
-            return "overview"
+            return "calculation"
         
         valid_topics = ["algebra", "basics of financial mathematics", "geometry", "calculus", "mathematical reasoning", "numbers quantification and numerical applications", "probability", "statistics", "set and functions", "surface area and volumes", "trigonometry"]
         if response in valid_topics:

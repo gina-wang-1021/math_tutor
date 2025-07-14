@@ -16,28 +16,24 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(__file__), 'logs')):
     Returns:
         logging.Logger: Configured logger instance
     """
-    # Check if this logger has already been configured in this session
+    # Return immediately if we've already configured this logger in this interpreter session
     if name in configured_loggers:
         return configured_loggers[name]
-        
-    # Create logs directory if it doesn't exist
+
+    # Ensure the logs directory exists
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-        
-    # Create logger
+
+    # Obtain (or create) the logger instance
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)  # Set logger level to DEBUG
-    
-    # Prevent propagation to root logger to avoid duplicate logs
-    logger.propagate = False
-    
-    # Clear any existing handlers to prevent duplication
+    logger.setLevel(logging.DEBUG)
+    logger.propagate = False  # Prevent log propagation to root
+
+    # If the logger already has handlers (e.g., because this module was re-imported
+    # by Streamlit), don't add another set. Cache and return it.
     if logger.handlers:
-        logger.handlers = []
-    
-    # Check if this logger has already been fully configured
-    if name in configured_loggers:
-        return configured_loggers[name]
+        configured_loggers[name] = logger
+        return logger
         
     # Create formatters
     file_formatter = logging.Formatter(

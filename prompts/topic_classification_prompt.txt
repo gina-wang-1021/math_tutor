@@ -1,40 +1,39 @@
 
-            Analyze the following question and classify it into one of three precise categories:
+            Analyze the following question and classify it into one of these specific topics:
 
-            CATEGORY A: CALCULATION/ARITHMETIC
-            - Questions that ask for a direct numerical calculation or arithmetic operation
-            - Questions that ask to solve a specific equation with a numerical answer
-            - Examples: "what is 2+2", "calculate 15% of 80", "solve 3x + 5 = 11", "find the derivative of x²"
-            
-            CATEGORY B: SYSTEM CAPABILITIES (ONLY ABOUT THE TUTOR SYSTEM ITSELF)
-            - Questions that SPECIFICALLY ask about what the tutoring system can do
-            - Questions about the system's features, limitations, or available topics
-            - Examples: "what can you teach me", "what topics do you cover", "what can I learn from you", "how does this tutoring system work"
-            - NOTE: Questions about math concepts, even general ones, do NOT belong here
-            
-            CATEGORY C: MATH TOPIC QUESTIONS
-            - ALL questions about mathematical concepts, definitions, explanations, or theory
-            - ALL general questions about math that aren't direct calculations
-            - Examples: "what is a triangle", "explain logarithms", "how do I factor polynomials", "what's the Pythagorean theorem"
-            
-            If it's Category A, respond with exactly: "calculation"
-            If it's Category B, respond with exactly: "overview"
-            If it's Category C, classify it into one of these specific topics:
-
-            - Algebra: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
-            - Basics of Financial Mathematics: any math-application problems related to finance. Simple interest, compound interest, annuities, depreciation, installments, profit and loss, taxes, EMI calculations, and percentage-based financial decisions.
-            - Calculus: limits, continuity, derivatives, rules of differentiation, applications of derivatives, integration, definite and indefinite integrals, area under curves, differential equations.
-            - Geometry: lines and angles, triangles, congruence and similarity, circles, polygons, geometric constructions, coordinate geometry, and properties of geometric figures.
-            - Mathematical Reasoning: statements and logical connectives, truth tables, implications, converse and contrapositive, mathematical induction, validating mathematical arguments.
-            - Numbers Quantification and Numerical Applications: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
-            - Probability: classical and empirical probability, random experiments, outcomes and sample space, events, conditional probability, independent events, and probability of compound events.
-            - Statistics: data representation, measures of central tendency (mean, median, mode), measures of dispersion (range, variance, standard deviation), histograms, frequency distributions, and data interpretation.
-            - Set and Functions: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
-            - Surface Area and Volumes: surface area and volume of solids like cube, cuboid, cylinder, cone, sphere, and hemisphere; frustum of a cone; applications in real-life problems.
-            - Trigonometry: trigonometric ratios and identities, angles and their measure, graphs of trigonometric functions, heights and distances, inverse trigonometric functions, and solving triangles.
+            - **Algebra**: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
+            - **Calculus**: limits, continuity, derivatives, rules of differentiation, applications of derivatives, integration, definite and indefinite integrals, area under curves, differential equations.
+            - **Numbers Quantification and Numerical Applications**: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
+            - **Probability**: classical and empirical probability, random experiments, outcomes and sample space, events, conditional probability, independent events, and probability of compound events.
+            - **Statistics**: data representation, measures of central tendency (mean, median, mode), measures of dispersion (range, variance, standard deviation), histograms, frequency distributions, and data interpretation.
+            - **Set and Functions**: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
+            - **Geometry**: lines and angles, triangles, congruence and similarity, circles, polygons, geometric constructions, coordinate geometry, and properties of geometric figures.
+            - **Surface Area and Volumes**: surface area and volume of solids like cube, cuboid, cylinder, cone, sphere, and hemisphere; frustum of a cone; applications in real-life problems.
+            - **Trigonometry**: trigonometric ratios and identities, angles and their measure, graphs of trigonometric functions, heights and distances, inverse trigonometric functions, and solving triangles.
+            - **Basics of Financial Mathematics**: any math-application problems related to finance. Simple interest, compound interest, annuities, depreciation, installments, profit and loss, taxes, EMI calculations, and percentage-based financial decisions.
+            - **Mathematical Reasoning**: statements and logical connectives, truth tables, implications, converse and contrapositive, mathematical induction, validating mathematical arguments.
             
             Question: {question}
 
-            For Category C, respond with ONLY the exact topic name from the list above. Do not include any explanation.
-            Example: "Algebra" or "Numbers Quantification and Numerical Applications"
+            -- THINK STEP --
+            First, think step-by-step about which topic best matches the question (do **NOT** output this reasoning).
+            Then respond with ONLY the exact topic name from the list above.
+
+            -- FEW-SHOT EXAMPLES --
+            Q: Why do the angles in a triangle sum to 180 degrees?
+            A: Geometry
+
+            Q: Can you describe the concept of a derivative?
+            A: Calculus
+
+            Q: What is the difference between mean and median?
+            A: Statistics
+
+            Q: Solve 2x + 5 = 11.
+            A: Algebra
+
+            Q: If I deposit $1000 at 5% compound interest, how much will I have after 2 years?
+            A: Basics of Financial Mathematics
+
+            Now, provide your answer:
         

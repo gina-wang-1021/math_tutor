@@ -9,7 +9,7 @@ from logger_config import setup_logger
 # Initialize logger
 logger = setup_logger('app')
 
-df = pd.read_csv(os.path.join("database", "student_data.csv"))
+df = pd.read_csv("official_db.csv")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -37,7 +37,9 @@ if not st.session_state.login_success:
         student_ids_in_df = [str(id).strip() for id in df["Student ID"].values]
         
         if student_id_str in student_ids_in_df:
-            logger.info(f"Successful login for student {student_id_str}")
+            # Only log if this is the initial login, not during reruns
+            if not st.session_state.login_success:
+                logger.info(f"Successful login for student {student_id_str}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
             st.session_state.student_id = student_id_str
@@ -53,8 +55,9 @@ else:
     matching_students = df[df["Student ID"].astype(str) == str(st.session_state.student_id)]
     
     if len(matching_students) > 0:
-        student_name = matching_students["Student Name"].values[0]
-        st.title(f"Hi {student_name}, let's learn math today!")
+        first_name = matching_students["First name"].values[0]
+        last_name = matching_students["Last name"].values[0]
+        st.title(f"Hi {first_name} {last_name}, let's learn math today!")
     else:
         logger.error(f"No matching student found for ID: {st.session_state.student_id}")
         st.error("Error: Student record not found. Please log out and try again.")
@@ -100,11 +103,9 @@ else:
 
                 # Callback to handle streaming tokens
                 def handle_token(token: str):
-                    # Clear the hint on first token
                     if not full_response:
                         hint_placeholder.empty()
                     full_response.append(token)
-                    # Join all tokens and display
                     response_placeholder.markdown(''.join(full_response), unsafe_allow_html=True)
                 
                 # Call pipeline with student_id and streaming handler
@@ -117,20 +118,15 @@ else:
                 
                 # Check if we have streamed content or a direct response
                 if full_response or response:
-                    # Clear the hint placeholder if it hasn't been cleared yet
-                    # This happens when we get a direct response without streaming
                     if not full_response:
                         hint_placeholder.empty()
                     
                     # Get the complete response - use streamed content if available, otherwise use direct response
                     complete_response = ''.join(full_response) if full_response else response
-                    # Add response to chat history
                     st.session_state.messages.append({"role": "assistant", "content": complete_response})
-                    # Update the placeholder with the complete response
                     response_placeholder.markdown(complete_response, unsafe_allow_html=True)
                 else:
                     # Only show error if both response is empty AND no content was streamed
-                    # Clear the hint and show error
                     hint_placeholder.empty()
                     error_msg = "I couldn't generate a response. Please try again."
                     st.error(error_msg)
