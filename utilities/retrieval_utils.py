@@ -74,6 +74,14 @@ def get_chunks_from_prior_years(topic, year, query):
     Returns:
         list: A combined list of relevant chunks from all prior levels.
     """
+    year_mapping = {
+        9: 'nine',
+        10: 'ten',
+        11: 'eleven',
+        12: 'twelve'
+    }
+
+    year = year_mapping.get(year, 'eleven')
     logger.info(f"Retrieving prior-year chunks for topic '{topic}' up to (but not including) level '{year}'.")
 
     level_order = ['nine', 'ten', 'eleven', 'twelve']

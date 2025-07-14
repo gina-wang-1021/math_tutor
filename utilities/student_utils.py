@@ -60,6 +60,8 @@ def get_student_level(student_id):
         grade = student_data.iloc[0]["Current Class"]
         if int(grade) == 12:
             return vectorspace_mapping[12], tablespace_mapping[12], 12
+        elif int(grade) == 11:
+            return vectorspace_mapping[11], tablespace_mapping[11], 11
         else:
             logger.error(f"Student grade is {grade}, not 12th or 11th. Returning eleven as default")
             return vectorspace_mapping[11], tablespace_mapping[11], 11 

@@ -185,7 +185,7 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
 
             # Check if we should use a single pass based on the previously calculated confidence check
-            if no_extra_explain or grade_based_level == "nine":
+            if no_extra_explain or numeric_grade == 9:
                 try:
                     # Use streaming LLM to generate direct answer
                     answer_chain = topic_prompt | llm_final
@@ -198,12 +198,12 @@ def pipeline(student_id, user_question, history, stream_handler=None):
                     }).content.strip()
                     logger.info(f"Final Answer for topic-based question → {final_answer}")
 
-                    if numeric_grade == 12:
-                        store_success = store_new_data(standalone_question, final_answer, no_extra_explain, historic_answer_id)
+                    if numeric_grade == 12 or numeric_grade == 11:
+                        store_success = store_new_data(standalone_question, final_answer, no_extra_explain, vectorstore_name, tablespace_name,historic_answer_id)
                         if store_success:
-                            logger.info(f"Successfully stored Q&A pair (single pass)")
+                            logger.info(f"Successfully stored Q&A pair (single pass) for grade {numeric_grade}")
                         else:
-                            logger.warning(f"Failed to store Q&A pair (single pass)")     
+                            logger.warning(f"Failed to store Q&A pair (single pass) for grade {numeric_grade}")     
                     return final_answer
 
                 except Exception as e:
@@ -251,12 +251,12 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             logger.info(f"Compared answer: {compare_answer}")
             
             # Save generated answer and the student's question to both databases
-            if numeric_grade == 12:
-                store_success = store_new_data(standalone_question, compare_answer, no_extra_explain, historic_answer_id)
+            if numeric_grade == 12 or numeric_grade == 11:
+                store_success = store_new_data(standalone_question, compare_answer, no_extra_explain, vectorstore_name, tablespace_name, historic_answer_id)
                 if store_success:
-                    logger.info(f"Successfully stored Q&A pair (two-pass)")
+                    logger.info(f"Successfully stored Q&A pair (two-pass) for grade {numeric_grade}")
                 else:
-                    logger.warning(f"Failed to store Q&A pair (two-pass)")
+                    logger.warning(f"Failed to store Q&A pair (two-pass) for grade {numeric_grade}")
             
             return compare_answer
 
