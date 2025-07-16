@@ -7,3 +7,4 @@ historic_qa_data/
 logs/
 official_db.csv
 client_secrets.json
+google_creds.json
