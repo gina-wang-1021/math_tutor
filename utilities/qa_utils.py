@@ -1,11 +1,7 @@
 import os
-import faiss
-import sqlite3
-import numpy as np
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from utilities.prompt_utils import load_prompt
-from langchain.chains import LLMChain
 from logger_config import setup_logger
 from utilities.postgre_utils import insert_answer, update_answer, get_historic_answer
 from utilities.pinecone_utils import search_index, add_to_index

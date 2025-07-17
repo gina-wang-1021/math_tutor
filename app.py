@@ -1,6 +1,4 @@
 import streamlit as st
-import numpy as np
-import os
 from openai import OpenAI
 from engine import pipeline
 import pandas as pd

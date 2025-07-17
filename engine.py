@@ -1,8 +1,5 @@
-import os
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_chroma import Chroma
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain.callbacks.base import BaseCallbackHandler
 from logger_config import setup_logger
 from utilities.student_utils import get_student_level, get_confidence_level_and_score, check_confidence_and_score
@@ -24,7 +21,6 @@ class StreamingCallbackHandler(BaseCallbackHandler):
         """
         self.stream_handler = stream_handler
         self.delay = delay
-    
     def on_llm_new_token(self, token: str, **kwargs) -> None:
         """Called when LLM produces a new token."""
         if self.stream_handler:

@@ -1,5 +1,4 @@
 import os
-import sys
 
 def load_env_vars():
     """Load environment variables from .env file."""
