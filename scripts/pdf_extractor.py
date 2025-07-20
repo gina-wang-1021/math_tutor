@@ -2,7 +2,6 @@ from argparse import ZERO_OR_MORE
 import pymupdf
 import re
 import os
-import pathlib
 import time
 import logging
 import datetime

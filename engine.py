@@ -130,9 +130,9 @@ def pipeline(student_id, user_question, history, stream_handler=None):
                 logger.error(f"Error getting chunks from prior years for {detected_topic}: {str(e)}")
                 lower_years_chunk = []
 
-            # Extract page_content from Document objects
-            processed_current_year_chunks = "\n\n".join([chunk.page_content for chunk in current_year_chunks]) if current_year_chunks else ""
-            processed_lower_years_chunks = "\n\n".join([chunk.page_content for chunk in lower_years_chunk]) if lower_years_chunk else ""
+            # Process chunks (now they are text strings, not Document objects)
+            processed_current_year_chunks = "\n\n".join(current_year_chunks) if current_year_chunks else ""
+            processed_lower_years_chunks = "\n\n".join(lower_years_chunk) if lower_years_chunk else ""
             
             # Combine both chunks into one
             combined_chunks = processed_current_year_chunks
