@@ -5,7 +5,7 @@ from logger_config import setup_logger
 from utilities.student_utils import get_student_level, get_confidence_level_and_score, check_confidence_and_score
 from utilities.prompt_utils import load_prompt
 from utilities.qa_utils import rephrase_question, fetch_historic_data, store_new_data
-from utilities.retrieval_utils import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
+from utilities.retrieval_utils_pinecone import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
 import time
 import ast
 
