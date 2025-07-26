@@ -1,13 +1,16 @@
 import streamlit as st
 from openai import OpenAI
 from engine import pipeline
-import pandas as pd
 from logger_config import setup_logger
 
 # Initialize logger
 logger = setup_logger('app')
 
-df = pd.read_csv("official_db.csv")
+student_db = st.secrets["rows"]
+
+# Create a lookup dictionary for faster authentication
+student_lookup = {str(student["Student ID"]): student for student in student_db}
+valid_student_ids = set(student_lookup.keys())
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -15,8 +18,8 @@ if "login_success" not in st.session_state:
     st.session_state.login_success = False
 if "login_failed" not in st.session_state:
     st.session_state.login_failed = False
-if "student_id" not in st.session_state:
-    st.session_state.student_id = None
+if "student_data" not in st.session_state:
+    st.session_state.student_data = None
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "openai_model" not in st.session_state:
@@ -32,15 +35,13 @@ if not st.session_state.login_success:
     
     if st.button("Start Learning"):
         student_id_str = str(student_id).strip()
-        student_ids_in_df = [str(id).strip() for id in df["Student ID"].values]
-        
-        if student_id_str in student_ids_in_df:
+        if student_id_str in valid_student_ids:
             # Only log if this is the initial login, not during reruns
             if not st.session_state.login_success:
                 logger.info(f"Successful login for student {student_id_str}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
-            st.session_state.student_id = student_id_str
+            st.session_state.student_data = student_lookup[student_id_str]
             st.success("Login successful!")
             st.rerun()
         else:
@@ -50,24 +51,32 @@ if not st.session_state.login_success:
 
 # Main Chatting Page
 else:
-    matching_students = df[df["Student ID"].astype(str) == str(st.session_state.student_id)]
+    # Get current student data
+    current_student = st.session_state.student_data
+    student_name = f"{current_student['First name']} {current_student['Last name']}"
+    student_class = current_student['Current Class']
+    student_stream = current_student['Stream']
     
-    if len(matching_students) > 0:
-        first_name = matching_students["First name"].values[0]
-        last_name = matching_students["Last name"].values[0]
-        st.title(f"Hi {first_name} {last_name}, let's learn math today!")
-    else:
-        logger.error(f"No matching student found for ID: {st.session_state.student_id}")
-        st.error("Error: Student record not found. Please log out and try again.")
-        student_name = "Student"
-        st.title(f"Hi {student_name}, let's learn math today!")
+    # Display personalized greeting
+    st.title(f"Hi {student_name}, let's learn math today!")
+    
+    # Display student info in sidebar
+    with st.sidebar:
+        st.write(f"**Student ID:** {st.session_state.student_data['Student ID']}")
+        st.write(f"**Name:** {student_name}")
+        st.write(f"**Class:** {student_class}")
+        if st.button("Logout"):
+            logger.info(f"Logging out for student {st.session_state.student_data['Student ID']}")
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
+            st.rerun()
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"], unsafe_allow_html=True)
 
     if question := st.chat_input(f"Ask a question on math"):
-        logger.info(f"New question from student {st.session_state.student_id}")
+        logger.info(f"New question from student {st.session_state.student_data['Student ID']}")
         logger.debug(f"Question: {question}")
         
         # Display user message
@@ -106,9 +115,9 @@ else:
                     full_response.append(token)
                     response_placeholder.markdown(''.join(full_response), unsafe_allow_html=True)
                 
-                # Call pipeline with student_id and streaming handler
+                # Call pipeline with student_data and streaming handler
                 response = pipeline(
-                    student_id=st.session_state.student_id,
+                    student_data=st.session_state.student_data,
                     user_question=question,
                     history=history_str,
                     stream_handler=handle_token

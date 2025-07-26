@@ -36,17 +36,19 @@ logger.info('Test INFO message')
 logger.warning('Test WARNING message')
 logger.error('Test ERROR message')
 
-def pipeline(student_id, user_question, history, stream_handler=None):
+def pipeline(student_data, user_question, history, stream_handler=None):
     """Process a question and return an answer.
     
     Args:
-        student_id (str): The student's ID
+        student_data (dict): The student's data
         user_question (str): The question to answer
         history (str): Chat history
         stream_handler (callable, optional): Function to handle streaming tokens
             The function should accept a string token as its argument.
     """
     try:
+        student_id = student_data["Student ID"]
+        
         logger.info(f"Processing question for student {student_id}")
         logger.debug(f"Original question: {user_question}")
         logger.debug(f"History length: {len(history.split()) if history else 0} words")
@@ -78,7 +80,7 @@ def pipeline(student_id, user_question, history, stream_handler=None):
 
             # Determine student's overall grade and corresponding database
             logger.info("Determining student's school year...")
-            vectorstore_name, tablespace_name, numeric_grade = get_student_level(student_id)
+            vectorstore_name, tablespace_name, numeric_grade = get_student_level(student_data)
             if not vectorstore_name and not tablespace_name and not numeric_grade:
                 vectorstore_name = "grade_eleven_math"
                 tablespace_name = "gradeElevenMath"
@@ -87,7 +89,7 @@ def pipeline(student_id, user_question, history, stream_handler=None):
             
             # Get the confidence level and scores for the topic
             logger.info("Getting student's confidence level and score for topic...")
-            topic_level, topic_scores = get_confidence_level_and_score(student_id, detected_topic)
+            topic_level, topic_scores = get_confidence_level_and_score(student_data, detected_topic)
             logger.debug(f"Student confidence level and score for topic {detected_topic}: {topic_level}, {topic_scores}")
             
             # Check confidence level and topic scores

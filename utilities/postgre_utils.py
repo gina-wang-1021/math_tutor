@@ -45,7 +45,6 @@ def insert_answer(no_extra_explain: bool, answer: str, tablespace_name: str):
             )
             .execute()
         ).data[0]
-        print(response)
         logger.info(f"Inserted answer for id {response['id']}: {answer}")
         return response['id']
     except Exception as e:
@@ -66,6 +65,3 @@ def update_answer(id: int, no_extra_explain: bool, answer: str, tablespace_name:
     except Exception as e:
         logger.error(f"Error updating answer: {str(e)}")
         return None
-
-if __name__ == "__main__":
-    insert_answer(True, "1+1 is 2", "gradeElevenMath")

@@ -68,7 +68,3 @@ def search_index(query: str, database_name: str):
     else:
         logger.info(f"No historic answer found for query: {query} with score: {round(results['score'], 4)} in {database_name}")
         return None
-
-if __name__ == "__main__":
-    # add_to_index(["What is 2+2?"], 1, "grade-eleven-math")
-    print(search_index("What is 2+2?", "grade-eleven-math"))

@@ -17,23 +17,51 @@ class TestStudentUtils(unittest.TestCase):
 
     def test_get_student_level_existing(self):
         """Test retrieving the level for an existing student."""
-        # This test assumes a student with ID '1' exists in the data
-        level, grade = get_student_level('1')
-        self.assertEqual(level, 'advanced')
+        # Sample student data dictionary
+        student_data = {
+            'Student ID': '1',
+            'First name': 'Test',
+            'Last name': 'Student',
+            'Current Class': '12',
+            'Stream': 'Science with Mathematics',
+            'Score': 'A (64-71)'
+        }
+        vectorstore, tablespace, grade = get_student_level(student_data)
+        self.assertEqual(vectorstore, 'grade-twelve-math')
+        self.assertEqual(tablespace, 'gradeTwelveMath')
         self.assertEqual(grade, 12)
 
-    def test_get_student_level_nonexistent(self):
-        """Test retrieving the level for a nonexistent student."""
-        level, grade = get_student_level('nonexistent_student')
-        self.assertIsNone(level, None)
-        self.assertIsNone(grade, None)
+    def test_get_student_level_missing_data(self):
+        """Test retrieving the level with missing data."""
+        # Test with missing Current Class key
+        student_data = {
+            'Student ID': '1',
+            'First name': 'Test',
+            'Last name': 'Student'
+        }
+        vectorstore, tablespace, grade = get_student_level(student_data)
+        # Should return default grade 11 values
+        self.assertEqual(vectorstore, 'grade-eleven-math')
+        self.assertEqual(tablespace, 'gradeElevenMath')
+        self.assertEqual(grade, 11)
 
     def test_get_confidence_level_and_score(self):
         """Test retrieving confidence level and score for a student and topic."""
-        # This test assumes student '1' has data for the 'algebra' topic
-        level, score = get_confidence_level_and_score('1', 'algebra')
+        # Sample student data dictionary with algebra confidence level
+        student_data = {
+            'Student ID': '1',
+            'First name': 'Test',
+            'Last name': 'Student',
+            'Current Class': '12',
+            'Stream': 'Science with Mathematics',
+            'Score': 'A (64-71)',
+            'Algebra': '4 = Confident'
+        }
+        level, score = get_confidence_level_and_score(student_data, 'algebra')
         self.assertIn(level, [1, 2, 3, 4, 5])
         self.assertIsInstance(score, str)
+        self.assertEqual(level, 4)  # Should be 4 based on '4 = Confident'
+        self.assertEqual(score, 'A')  # Should be 'A' based on 'A (64-71)'
 
     def test_check_confidence_and_score(self):
         """Test the confidence and score checking logic."""

@@ -29,5 +29,3 @@ def load_env_vars():
             print(f"Warning: .env file not found at {current_dir} or {parent_dir}")
             return False
 
-if __name__ == "__main__":
-    load_env_vars()
