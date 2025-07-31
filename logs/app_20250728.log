@@ -1,0 +1,94 @@
+2025-07-28 20:32:16,047 | INFO     | app | Successful login for student 67
+2025-07-28 20:33:10,935 | INFO     | app | New question from student 67
+2025-07-28 20:33:10,936 | DEBUG    | app | Question: what does integrals intel
+2025-07-28 20:33:10,938 | DEBUG    | app | Chat history length: 5 words
+2025-07-28 20:33:10,939 | INFO     | app | Calling pipeline
+2025-07-28 20:34:43,949 | INFO     | app | New question from student 67
+2025-07-28 20:34:43,951 | DEBUG    | app | Question: a sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 20:34:43,952 | DEBUG    | app | Chat history length: 54 words
+2025-07-28 20:34:43,953 | INFO     | app | Calling pipeline
+2025-07-28 20:34:59,676 | INFO     | app | Logging out for student 67
+2025-07-28 20:35:04,409 | INFO     | app | Successful login for student 64
+2025-07-28 20:35:06,254 | INFO     | app | New question from student 64
+2025-07-28 20:35:06,254 | DEBUG    | app | Question: a sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 20:35:06,255 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 20:35:06,256 | INFO     | app | Calling pipeline
+2025-07-28 20:35:53,636 | INFO     | app | New question from student 64
+2025-07-28 20:35:53,637 | DEBUG    | app | Question: two cards are drawn without replacement. Probability both are face cards?
+2025-07-28 20:35:53,638 | DEBUG    | app | Chat history length: 238 words
+2025-07-28 20:35:53,639 | INFO     | app | Calling pipeline
+2025-07-28 20:36:31,969 | INFO     | app | Logging out for student 64
+2025-07-28 20:36:37,123 | INFO     | app | Successful login for student 65
+2025-07-28 20:37:24,014 | INFO     | app | New question from student 65
+2025-07-28 20:37:24,018 | DEBUG    | app | Question: two cards are drawn without replacement, probability both are face cards??
+2025-07-28 20:37:24,020 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 20:37:24,021 | INFO     | app | Calling pipeline
+2025-07-28 20:38:58,288 | INFO     | app | New question from student 65
+2025-07-28 20:38:58,288 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to five times itslef?
+2025-07-28 20:38:58,290 | DEBUG    | app | Chat history length: 445 words
+2025-07-28 20:38:58,291 | INFO     | app | Calling pipeline
+2025-07-28 21:02:41,173 | INFO     | app | Successful login for student 64
+2025-07-28 21:02:56,310 | INFO     | app | New question from student 64
+2025-07-28 21:02:56,311 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 21:02:56,312 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 21:02:56,313 | INFO     | app | Calling pipeline
+2025-07-28 21:07:05,532 | INFO     | app | New question from student 64
+2025-07-28 21:07:05,533 | DEBUG    | app | Question: two cards are drawn without replacement. Probability both are face cards?
+2025-07-28 21:07:05,534 | DEBUG    | app | Chat history length: 257 words
+2025-07-28 21:07:05,536 | INFO     | app | Calling pipeline
+2025-07-28 21:07:39,914 | INFO     | app | Logging out for student 64
+2025-07-28 21:07:43,645 | INFO     | app | Successful login for student 65
+2025-07-28 21:08:13,351 | INFO     | app | New question from student 65
+2025-07-28 21:08:13,352 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to give times itself?
+2025-07-28 21:08:13,353 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 21:08:13,354 | INFO     | app | Calling pipeline
+2025-07-28 21:32:12,590 | INFO     | app | Successful login for student 64
+2025-07-28 21:33:32,564 | INFO     | app | New question from student 64
+2025-07-28 21:33:32,565 | DEBUG    | app | Question: two cards are drawn without replacement. Probability both are face cards?
+2025-07-28 21:33:32,566 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 21:33:32,567 | INFO     | app | Calling pipeline
+2025-07-28 21:35:50,985 | INFO     | app | Successful login for student 64
+2025-07-28 21:36:58,497 | INFO     | app | New question from student 64
+2025-07-28 21:36:58,498 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 21:36:58,499 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 21:36:58,500 | INFO     | app | Calling pipeline
+2025-07-28 21:37:53,988 | INFO     | app | New question from student 64
+2025-07-28 21:37:53,989 | DEBUG    | app | Question: two cards are drawn without replacement. Probability both are face cards?
+2025-07-28 21:37:53,990 | DEBUG    | app | Chat history length: 287 words
+2025-07-28 21:37:53,991 | INFO     | app | Calling pipeline
+2025-07-28 21:42:23,579 | INFO     | app | Successful login for student 65
+2025-07-28 21:43:15,708 | INFO     | app | New question from student 65
+2025-07-28 21:43:15,709 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 21:43:15,711 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 21:43:15,712 | INFO     | app | Calling pipeline
+2025-07-28 21:49:45,688 | INFO     | app | Successful login for student 65
+2025-07-28 21:49:56,064 | INFO     | app | New question from student 65
+2025-07-28 21:49:56,066 | DEBUG    | app | Question: two cards are drawn wihtout replacement. Probabiliyt both are face cards?
+2025-07-28 21:49:56,068 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 21:49:56,070 | INFO     | app | Calling pipeline
+2025-07-28 21:50:54,498 | INFO     | app | Successful login for student 65
+2025-07-28 21:51:24,630 | INFO     | app | New question from student 65
+2025-07-28 21:51:24,631 | DEBUG    | app | Question: two cards are drawn with replacement. Probability both are face cards?
+2025-07-28 21:51:24,632 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 21:51:24,633 | INFO     | app | Calling pipeline
+2025-07-28 22:03:54,990 | INFO     | app | Successful login for student 66
+2025-07-28 22:04:20,554 | INFO     | app | New question from student 66
+2025-07-28 22:04:20,554 | DEBUG    | app | Question: Two cards are drawn without replacement. Probability both are face cards
+2025-07-28 22:04:20,555 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 22:04:20,557 | INFO     | app | Calling pipeline
+2025-07-28 22:06:04,254 | INFO     | app | Successful login for student 66
+2025-07-28 22:06:23,936 | INFO     | app | New question from student 66
+2025-07-28 22:06:23,937 | DEBUG    | app | Question: a sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 22:06:23,939 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 22:06:23,940 | INFO     | app | Calling pipeline
+2025-07-28 22:06:59,902 | INFO     | app | Logging out for student 66
+2025-07-28 22:07:02,406 | INFO     | app | Successful login for student 67
+2025-07-28 22:07:21,147 | INFO     | app | New question from student 67
+2025-07-28 22:07:21,148 | DEBUG    | app | Question: A sum doubles at simple interest in 8 years. In how many years will it amount to five times itself?
+2025-07-28 22:07:21,149 | DEBUG    | app | Chat history length: 21 words
+2025-07-28 22:07:21,150 | INFO     | app | Calling pipeline
+2025-07-28 22:17:08,642 | INFO     | app | Successful login for student 67
+2025-07-28 22:18:26,082 | INFO     | app | New question from student 67
+2025-07-28 22:18:26,084 | DEBUG    | app | Question: two cards are drawn without replacement. Probability both are face cards?
+2025-07-28 22:18:26,085 | DEBUG    | app | Chat history length: 12 words
+2025-07-28 22:18:26,086 | INFO     | app | Calling pipeline

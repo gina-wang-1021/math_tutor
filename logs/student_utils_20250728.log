@@ -1,0 +1,76 @@
+2025-07-28 20:33:13,885 | INFO     | utilities.student_utils | Getting student level for student 67
+2025-07-28 20:33:13,886 | INFO     | utilities.student_utils | Student 67 is in grade 11
+2025-07-28 20:33:13,886 | INFO     | utilities.student_utils | Getting confidence level for student 67 in topic calculus
+2025-07-28 20:33:13,887 | INFO     | utilities.student_utils | Student 67 is at 2 level and B+ score for calculus
+2025-07-28 20:34:45,260 | INFO     | utilities.student_utils | Getting student level for student 67
+2025-07-28 20:34:45,261 | INFO     | utilities.student_utils | Student 67 is in grade 11
+2025-07-28 20:34:45,261 | INFO     | utilities.student_utils | Getting confidence level for student 67 in topic basics of financial mathematics
+2025-07-28 20:34:45,262 | INFO     | utilities.student_utils | Student 67 is at 2 level and B+ score for basics of financial mathematics
+2025-07-28 20:35:07,406 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 20:35:07,406 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 20:35:07,406 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic basics of financial mathematics
+2025-07-28 20:35:07,407 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for basics of financial mathematics
+2025-07-28 20:35:54,921 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 20:35:54,922 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 20:35:54,923 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic probability
+2025-07-28 20:35:54,923 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for probability
+2025-07-28 20:37:25,295 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 20:37:25,295 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 20:37:25,296 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic probability
+2025-07-28 20:37:25,296 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for probability
+2025-07-28 20:38:59,459 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 20:38:59,460 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 20:38:59,460 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic basics of financial mathematics
+2025-07-28 20:38:59,460 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for basics of financial mathematics
+2025-07-28 21:02:57,977 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 21:02:57,977 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 21:02:57,978 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic basics of financial mathematics
+2025-07-28 21:02:57,978 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for basics of financial mathematics
+2025-07-28 21:07:06,572 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 21:07:06,572 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 21:07:06,572 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic probability
+2025-07-28 21:07:06,572 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for probability
+2025-07-28 21:08:14,788 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 21:08:14,788 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 21:08:14,789 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic basics of financial mathematics
+2025-07-28 21:08:14,789 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for basics of financial mathematics
+2025-07-28 21:33:34,247 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 21:33:34,247 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 21:33:34,248 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic probability
+2025-07-28 21:33:34,248 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for probability
+2025-07-28 21:37:00,138 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 21:37:00,138 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 21:37:00,138 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic basics of financial mathematics
+2025-07-28 21:37:00,138 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for basics of financial mathematics
+2025-07-28 21:37:55,019 | INFO     | utilities.student_utils | Getting student level for student 64
+2025-07-28 21:37:55,019 | INFO     | utilities.student_utils | Student 64 is in grade 12
+2025-07-28 21:37:55,020 | INFO     | utilities.student_utils | Getting confidence level for student 64 in topic probability
+2025-07-28 21:37:55,020 | INFO     | utilities.student_utils | Student 64 is at 5 level and A score for probability
+2025-07-28 21:43:17,286 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 21:43:17,287 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 21:43:17,287 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic basics of financial mathematics
+2025-07-28 21:43:17,287 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for basics of financial mathematics
+2025-07-28 21:49:57,815 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 21:49:57,815 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 21:49:57,816 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic probability
+2025-07-28 21:49:57,816 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for probability
+2025-07-28 21:51:26,097 | INFO     | utilities.student_utils | Getting student level for student 65
+2025-07-28 21:51:26,097 | INFO     | utilities.student_utils | Student 65 is in grade 12
+2025-07-28 21:51:26,098 | INFO     | utilities.student_utils | Getting confidence level for student 65 in topic probability
+2025-07-28 21:51:26,098 | INFO     | utilities.student_utils | Student 65 is at 2 level and B+ score for probability
+2025-07-28 22:04:23,145 | INFO     | utilities.student_utils | Getting student level for student 66
+2025-07-28 22:04:23,147 | INFO     | utilities.student_utils | Student 66 is in grade 11
+2025-07-28 22:04:23,148 | INFO     | utilities.student_utils | Getting confidence level for student 66 in topic probability
+2025-07-28 22:04:23,148 | INFO     | utilities.student_utils | Student 66 is at 5 level and A score for probability
+2025-07-28 22:06:25,700 | INFO     | utilities.student_utils | Getting student level for student 66
+2025-07-28 22:06:25,701 | INFO     | utilities.student_utils | Student 66 is in grade 11
+2025-07-28 22:06:25,701 | INFO     | utilities.student_utils | Getting confidence level for student 66 in topic basics of financial mathematics
+2025-07-28 22:06:25,701 | INFO     | utilities.student_utils | Student 66 is at 5 level and A score for basics of financial mathematics
+2025-07-28 22:07:22,627 | INFO     | utilities.student_utils | Getting student level for student 67
+2025-07-28 22:07:22,627 | INFO     | utilities.student_utils | Student 67 is in grade 11
+2025-07-28 22:07:22,628 | INFO     | utilities.student_utils | Getting confidence level for student 67 in topic basics of financial mathematics
+2025-07-28 22:07:22,628 | INFO     | utilities.student_utils | Student 67 is at 2 level and B+ score for basics of financial mathematics
+2025-07-28 22:18:28,055 | INFO     | utilities.student_utils | Getting student level for student 67
+2025-07-28 22:18:28,056 | INFO     | utilities.student_utils | Student 67 is in grade 11
+2025-07-28 22:18:28,056 | INFO     | utilities.student_utils | Getting confidence level for student 67 in topic probability
+2025-07-28 22:18:28,056 | INFO     | utilities.student_utils | Student 67 is at 2 level and B+ score for probability

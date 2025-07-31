@@ -1,31 +1,22 @@
-import os
+import streamlit as st
 
-def load_env_vars():
-    """Load environment variables from .env file."""
-    # Get the current directory and parent directory
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.dirname(current_dir)
+def load_env_vars(variable_name):
+    """Load a specific environment variable from Streamlit secrets.
     
-    # Check current directory for .env file
-    env_path = os.path.join(current_dir, '.env')
-    if os.path.exists(env_path):
-        with open(env_path, 'r') as f:
-            for line in f:
-                if '=' in line and not line.strip().startswith('#'):
-                    key, value = line.strip().split('=', 1)
-                    os.environ[key] = value.strip('"\'')
-        return True
-    else:
-        # If not found, check parent directory
-        env_path = os.path.join(parent_dir, '.env')
-        if os.path.exists(env_path):
-            with open(env_path, 'r') as f:
-                for line in f:
-                    if '=' in line and not line.strip().startswith('#'):
-                        key, value = line.strip().split('=', 1)
-                        os.environ[key] = value.strip('"\'')
-            return True
-        else:
-            print(f"Warning: .env file not found at {current_dir} or {parent_dir}")
-            return False
+    Args:
+        variable_name (str): The name of the secret variable to retrieve
+        
+    Returns:
+        str: The value of the secret variable
+        
+    Raises:
+        KeyError: If the variable is not found in secrets
+        FileNotFoundError: If secrets.toml file is not found
+    """
+    try:
+        return st.secrets[variable_name]
+    except KeyError:
+        raise KeyError(f"Secret '{variable_name}' not found in .streamlit/secrets.toml")
+    except FileNotFoundError:
+        raise FileNotFoundError("secrets.toml file not found in .streamlit/ directory")
 

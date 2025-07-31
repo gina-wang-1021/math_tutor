@@ -7,10 +7,6 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 sys.path.append(os.path.join(PROJECT_ROOT, 'scripts'))
 
-# Load environment variables from .env file
-from scripts.load_env import load_env_vars
-load_env_vars()
-
 from utilities.student_utils import get_student_level, get_confidence_level_and_score, check_confidence_and_score
 
 class TestStudentUtils(unittest.TestCase):

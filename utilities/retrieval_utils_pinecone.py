@@ -45,6 +45,7 @@ def get_chunks_for_current_year(topic: str, year: int, query: str):
         12: "twelve"
     }
     year_str = int_str_year_mapping[year]
+    topic = topic_mapping.get(topic, "algebra")
     logger.info(f"Retrieving chunks for topic '{topic}' at level '{year_str}' with query: '{query[:50]}...'")
     
     level_order = ['nine', 'ten', 'eleven', 'twelve']
@@ -53,11 +54,8 @@ def get_chunks_for_current_year(topic: str, year: int, query: str):
         year_str = 'twelve'
 
     try:
-        # Load environment variables
-        load_env_vars()
-            
         # Initialize Pinecone client
-        pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+        pc = Pinecone(api_key=load_env_vars("PINECONE_API_KEY"))
         
         # Check if index exists
         if INDEX_NAME not in [index.name for index in pc.list_indexes()]:
@@ -68,7 +66,7 @@ def get_chunks_for_current_year(topic: str, year: int, query: str):
         index = pc.Index(INDEX_NAME)
         
         # Create embedding for query
-        openai.api_key = os.environ["OPENAI_API_KEY"]
+        openai.api_key = load_env_vars("OPENAI_API_KEY")
         embedding_response = openai.embeddings.create(
             input=query,
             model="text-embedding-3-small"
@@ -76,7 +74,6 @@ def get_chunks_for_current_year(topic: str, year: int, query: str):
         query_embedding = embedding_response.data[0].embedding
         
         # Query the specific namespace (topic) with level filter
-        topic = topic_mapping.get(topic, "algebra")
         results = index.query(
             vector=query_embedding,
             top_k=3,
@@ -121,15 +118,14 @@ def get_chunks_from_prior_years(topic: str, year: int, query: str):
     
     current_level_index = level_order.index(year_str)
     prior_levels = level_order[:current_level_index]
+    topic = topic_mapping.get(topic, "algebra")
     
-    logger.info(f"Retrieving chunks for topic '{topic}' from levels {prior_levels} with query: '{query[:50]}...'")
+    logger.info(f"Retrieving chunks from levels {prior_levels} for topic '{topic}' with query: '{query[:50]}...'")
     
     try:
-        # Load environment variables
-        load_env_vars()
-            
+        
         # Initialize Pinecone client
-        pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+        pc = Pinecone(api_key=load_env_vars("PINECONE_API_KEY"))
         
         # Check if index exists
         if INDEX_NAME not in [index.name for index in pc.list_indexes()]:
@@ -140,7 +136,7 @@ def get_chunks_from_prior_years(topic: str, year: int, query: str):
         index = pc.Index(INDEX_NAME)
         
         # Create embedding for query
-        openai.api_key = os.environ["OPENAI_API_KEY"]
+        openai.api_key = load_env_vars("OPENAI_API_KEY")
         embedding_response = openai.embeddings.create(
             input=query,
             model="text-embedding-3-small"
@@ -166,7 +162,7 @@ def get_chunks_from_prior_years(topic: str, year: int, query: str):
                     # Create a document-like object with the content and metadata
                     chunk = {
                         'page_content': match.metadata.get('text', ''),
-                        'score': match.score + (level_order.index(level) * 0.1)  # Boost higher levels
+                        'score': match.score + (level_order.index(level) * 0.1)
                     }
                     all_chunks.append(chunk)
                     
@@ -192,7 +188,7 @@ def get_topic(question: str) -> str:
         - The most relevant topic
     """
     try:
-        llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+        llm = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
         topic_prompt_text = load_prompt("topic_classification_prompt.txt")
         topic_prompt = PromptTemplate.from_template(topic_prompt_text)
         

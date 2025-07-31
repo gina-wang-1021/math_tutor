@@ -11,9 +11,8 @@ from utilities.load_env import load_env_vars
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
-load_env_vars()
 
-openai.api_key = os.environ["OPENAI_API_KEY"]
+openai.api_key = load_env_vars("OPENAI_API_KEY")
 
 def embed(docs: list[str]) -> list[list[float]]:
     res = openai.embeddings.create(
@@ -34,7 +33,7 @@ def add_to_index(docs: list[str], id: int, database_name: str):
         })
 
     pc = Pinecone(
-        api_key=os.environ["PINECONE_API_KEY"],
+        api_key=load_env_vars("PINECONE_API_KEY"),
     )
     index = pc.Index(database_name)
     index.upsert(
@@ -46,18 +45,25 @@ def add_to_index(docs: list[str], id: int, database_name: str):
 def search_index(query: str, database_name: str):
     try:
         pc = Pinecone(
-            api_key=os.environ["PINECONE_API_KEY"],
+            api_key=load_env_vars("PINECONE_API_KEY"),
         )
         index = pc.Index(database_name)
 
         x = embed([query])
 
-        results = index.query(
+        query_results = index.query(
             vector=x[0],
             top_k=1,
             include_values=False,
             include_metadata=False
-        )["matches"][0]
+        )
+        
+        matches = query_results.get("matches", [])
+        if not matches:
+            logger.info(f"No matches found for query: {query} in {database_name}")
+            return None
+            
+        results = matches[0]
     except Exception as e:
         logger.error(f"Error searching index: {str(e)}")
         return None

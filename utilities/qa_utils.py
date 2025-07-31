@@ -21,7 +21,7 @@ def rephrase_question(user_question: str, history: str) -> str:
         str: Reformulated standalone question (falls back to original on error).
     """
     try:
-        llm_rephrase = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+        llm_rephrase = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
         rephrase_prompt_text = load_prompt("rephrase_question_prompt.txt")
         rephrase_prompt = PromptTemplate.from_template(rephrase_prompt_text)
         llm_chain = rephrase_prompt | llm_rephrase

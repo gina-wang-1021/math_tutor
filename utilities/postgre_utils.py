@@ -11,10 +11,9 @@ from logger_config import setup_logger
 from utilities.load_env import load_env_vars
 
 logger = setup_logger(__name__)
-load_env_vars()
 
-url: str = os.environ["SUPABASE_URL"]
-key: str = os.environ["SUPABASE_KEY"]
+url: str = load_env_vars("SUPABASE_URL")
+key: str = load_env_vars("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
 # perhaps add maintenance functions? Clean, check, backup, etc.
@@ -23,12 +22,18 @@ def get_historic_answer(id: int, no_extra_explain: bool, tablespace_name: str):
     """Given a known record's ID, see if the correct version of answer exists and fetch the historic answer from the database."""
     answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
     try:
-        response = (
+        query_result = (
             supabase.table(tablespace_name)
             .select(f"id, {answer_field}")
             .eq("id", id)
             .execute()
-        ).data[0]
+        )
+        
+        if not query_result.data:
+            logger.warning(f"No record found with id {id} in table {tablespace_name}")
+            return None
+            
+        response = query_result.data[0]
         logger.info(f"Fetched historic answer for id {response['id']}: {response[answer_field]}")
         return response[answer_field]
     except Exception as e:

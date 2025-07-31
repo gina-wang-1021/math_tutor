@@ -1,0 +1,25 @@
+2025-07-31 17:12:40,738 | INFO     | utilities.retrieval_utils_pinecone | Question classified under topic 'probability': 'What is the probability that both cards are face c...' 
+2025-07-31 17:12:44,693 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks for topic 'probability' at level 'eleven' with query: 'What is the probability that both cards are face c...'
+2025-07-31 17:12:46,650 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 3 chunks for topic 'probability' at level 'eleven'
+2025-07-31 17:12:46,658 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks from levels ['nine', 'ten'] for topic 'probability' with query: 'What is the probability that both cards are face c...'
+2025-07-31 17:12:47,665 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 2 total chunks for topic 'probability' from levels ['nine', 'ten']
+2025-07-31 17:35:20,499 | INFO     | utilities.retrieval_utils_pinecone | Question classified under topic 'basics of financial mathematics': 'A sum doubles at simple interest in 8 years. In ho...' 
+2025-07-31 17:35:21,937 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks for topic 'financial-math' at level 'eleven' with query: 'A sum doubles at simple interest in 8 years. In ho...'
+2025-07-31 17:35:23,526 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 3 chunks for topic 'financial-math' at level 'eleven'
+2025-07-31 17:35:23,530 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks from levels ['nine', 'ten'] for topic 'financial-math' with query: 'A sum doubles at simple interest in 8 years. In ho...'
+2025-07-31 17:35:24,616 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 4 total chunks for topic 'financial-math' from levels ['nine', 'ten']
+2025-07-31 17:37:20,615 | INFO     | utilities.retrieval_utils_pinecone | Question classified under topic 'calculus': 'What are integrals?...' 
+2025-07-31 17:37:22,475 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks for topic 'calculus' at level 'eleven' with query: 'What are integrals?...'
+2025-07-31 17:37:24,611 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 3 chunks for topic 'calculus' at level 'eleven'
+2025-07-31 17:37:24,620 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks from levels ['nine', 'ten'] for topic 'calculus' with query: 'What are integrals?...'
+2025-07-31 17:37:30,522 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 0 total chunks for topic 'calculus' from levels ['nine', 'ten']
+2025-07-31 17:37:43,132 | INFO     | utilities.retrieval_utils_pinecone | Question classified under topic 'calculus': 'What are derivatives?...' 
+2025-07-31 17:37:43,668 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks for topic 'calculus' at level 'eleven' with query: 'What are derivatives?...'
+2025-07-31 17:37:46,322 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 3 chunks for topic 'calculus' at level 'eleven'
+2025-07-31 17:37:46,331 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks from levels ['nine', 'ten'] for topic 'calculus' with query: 'What are derivatives?...'
+2025-07-31 17:37:47,426 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 0 total chunks for topic 'calculus' from levels ['nine', 'ten']
+2025-07-31 17:38:46,929 | INFO     | utilities.retrieval_utils_pinecone | Question classified under topic 'probability': 'If two cards are drawn from a standard deck of 52 ...' 
+2025-07-31 17:38:47,743 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks for topic 'probability' at level 'eleven' with query: 'If two cards are drawn from a standard deck of 52 ...'
+2025-07-31 17:38:48,567 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 3 chunks for topic 'probability' at level 'eleven'
+2025-07-31 17:38:48,577 | INFO     | utilities.retrieval_utils_pinecone | Retrieving chunks from levels ['nine', 'ten'] for topic 'probability' with query: 'If two cards are drawn from a standard deck of 52 ...'
+2025-07-31 17:38:51,318 | INFO     | utilities.retrieval_utils_pinecone | Retrieved 2 total chunks for topic 'probability' from levels ['nine', 'ten']

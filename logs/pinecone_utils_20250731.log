@@ -1,0 +1,16 @@
+2025-07-31 17:12:43,492 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:12:43,800 | INFO     | utilities.pinecone_utils | Found historic answer for query: What is the probability that both cards are face cards when two cards are drawn without replacement? with id: 10 in grade-eleven-math and score: 1.0
+2025-07-31 17:35:21,618 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:35:21,926 | INFO     | utilities.pinecone_utils | No historic answer found for query: A sum doubles at simple interest in 8 years. In how many years will the same sum amount to five times itself at the same rate of simple interest? with score: 0.2062 in grade-eleven-math
+2025-07-31 17:36:10,450 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:36:10,802 | INFO     | utilities.pinecone_utils | Stored generated response to index with id 11
+2025-07-31 17:37:22,159 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:37:22,463 | INFO     | utilities.pinecone_utils | No matches found for query: What are integrals? in grade-eleven-math
+2025-07-31 17:37:43,372 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:37:43,664 | INFO     | utilities.pinecone_utils | No matches found for query: What are derivatives? in grade-eleven-math
+2025-07-31 17:38:45,443 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:38:45,807 | INFO     | utilities.pinecone_utils | Stored generated response to index with id 12
+2025-07-31 17:38:47,449 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:38:47,737 | INFO     | utilities.pinecone_utils | No historic answer found for query: If two cards are drawn from a standard deck of 52 cards without replacement, what is the probability that both cards are face cards? with score: 0.0959 in grade-eleven-math
+2025-07-31 17:39:31,546 | INFO     | utilities.pinecone_utils | Embedded generated response
+2025-07-31 17:39:32,631 | INFO     | utilities.pinecone_utils | Stored generated response to index with id 13

@@ -9,10 +9,6 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 sys.path.append(os.path.join(PROJECT_ROOT, 'scripts'))
 
-# Load environment variables from .env file
-from utilities.load_env import load_env_vars
-load_env_vars()
-
 from utilities.qa_utils import rephrase_question, fetch_historic_data, store_new_data
 
 class TestQaUtils(unittest.TestCase):

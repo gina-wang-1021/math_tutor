@@ -66,13 +66,13 @@ def pipeline(student_data, user_question, history, stream_handler=None):
 
             # Initialize LLMs - one for intermediate steps (no streaming) and one for final answer (with streaming)
             llm_intermediate = ChatOpenAI(
-                model_name="gpt-3.5-turbo",
+                model_name="gpt-4.1",
                 temperature=0.5,
                 streaming=False
             )
             
             llm_final = ChatOpenAI(
-                model_name="gpt-3.5-turbo",
+                model_name="gpt-4.1",
                 temperature=0.5,
                 streaming=bool(stream_handler),
                 callbacks=[StreamingCallbackHandler(stream_handler, delay=0.05)] if stream_handler else None
@@ -146,7 +146,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             logger.info("Determining if question is covered in retrieved chunks...")
             chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
             chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
-            llm_decision = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+            llm_decision = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
             coverage_answer_chain = chunk_coverage_prompt | llm_decision
             
             # Get the response from the LLM
@@ -241,11 +241,14 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             compare_prompt_text = load_prompt("compare_prompt.txt")
             compare_prompt = PromptTemplate.from_template(compare_prompt_text)
             compare_chain = compare_prompt | llm_final
+            
+            # Use invoke method like single-pass to ensure consistent LaTeX rendering
             compare_answer = compare_chain.invoke({
                 "first_pass_answer": first_response,
                 "second_pass_answer": second_response,
                 "student_question": standalone_question
             }).content.strip()
+            
             logger.info(f"Compared answer: {compare_answer}")
             
             # Save generated answer and the student's question to both databases

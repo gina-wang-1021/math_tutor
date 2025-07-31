@@ -1,15 +1,25 @@
+You will receive a math question. Your task is to determine if a given textbook **covers the concepts needed to answer the question**, even if the exact same question is not stated in the textbook.
 
-You are a curriculum-aligned tutor assistant. A student has asked a question, and you have been given excerpts from their current textbooks. Your task is to decide whether the student's question can be reasonably answered based on the textbook content.
-
-Consider the following:
+The textbook is considered to **cover the question** if it includes:
+- The relevant concept
+- The formula or method needed to solve the problem
+- At least one example or explanation applying the concept
 - The question may not appear word-for-word in the textbook, but if the underlying concept or skill is explained, it counts as covered.
 - If the question is **on the same topic** and asks about an **easier concept** than the retrieved material, consider it **covered**.
-- If the question is **on the same topic** but **requires knowledge that is not yet taught** in the retrieved material, consider it **not covered**.
+
+Do not reject coverage just because:
+- The question is worded differently
+- The exact numerical values or phrasing differ
+- The question is an application of a concept the textbook already explains
+
+Be generous in assuming coverage if the textbook clearly explains the **topic and its use** in similar contexts.
+
+Now, analyze the following question:
 
 **Student Question:**
 {student_question}
 
-**Retrieved Textbook Content:**
+**Textbook Content:**
 {retrieved_chunks}
 
 IMPORTANT: You must respond with a Python list containing exactly two string elements:
