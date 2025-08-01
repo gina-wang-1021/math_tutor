@@ -242,7 +242,6 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             compare_prompt = PromptTemplate.from_template(compare_prompt_text)
             compare_chain = compare_prompt | llm_final
             
-            # Use invoke method like single-pass to ensure consistent LaTeX rendering
             compare_answer = compare_chain.invoke({
                 "first_pass_answer": first_response,
                 "second_pass_answer": second_response,

@@ -2,9 +2,8 @@ You will receive a math question. Your task is to determine if a given textbook 
 
 The textbook is considered to **cover the question** if it includes:
 - The relevant concept
-- The formula or method needed to solve the problem
-- At least one example or explanation applying the concept
 - The question may not appear word-for-word in the textbook, but if the underlying concept or skill is explained, it counts as covered.
+- Even if the formula or method is not explicitly stated, or if there is no examples provided, if the underlying concept or skill is explained, it counts as covered.
 - If the question is **on the same topic** and asks about an **easier concept** than the retrieved material, consider it **covered**.
 
 Do not reject coverage just because:
