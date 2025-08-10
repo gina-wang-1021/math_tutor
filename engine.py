@@ -62,7 +62,18 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             # Detect topics from the rephrased question
             logger.info("Detecting topic...")
             detected_topic = get_topic(standalone_question)
-            logger.info(f"Detected topic: {detected_topic}")
+            logger.info(f"Get topic result: {detected_topic}")
+            if detected_topic == "none":
+                response_message = f"This question is not covered in your textbook yet. I can only answer math questions related to your textbook content - happy to help with those! 😊"
+
+                if stream_handler:
+                    tokens = response_message.split()
+                    for token in tokens:
+                        stream_handler(token + " ")
+                        time.sleep(0.05)
+                    return ""
+                else:
+                    return response_message
 
             # Initialize LLMs - one for intermediate steps (no streaming) and one for final answer (with streaming)
             llm_intermediate = ChatOpenAI(
@@ -142,41 +153,29 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 combined_chunks += "\n\n"
             combined_chunks += processed_lower_years_chunks
 
-            # Determine if student's question is covered in the retrieved chunks
-            logger.info("Determining if question is covered in retrieved chunks...")
-            chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
-            chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
-            llm_decision = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
-            coverage_answer_chain = chunk_coverage_prompt | llm_decision
+            # # Determine if student's question is covered in the retrieved chunks
+            # logger.info("Determining if question is covered in retrieved chunks...")
+            # chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
+            # chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
+            # llm_decision = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
+            # coverage_answer_chain = chunk_coverage_prompt | llm_decision
             
-            # Get the response from the LLM
-            response_content = coverage_answer_chain.invoke({
-                "student_question": standalone_question,
-                "retrieved_chunks": combined_chunks
-            }).content
+            # # Get the response from the LLM
+            # response_content = coverage_answer_chain.invoke({
+            #     "student_question": standalone_question,
+            #     "retrieved_chunks": combined_chunks
+            # }).content
             
-            # Parse the response as a Python list
-            try:
-                coverage_answer = ast.literal_eval(response_content)
-                logger.info(f"Coverage answer: {coverage_answer}")
-                logger.info(f"Decision: {coverage_answer[0]}, Reasoning: {coverage_answer[1]}")
-            except (ValueError, SyntaxError) as e:
-                logger.error(f"Failed to parse coverage answer as list: {e}")
-                logger.error(f"Raw response: {response_content}")
-                # Default to Yes if parsing fails
-                coverage_answer = ["Yes", "Failed to parse response, defaulting to covered."]
-                
-            if coverage_answer[0] == "No":
-                response_message = f"This question is not covered in your textbook yet. I can only answer math questions related to your textbook content - happy to help with those! 😊"
-
-                if stream_handler:
-                    tokens = response_message.split()
-                    for token in tokens:
-                        stream_handler(token + " ")
-                        time.sleep(0.05)
-                    return ""
-                else:
-                    return response_message
+            # # Parse the response as a Python list
+            # try:
+            #     coverage_answer = ast.literal_eval(response_content)
+            #     logger.info(f"Coverage answer: {coverage_answer}")
+            #     logger.info(f"Decision: {coverage_answer[0]}, Reasoning: {coverage_answer[1]}")
+            # except (ValueError, SyntaxError) as e:
+            #     logger.error(f"Failed to parse coverage answer as list: {e}")
+            #     logger.error(f"Raw response: {response_content}")
+            #     # Default to Yes if parsing fails
+            #     coverage_answer = ["Yes", "Failed to parse response, defaulting to covered."]
 
             # Topic-based answer prompt
             topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
