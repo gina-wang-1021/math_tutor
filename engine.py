@@ -92,10 +92,6 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             # Determine student's overall grade and corresponding database
             logger.info("Determining student's school year...")
             vectorstore_name, tablespace_name, numeric_grade = get_student_level(student_data)
-            if not vectorstore_name and not tablespace_name and not numeric_grade:
-                vectorstore_name = "grade_eleven_math"
-                tablespace_name = "gradeElevenMath"
-                numeric_grade = 11
             logger.info(f"Student {student_id}: Vector Database: {vectorstore_name}, Tablespace: {tablespace_name}, Numeric Grade: {numeric_grade}")
             
             # Get the confidence level and scores for the topic
@@ -108,7 +104,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             logger.info(f"confidence and score check result: {no_extra_explain}")
             
             # Detect whether a similar question had been asked before
-            historic_answer, historic_answer_id = fetch_historic_data(standalone_question, no_extra_explain, vectorstore_name, tablespace_name)
+            historic_answer, historic_answer_id = fetch_historic_data(standalone_question, no_extra_explain)
             if historic_answer:
                 if stream_handler:
                     logger.info(f"Streaming historic answer for grade {numeric_grade}")
@@ -153,30 +149,6 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 combined_chunks += "\n\n"
             combined_chunks += processed_lower_years_chunks
 
-            # # Determine if student's question is covered in the retrieved chunks
-            # logger.info("Determining if question is covered in retrieved chunks...")
-            # chunk_coverage_prompt_text = load_prompt("chunk_coverage_prompt.txt")
-            # chunk_coverage_prompt = PromptTemplate.from_template(chunk_coverage_prompt_text)
-            # llm_decision = ChatOpenAI(model_name="gpt-4.1", temperature=0.0)
-            # coverage_answer_chain = chunk_coverage_prompt | llm_decision
-            
-            # # Get the response from the LLM
-            # response_content = coverage_answer_chain.invoke({
-            #     "student_question": standalone_question,
-            #     "retrieved_chunks": combined_chunks
-            # }).content
-            
-            # # Parse the response as a Python list
-            # try:
-            #     coverage_answer = ast.literal_eval(response_content)
-            #     logger.info(f"Coverage answer: {coverage_answer}")
-            #     logger.info(f"Decision: {coverage_answer[0]}, Reasoning: {coverage_answer[1]}")
-            # except (ValueError, SyntaxError) as e:
-            #     logger.error(f"Failed to parse coverage answer as list: {e}")
-            #     logger.error(f"Raw response: {response_content}")
-            #     # Default to Yes if parsing fails
-            #     coverage_answer = ["Yes", "Failed to parse response, defaulting to covered."]
-
             # Topic-based answer prompt
             topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
             topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
@@ -195,8 +167,8 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                     }).content.strip()
                     logger.info(f"Final Answer for topic-based question → {final_answer}")
 
-                    if numeric_grade == 12 or numeric_grade == 11:
-                        store_success = store_new_data(standalone_question, final_answer, no_extra_explain, vectorstore_name, tablespace_name,historic_answer_id)
+                    if numeric_grade == 12:
+                        store_success = store_new_data(standalone_question, final_answer, no_extra_explain, historic_answer_id)
                         if store_success:
                             logger.info(f"Successfully stored Q&A pair (single pass) for grade {numeric_grade}")
                         else:
@@ -250,8 +222,8 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             logger.info(f"Compared answer: {compare_answer}")
             
             # Save generated answer and the student's question to both databases
-            if numeric_grade == 12 or numeric_grade == 11:
-                store_success = store_new_data(standalone_question, compare_answer, no_extra_explain, vectorstore_name, tablespace_name, historic_answer_id)
+            if numeric_grade == 12:
+                store_success = store_new_data(standalone_question, compare_answer, no_extra_explain, historic_answer_id)
                 if store_success:
                     logger.info(f"Successfully stored Q&A pair (two-pass) for grade {numeric_grade}")
                 else:

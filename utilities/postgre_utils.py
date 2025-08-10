@@ -1,7 +1,5 @@
-import os
 import sys, pathlib
 
-# Add project root to sys.path before importing local modules
 project_root = pathlib.Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
@@ -18,8 +16,10 @@ supabase: Client = create_client(url, key)
 
 # perhaps add maintenance functions? Clean, check, backup, etc.
 
-def get_historic_answer(id: int, no_extra_explain: bool, tablespace_name: str):
+def get_historic_answer(id: int, no_extra_explain: bool):
     """Given a known record's ID, see if the correct version of answer exists and fetch the historic answer from the database."""
+    
+    tablespace_name = "gradeTwelveMath"
     answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
     try:
         query_result = (
@@ -40,7 +40,9 @@ def get_historic_answer(id: int, no_extra_explain: bool, tablespace_name: str):
         logger.error(f"Error getting historic answer: {str(e)}")
         return None
 
-def insert_answer(no_extra_explain: bool, answer: str, tablespace_name: str):
+def insert_answer(no_extra_explain: bool, answer: str):
+
+    tablespace_name = "gradeTwelveMath"
     try:
         answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
         response = (
@@ -56,7 +58,9 @@ def insert_answer(no_extra_explain: bool, answer: str, tablespace_name: str):
         logger.error(f"Error inserting answer: {str(e)}")
         return None
 
-def update_answer(id: int, no_extra_explain: bool, answer: str, tablespace_name: str):
+def update_answer(id: int, no_extra_explain: bool, answer: str):
+    tablespace_name = "gradeTwelveMath"
+
     try:
         answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
         response = (

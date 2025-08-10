@@ -5,10 +5,10 @@
 
             - **Algebra**: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
             - **Calculus**: limits, continuity, derivatives, rules of differentiation, applications of derivatives, integration, definite and indefinite integrals, area under curves, differential equations.
-            - **Numbers Quantification and Numerical Applications**: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
+            - **Numbers, Quantification and Numerical Applications**: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
             - **Probability**: classical and empirical probability, random experiments, outcomes and sample space, events, conditional probability, independent events, and probability of compound events.
             - **Statistics**: data representation, measures of central tendency (mean, median, mode), measures of dispersion (range, variance, standard deviation), histograms, frequency distributions, and data interpretation.
-            - **Set and Functions**: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
+            - **Sets and Functions**: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
             - **Geometry**: lines and angles, triangles, congruence and similarity, circles, polygons, geometric constructions, coordinate geometry, and properties of geometric figures.
             - **Surface Area and Volumes**: surface area and volume of solids like cube, cuboid, cylinder, cone, sphere, and hemisphere; frustum of a cone; applications in real-life problems.
             - **Trigonometry**: trigonometric ratios and identities, angles and their measure, graphs of trigonometric functions, heights and distances, inverse trigonometric functions, and solving triangles.

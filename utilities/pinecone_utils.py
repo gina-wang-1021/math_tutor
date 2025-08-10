@@ -1,8 +1,7 @@
 from pinecone import Pinecone
-import os
 import openai
 import sys, pathlib
-# Ensure project root is on sys.path so we can import load_env when this file is run directly
+
 project_root = pathlib.Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
@@ -23,7 +22,9 @@ def embed(docs: list[str]) -> list[list[float]]:
     logger.info(f"Embedded generated response")
     return doc_embeds 
 
-def add_to_index(docs: list[str], id: int, database_name: str):
+def add_to_index(docs: list[str], id: int):
+    database_name = "grade-twelve-math"
+
     x = embed(docs)
     vectors = []
     for vec in x:
@@ -42,7 +43,10 @@ def add_to_index(docs: list[str], id: int, database_name: str):
     logger.info(f"Stored generated response to index with id {id}")
     return
 
-def search_index(query: str, database_name: str):
+def search_index(query: str):
+
+    database_name = "grade-twelve-math" 
+
     try:
         pc = Pinecone(
             api_key=load_env_vars("PINECONE_API_KEY"),
