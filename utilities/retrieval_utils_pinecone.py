@@ -26,32 +26,22 @@ topic_mapping = {
     "trigonometry": "trigonometry"
 }
 
-def get_chunks_for_current_year(topic: str, year: int, query: str):
-    """Get relevant chunks for a topic at the specified year level using Pinecone namespaces.
+def get_chunks_for_current_year(topic: str, query: str):
+    """Get relevant chunks for a topic at twelfth grade level using Pinecone namespaces.
+    Note: This function now always fetches chunks for twelfth grade regardless of the year parameter.
 
     Args:
         topic (str): The topic to search for.
-        year (int): The year level (11 or 12).
         query (str): The search query.
 
     Returns:
-        list: A list of relevant chunks from the specified level.
+        list: A list of relevant chunks from twelfth grade level.
     """
 
-    int_str_year_mapping = {
-        9: "nine",
-        10: "ten",
-        11: "eleven",
-        12: "twelve"
-    }
-    year_str = int_str_year_mapping[year]
+    # Always use twelfth grade regardless of the year parameter
+    year_str = 'twelve'
     topic = topic_mapping.get(topic, "algebra")
-    logger.info(f"Retrieving chunks for topic '{topic}' at level '{year_str}' with query: '{query[:50]}...'")
-    
-    level_order = ['nine', 'ten', 'eleven', 'twelve']
-    if year_str not in level_order:
-        logger.warning(f"Invalid level '{year_str}', defaulting to 'twelve'.")
-        year_str = 'twelve'
+    logger.info(f"Retrieving chunks for topic '{topic}' at level twelfth with query: '{query[:50]}...'")
 
     try:
         # Initialize Pinecone client
@@ -88,39 +78,30 @@ def get_chunks_for_current_year(topic: str, year: int, query: str):
             chunk = match.metadata.get('text', '')
             chunks.append(chunk)
         
-        logger.info(f"Retrieved {len(chunks)} chunks for topic '{topic}' at level '{year_str}'")
+        logger.info(f"Retrieved {len(chunks)} chunks for topic '{topic}' at level twelfth")
         return chunks
         
     except Exception as e:
-        logger.error(f"Error retrieving chunks for topic '{topic}' at level '{year_str}': {str(e)}")
+        logger.error(f"Error retrieving chunks for topic '{topic}' at level twelfth: {str(e)}")
         return []
 
-def get_chunks_from_prior_years(topic: str, year: int, query: str):
-    """Get relevant chunks for a topic from levels below the specified year using Pinecone namespaces.
+def get_chunks_from_prior_years(topic: str, query: str):
+    """Get relevant chunks for a topic from levels below twelfth grade using Pinecone namespaces.
+    Note: This function now always fetches chunks from grades 9, 10, and 11 (excluding grade 12).
 
     Args:
         topic (str): The topic to search for.
-        year (int): The current year level (9, 10, 11, 12).
         query (str): The search query.
 
     Returns:
-        list: A combined list of relevant chunks from all prior levels.
+        list: A combined list of relevant chunks from grades 9, 10, and 11.
     """
     
-    level_order = ['nine', 'ten', 'eleven', 'twelve']
-    int_str_year_mapping = {
-        9: "nine",
-        10: "ten",
-        11: "eleven",
-        12: "twelve"
-    }
-    year_str = int_str_year_mapping.get(year, 'twelve')
-    
-    current_level_index = level_order.index(year_str)
-    prior_levels = level_order[:current_level_index]
+    # Always fetch from grades 9, 10, and 11 (excluding grade 12)
+    prior_levels = ['nine', 'ten', 'eleven']
     topic = topic_mapping.get(topic, "algebra")
     
-    logger.info(f"Retrieving chunks from levels {prior_levels} for topic '{topic}' with query: '{query[:50]}...'")
+    logger.info(f"Retrieving chunks from levels {prior_levels} for topic '{topic}' with query: '{query[:50]}...')")
     
     try:
         
@@ -146,13 +127,11 @@ def get_chunks_from_prior_years(topic: str, year: int, query: str):
         all_chunks = []
         
         # Query each level with different k values (more for higher levels)
-        for level in prior_levels:
-            k_value = 3 if level in ['eleven', 'twelve'] else 2
-            
+        for level in prior_levels:            
             try:
                 results = index.query(
                     vector=query_embedding,
-                    top_k=k_value,
+                    top_k=2,
                     namespace=topic,
                     filter={"level": level},
                     include_metadata=True
@@ -162,7 +141,7 @@ def get_chunks_from_prior_years(topic: str, year: int, query: str):
                     # Create a document-like object with the content and metadata
                     chunk = {
                         'page_content': match.metadata.get('text', ''),
-                        'score': match.score + (level_order.index(level) * 0.1)
+                        'score': match.score
                     }
                     all_chunks.append(chunk)
                     
@@ -212,7 +191,7 @@ def get_topic(question: str) -> str:
             reasoning = "Parsing failed, using fallback method"
             logger.info(f"Topic classification (fallback): '{classification}' | Question: '{question[:50]}...'")
         
-        valid_topics = ["algebra", "basics of financial mathematics", "geometry", "calculus", "mathematical reasoning", "numbers quantification and numerical applications", "probability", "statistics", "set and functions", "surface area and volumes", "trigonometry"]
+        valid_topics = ["algebra", "basics of financial mathematics", "geometry", "calculus", "mathematical reasoning", "numbers, quantification and numerical applications", "probability", "statistics", "sets and functions", "surface area and volumes", "trigonometry"]
         
         if classification in valid_topics:
             return classification

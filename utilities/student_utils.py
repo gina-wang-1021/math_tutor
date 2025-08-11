@@ -25,40 +25,6 @@ SCORES_MAPPING = {
     "D (32-39)": "D",
 }
 
-def get_student_level(student_data):
-    """Extract information from student dictionary and return grade 12 configuration.
-    
-    Args:
-        student_data (dict): The student's data dictionary
-        
-    Returns:
-        tuple: (str, str, int): The vectorstore name, tablespace name, and numeric grade (always 12).
-    """
-
-    # Only supporting grade 12 students
-    vectorstore_name = "grade-twelve-math"
-    tablespace_name = "gradeTwelveMath"
-    grade = 12
-
-    try:
-        student_id = student_data["Student ID"]
-        logger.info(f"Getting student level for student {student_id} (Grade 12 only)")
-        
-        # Verify the student is in grade 12 (optional validation)
-        current_class = student_data.get("Current Class", "12")
-        if str(current_class) != "12":
-            logger.warning(f"Student {student_id} is in grade {current_class}, but system only supports grade 12. Proceeding with grade 12 configuration.")
-        
-        logger.info(f"Student {student_id} configured for grade 12")
-        return vectorstore_name, tablespace_name, grade
-        
-    except KeyError as e: 
-        logger.error(f"Missing key in student data: {str(e)}. Using grade 12 defaults.")
-        return vectorstore_name, tablespace_name, grade
-    except Exception as e: 
-        logger.error(f"Error getting student grade: {str(e)}. Using grade 12 defaults.")
-        return vectorstore_name, tablespace_name, grade
-
 def get_confidence_level_and_score(student_data, topic):
     """Get student's confidence level (1-5) and score for a specific topic from student data dictionary.
     

@@ -20,6 +20,10 @@ def get_historic_answer(id: int, no_extra_explain: bool):
     """Given a known record's ID, see if the correct version of answer exists and fetch the historic answer from the database."""
     
     tablespace_name = "gradeTwelveMath"
+    if not id:
+        logger.warning("ID is None.")
+        return None
+    
     answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
     try:
         query_result = (
@@ -60,7 +64,9 @@ def insert_answer(no_extra_explain: bool, answer: str):
 
 def update_answer(id: int, no_extra_explain: bool, answer: str):
     tablespace_name = "gradeTwelveMath"
-
+    if not id:
+        logger.warning("ID is None.")
+        return None
     try:
         answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
         response = (
