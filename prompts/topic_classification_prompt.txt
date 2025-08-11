@@ -1,12 +1,14 @@
 
-            Analyze the following question and classify it into one of these specific topics:
+            Analyze the following question and classify it into one of these specific topics.
+            
+            **IMPORTANT**: Look beyond the surface context and identify the underlying mathematical concept. Even if a question appears to be about non-mathematical topics (like resorts, businesses, everyday situations), focus on what mathematical skills or concepts are actually being asked about.
 
             - **Algebra**: Linear equations, inequalities, polynomials, factoring, quadratic equations, exponents, binomial theorem, algebraic identities, sequences and series.
             - **Calculus**: limits, continuity, derivatives, rules of differentiation, applications of derivatives, integration, definite and indefinite integrals, area under curves, differential equations.
-            - **Numbers Quantification and Numerical Applications**: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
+            - **Numbers, Quantification and Numerical Applications**: number systems, divisibility, surds and indices, logarithms, ratios and proportions, averages, unit conversions, time and work, time-speed-distance, and estimation.
             - **Probability**: classical and empirical probability, random experiments, outcomes and sample space, events, conditional probability, independent events, and probability of compound events.
             - **Statistics**: data representation, measures of central tendency (mean, median, mode), measures of dispersion (range, variance, standard deviation), histograms, frequency distributions, and data interpretation.
-            - **Set and Functions**: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
+            - **Sets and Functions**: set theory, subsets, union and intersection, Venn diagrams, types of functions (linear, quadratic, polynomial), domain and range, composition and inverse of functions.
             - **Geometry**: lines and angles, triangles, congruence and similarity, circles, polygons, geometric constructions, coordinate geometry, and properties of geometric figures.
             - **Surface Area and Volumes**: surface area and volume of solids like cube, cuboid, cylinder, cone, sphere, and hemisphere; frustum of a cone; applications in real-life problems.
             - **Trigonometry**: trigonometric ratios and identities, angles and their measure, graphs of trigonometric functions, heights and distances, inverse trigonometric functions, and solving triangles.
@@ -16,24 +18,57 @@
             Question: {question}
 
             -- THINK STEP --
-            First, think step-by-step about which topic best matches the question (do **NOT** output this reasoning).
-            Then respond with ONLY the exact topic name from the list above.
+            First, think step-by-step about which topic best matches the question.
+            - Ignore the surface context (resorts, businesses, stories, etc.) and focus on the mathematical operation or concept being asked
+            - Look for keywords that indicate mathematical processes: calculate, find, determine, optimize, compare, analyze data, etc.
+            - Identify what mathematical skills would be needed to solve the problem
+            
+            -- OUTPUT FORMAT --
+            Return your answer as a Python list with exactly two elements:
+            [classification, reasoning]
+            
+            Where:
+            - classification: The exact topic name from the list above, or "None" if no mathematical concept applies
+            - reasoning: A brief explanation (1-2 sentences) of why you chose this classification
+            
+            Example format: ["Algebra", "This question involves solving linear equations with variables."]
 
             -- FEW-SHOT EXAMPLES --
             Q: Why do the angles in a triangle sum to 180 degrees?
-            A: Geometry
+            A: ["Geometry", "This question asks about fundamental properties of triangles and geometric relationships between angles."]
 
             Q: Can you describe the concept of a derivative?
-            A: Calculus
+            A: ["Calculus", "This question is asking for an explanation of derivatives, which is a core concept in differential calculus."]
 
             Q: What is the difference between mean and median?
-            A: Statistics
+            A: ["Statistics", "This question asks about measures of central tendency, which are fundamental statistical concepts."]
 
             Q: Solve 2x + 5 = 11.
-            A: Algebra
+            A: ["Algebra", "This is a linear equation that requires algebraic manipulation to solve for the variable x."]
 
             Q: If I deposit $1000 at 5% compound interest, how much will I have after 2 years?
-            A: Basics of Financial Mathematics
+            A: ["Basics of Financial Mathematics", "This question involves compound interest calculations, which is a core topic in financial mathematics."]
+
+            Q: A resort has a circular pool with radius 10 meters. What is the area available for swimming?
+            A: ["Geometry", "Despite the resort context, this question requires calculating the area of a circle using geometric formulas."]
+
+            Q: The hotel manager wants to maximize profit. If rooms cost $50 to maintain and sell for $120, how many rooms should be rented to maximize revenue given that demand decreases linearly?
+            A: ["Algebra", "This is an optimization problem that requires setting up and solving algebraic equations with linear relationships."]
+
+            Q: A restaurant collected customer satisfaction scores: 8, 7, 9, 6, 8, 7, 9, 8. What's the average satisfaction?
+            A: ["Statistics", "This question asks for calculating the mean of a dataset, which is a basic statistical measure."]
+
+            Q: In a casino, what's the probability of getting two aces in a row from a standard deck?
+            A: ["Probability", "This question involves calculating the probability of sequential events, which is a core probability concept."]
+
+            Q: A ski resort needs to calculate the volume of artificial snow required to cover a slope that's 100m long, 50m wide, with 30cm depth.
+            A: ["Surface Area and Volumes", "Despite the ski resort context, this question requires calculating the volume of a rectangular prism."]
+
+            Q: What is the capital of France?
+            A: ["None", "This is a geography question with no mathematical content or concepts involved."]
+
+            Q: How do I cook pasta?
+            A: ["None", "This is a cooking question with no mathematical content or concepts involved."]
 
             Now, provide your answer:
         

@@ -31,24 +31,26 @@ def rephrase_question(user_question: str, history: str) -> str:
         logger.error(f"Error rephrasing question: {str(e)}")
         return user_question
 
-def fetch_historic_data(query: str, no_extra_explain: bool, vectorstore_name: str, tablespace_name: str):
-    answer_index = search_index(query, vectorstore_name)
+def fetch_historic_data(query: str, no_extra_explain: bool):
+    answer_index = search_index(query)
     if not answer_index:
         return None, None
-    historic_answer = get_historic_answer(int(answer_index), no_extra_explain, tablespace_name)
+    historic_answer = get_historic_answer(int(answer_index), no_extra_explain)
     if not historic_answer:
         return None, int(answer_index)
     return historic_answer, int(answer_index)
 
-def store_new_data(query: str, answer: str, no_extra_explain: bool, vectorstore_name: str, tablespace_name: str, question_id=None):
+def store_new_data(query: str, answer: str, no_extra_explain: bool, question_id=None):    
     if question_id:
-        update_answer(question_id, no_extra_explain, answer, tablespace_name)
+        update_answer(question_id, no_extra_explain, answer)
         return True
     try:
-        insert_position = insert_answer(no_extra_explain, answer, tablespace_name)
-        add_to_index(query, insert_position, vectorstore_name)
+        insert_position = insert_answer(no_extra_explain, answer)
+        if insert_position is None:
+            logger.error("Failed to insert answer to database, skipping vector storage")
+            return False
+        add_to_index(query, insert_position)
         return True
-        
     except Exception as e:
         logger.error(f"Error inserting answer: {str(e)}")
         return False
