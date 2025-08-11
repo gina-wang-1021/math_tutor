@@ -8,3 +8,4 @@ official_db.csv
 client_secrets.json
 google_creds.json
 logs/
+.DS_Store
