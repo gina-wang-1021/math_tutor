@@ -8,6 +8,7 @@ from utilities.qa_utils import rephrase_question, fetch_historic_data, store_new
 from utilities.retrieval_utils_pinecone import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
 import time
 import ast
+import concurrent.futures
 
 class StreamingCallbackHandler(BaseCallbackHandler):
     """Callback handler for streaming LLM responses."""
@@ -52,14 +53,16 @@ def pipeline(student_data, user_question, history, stream_handler=None):
         logger.info(f"Processing question for student {student_id}")
         logger.debug(f"Original question: {user_question}")
         logger.debug(f"History length: {len(history.split()) if history else 0} words")
-
         # Rephrase the question with context
         try:
+            t0 = time.perf_counter()
             logger.info("Rephrasing question...")
             standalone_question = rephrase_question(user_question, history)
             logger.info(f"Rephrased Question → {standalone_question}")
+            logger.info(f"Rephrasing question took {time.perf_counter() - t0:.2f} sec")
             
             # Detect topics from the rephrased question
+            t1 = time.perf_counter()
             logger.info("Detecting topic...")
             detected_topic = get_topic(standalone_question)
             logger.info(f"Get topic result: {detected_topic}")
@@ -74,6 +77,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                     return ""
                 else:
                     return response_message
+            logger.info(f"Detecting topic took {time.perf_counter() - t1:.2f} sec")
 
             # Initialize LLMs - one for intermediate steps (no streaming) and one for final answer (with streaming)
             llm_intermediate = ChatOpenAI(
@@ -99,6 +103,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             logger.info(f"confidence and score check result: {no_extra_explain}")
             
             # Detect whether a similar question had been asked before
+            t4 = time.perf_counter()
             historic_answer, historic_answer_id = fetch_historic_data(standalone_question, no_extra_explain)
             if historic_answer:
                 if stream_handler:
@@ -106,52 +111,60 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                     for _, char in enumerate(historic_answer):
                         stream_handler(char)
                         time.sleep(0.02)
+                    logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
                     return ""
                 else:
+                    logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
                     return historic_answer
-            
-            try:
-                # Retrieve chunks for the current year
-                logger.info("Retrieving chunks for current year...")
-                current_year_chunks = get_chunks_for_current_year(detected_topic, standalone_question)
+            logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
 
-                if current_year_chunks:
-                    logger.debug(f"Found {len(current_year_chunks)} relevant chunks for {detected_topic}")
-                else:
-                    logger.warning(f"No relevant chunks found for {detected_topic} at level twelfth")                           
-            except Exception as e:
-                logger.error(f"Error getting chunks for {detected_topic}: {str(e)}")
-                current_year_chunks = []
+            # Retrieve chunks in parallel
+            t5 = time.perf_counter()
+            logger.info("Retrieving chunks in parallel...")
             
-            # Get chunks from prior years
-            try:
-                lower_years_chunk = get_chunks_from_prior_years(detected_topic, standalone_question)
-                if lower_years_chunk:
-                    logger.debug(f"Found {len(lower_years_chunk)} relevant chunks for {detected_topic}")
-                else:
-                    logger.warning(f"No relevant chunks found for {detected_topic} below level twelfth")      
-            except Exception as e:
-                logger.error(f"Error getting chunks from prior years for {detected_topic}: {str(e)}")
-                lower_years_chunk = []
+            current_year_chunks = []
+            lower_years_chunk = []
+            
+            with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+                # Submit both chunk retrieval tasks
+                current_year_future = executor.submit(get_chunks_for_current_year, detected_topic, standalone_question)
+                prior_years_future = executor.submit(get_chunks_from_prior_years, detected_topic, standalone_question)
+                
+                # Topic-based answer prompt
+                topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
+                topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
+                
+                # Get results from both tasks
+                try:
+                    current_year_chunks = current_year_future.result()
+                    if current_year_chunks:
+                        logger.debug(f"Found {len(current_year_chunks)} relevant chunks for {detected_topic}")
+                    else:
+                        logger.warning(f"No relevant chunks found for {detected_topic} at level twelfth")
+                except Exception as e:
+                    logger.error(f"Error getting chunks for {detected_topic}: {str(e)}")
+                    current_year_chunks = []
+                
+                try:
+                    lower_years_chunk = prior_years_future.result()
+                    if lower_years_chunk:
+                        logger.debug(f"Found {len(lower_years_chunk)} relevant chunks for {detected_topic}")
+                    else:
+                        logger.warning(f"No relevant chunks found for {detected_topic} below level twelfth")
+                except Exception as e:
+                    logger.error(f"Error getting chunks from prior years for {detected_topic}: {str(e)}")
+                    lower_years_chunk = []
 
             # Process chunks (now they are text strings, not Document objects)
             processed_current_year_chunks = "\n\n".join(current_year_chunks) if current_year_chunks else ""
             processed_lower_years_chunks = "\n\n".join(lower_years_chunk) if lower_years_chunk else ""
-            
-            # Combine both chunks into one
-            combined_chunks = processed_current_year_chunks
-            if processed_current_year_chunks and processed_lower_years_chunks:
-                combined_chunks += "\n\n"
-            combined_chunks += processed_lower_years_chunks
-
-            # Topic-based answer prompt
-            topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
-            topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
+            logger.info(f"Retrieve chunks took {time.perf_counter() - t5:.2f} sec")
 
             # Check if we should use a single pass based on the previously calculated confidence check
             if no_extra_explain:
                 try:
                     # Use streaming LLM to generate direct answer
+                    t6 = time.perf_counter()
                     answer_chain = topic_prompt | llm_final
                     logger.info("Generating single pass answer...")
 
@@ -161,14 +174,16 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                         "student_question": standalone_question,
                     }).content.strip()
                     logger.info(f"Final Answer for topic-based question → {final_answer}")
+                    logger.info(f"Generating single pass answer took {time.perf_counter() - t6:.2f} sec")
 
+                    t11 = time.perf_counter()
                     store_success = store_new_data(standalone_question, final_answer, no_extra_explain, historic_answer_id)
                     if store_success:
                         logger.info(f"Successfully stored Q&A pair (single pass)")
                     else:
-                        logger.warning(f"Failed to store Q&A pair (single pass)")     
+                        logger.warning(f"Failed to store Q&A pair (single pass)")
+                    logger.info(f"Storing Q&A pair (single pass) took {time.perf_counter() - t11:.2f} sec")
                     return final_answer
-
                 except Exception as e:
                     logger.error(f"Error generating answer: {str(e)}")
                     return "I'm sorry, I encountered an error while generating an answer. Please try again."
@@ -176,6 +191,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             # first pass
             try:
                 logger.info("Generating first pass answer...")
+                t7 = time.perf_counter()
                 first_pass_chain = topic_prompt | llm_intermediate
                 first_response = first_pass_chain.invoke({
                     "retrieved_chunks": processed_current_year_chunks,
@@ -183,12 +199,14 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                     "student_question": standalone_question
                 }).content.strip()
                 logger.info(f"First Pass Answer for topic-based question → {first_response}")
+                logger.info(f"Generating first pass answer took {time.perf_counter() - t7:.2f} sec")
             except Exception as e:
                 logger.error(f"Error generating first pass answer: {str(e)}")
                 return "I'm sorry, I encountered an error while generating an answer. Please try again."
 
             # Second pass
             logger.info("Generating second pass answer...")
+            t8 = time.perf_counter()
             
             logger.info("Generating detail explanation for topic-based question...")
             explain_prompt_text = load_prompt("explain_prompt.txt")
@@ -201,8 +219,10 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 "student_question": standalone_question
             }).content.strip()
             logger.info(f"Second Pass Answer for topic-based question → {second_response}")
+            logger.info(f"Generating second pass answer took {time.perf_counter() - t8:.2f} sec")
 
             logger.info("Comparing answers...")
+            t9 = time.perf_counter()
             compare_prompt_text = load_prompt("compare_prompt.txt")
             compare_prompt = PromptTemplate.from_template(compare_prompt_text)
             compare_chain = compare_prompt | llm_final
@@ -212,16 +232,17 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 "second_pass_answer": second_response,
                 "student_question": standalone_question
             }).content.strip()
-            
             logger.info(f"Compared answer: {compare_answer}")
+            logger.info(f"Comparing answers took {time.perf_counter() - t9:.2f} sec")
             
             # Save generated answer and the student's question to both databases
+            t10 = time.perf_counter()
             store_success = store_new_data(standalone_question, compare_answer, no_extra_explain, historic_answer_id)
             if store_success:
                 logger.info(f"Successfully stored Q&A pair (two-pass)")
             else:
                 logger.warning(f"Failed to store Q&A pair (two-pass)")
-            
+            logger.info(f"Storing Q&A pair took {time.perf_counter() - t10:.2f} sec")
             return compare_answer
 
         except Exception as e:
