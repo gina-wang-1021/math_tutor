@@ -7,7 +7,6 @@ from utilities.prompt_utils import load_prompt
 from utilities.qa_utils import rephrase_question, fetch_historic_data, store_new_data
 from utilities.retrieval_utils_pinecone import get_chunks_for_current_year, get_chunks_from_prior_years, get_topic
 import time
-import ast
 import concurrent.futures
 
 class StreamingCallbackHandler(BaseCallbackHandler):
@@ -30,8 +29,6 @@ class StreamingCallbackHandler(BaseCallbackHandler):
 
 # Initialize logger
 logger = setup_logger('engine')
-
-# Test all log levels (can be kept here or removed if not essential for engine.py's direct operation)
 logger.debug('Test DEBUG message')
 logger.info('Test INFO message')
 logger.warning('Test WARNING message')
@@ -53,6 +50,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
         logger.info(f"Processing question for student {student_id}")
         logger.debug(f"Original question: {user_question}")
         logger.debug(f"History length: {len(history.split()) if history else 0} words")
+        
         # Rephrase the question with context
         try:
             t0 = time.perf_counter()
@@ -102,39 +100,53 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             no_extra_explain = check_confidence_and_score(topic_level, topic_scores)
             logger.info(f"confidence and score check result: {no_extra_explain}")
             
-            # Detect whether a similar question had been asked before
+            # Run historical detection and knowledge fetching in parallel
             t4 = time.perf_counter()
-            historic_answer, historic_answer_id = fetch_historic_data(standalone_question, no_extra_explain)
-            if historic_answer:
-                if stream_handler:
-                    logger.info(f"Streaming historic answer.")
-                    for _, char in enumerate(historic_answer):
-                        stream_handler(char)
-                        time.sleep(0.02)
-                    logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
-                    return ""
-                else:
-                    logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
-                    return historic_answer
-            logger.info(f"Detecting whether a similar question had been asked before took {time.perf_counter() - t4:.2f} sec")
-
-            # Retrieve chunks in parallel
-            t5 = time.perf_counter()
-            logger.info("Retrieving chunks in parallel...")
+            logger.info("Starting parallel historical detection and knowledge fetching...")
             
             current_year_chunks = []
             lower_years_chunk = []
+            historic_answer = None
+            historic_answer_id = None
             
-            with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-                # Submit both chunk retrieval tasks
+            with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                # Submit all three tasks in parallel
+                historic_future = executor.submit(fetch_historic_data, standalone_question, no_extra_explain)
                 current_year_future = executor.submit(get_chunks_for_current_year, detected_topic, standalone_question)
                 prior_years_future = executor.submit(get_chunks_from_prior_years, detected_topic, standalone_question)
                 
-                # Topic-based answer prompt
+                # Load prompt while other tasks are running
                 topic_based_answer_prompt_text = load_prompt("topic_based_answer_prompt.txt")
                 topic_prompt = PromptTemplate.from_template(topic_based_answer_prompt_text)
                 
-                # Get results from both tasks
+                # Check historical result first (usually fastest)
+                try:
+                    historic_answer, historic_answer_id = historic_future.result(timeout=10)  # Give it up to 10 seconds
+                    if historic_answer:
+                        logger.info("Historical answer found, cancelling knowledge retrieval...")
+                        # Cancel the chunk retrieval tasks
+                        current_year_future.cancel()
+                        prior_years_future.cancel()
+                        
+                        logger.info(f"Historical detection and early return took {time.perf_counter() - t4:.2f} sec")
+                        
+                        # Stream or return the historical answer
+                        if stream_handler:
+                            logger.info(f"Streaming historic answer.")
+                            for _, char in enumerate(historic_answer):
+                                stream_handler(char)
+                                time.sleep(0.02)
+                            return ""
+                        else:
+                            return historic_answer
+                except concurrent.futures.TimeoutError:
+                    logger.warning("Historical detection timed out, continuing with knowledge retrieval")
+                except Exception as e:
+                    logger.error(f"Error in historical detection: {str(e)}")
+                
+                # If no historical answer found, get the knowledge chunks
+                logger.info("No historical answer found, retrieving knowledge chunks...")
+                
                 try:
                     current_year_chunks = current_year_future.result()
                     if current_year_chunks:
@@ -158,7 +170,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             # Process chunks (now they are text strings, not Document objects)
             processed_current_year_chunks = "\n\n".join(current_year_chunks) if current_year_chunks else ""
             processed_lower_years_chunks = "\n\n".join(lower_years_chunk) if lower_years_chunk else ""
-            logger.info(f"Retrieve chunks took {time.perf_counter() - t5:.2f} sec")
+            logger.info(f"Parallel historical detection and knowledge retrieval took {time.perf_counter() - t4:.2f} sec")
 
             # Check if we should use a single pass based on the previously calculated confidence check
             if no_extra_explain:

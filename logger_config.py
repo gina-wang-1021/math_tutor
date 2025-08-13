@@ -21,10 +21,9 @@ def setup_logger(name, log_dir=os.path.join(os.path.dirname(__file__), 'logs')):
     
     # Check if this specific logger already has the right number of handlers
     # We expect exactly 2 handlers: file and console
-    if len(logger.handlers) >= 2:
+    if len(logger.handlers) >= 2 and name in configured_loggers:
         # Logger is already configured, return it
-        configured_loggers[name] = logger
-        return logger
+        return configured_loggers[name]
     
     # Clear any existing handlers to prevent duplication
     logger.handlers.clear()
