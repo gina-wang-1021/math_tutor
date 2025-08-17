@@ -29,13 +29,18 @@ if "openai_model" not in st.session_state:
 if not st.session_state.login_success:
     st.title("Welcome to Your Study Buddy!")
     student_id = st.text_input("Please enter your student ID")
+    password = st.text_input("Please enter your password", type="password")
 
     if st.session_state.login_failed:
-        st.error("Invalid student ID")
+        st.error("Invalid student ID or password")
     
     if st.button("Start Learning"):
         student_id_str = str(student_id).strip()
-        if student_id_str in valid_student_ids:
+        password_str = str(password).strip()
+        
+        # Check if student ID exists and password matches
+        if (student_id_str in valid_student_ids and 
+            student_lookup[student_id_str].get("Password") == password_str):
             # Only log if this is the initial login, not during reruns
             if not st.session_state.login_success:
                 logger.info(f"Successful login for student {student_id_str}")
