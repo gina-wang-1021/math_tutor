@@ -1,6 +1,7 @@
 import streamlit as st
 from openai import OpenAI
-from engine import pipeline
+from math_engine import pipeline as math_pipeline
+from econ_engine import pipeline as econ_pipeline
 from logger_config import setup_logger
 
 # Initialize logger
@@ -9,7 +10,7 @@ logger = setup_logger('app')
 student_db = st.secrets["rows"]
 
 # Create a lookup dictionary for faster authentication
-student_lookup = {str(student["Student ID"]): student for student in student_db}
+student_lookup = {str(student["Username"]).lower(): student for student in student_db}
 valid_student_ids = set(student_lookup.keys())
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -28,11 +29,11 @@ if "openai_model" not in st.session_state:
 # Landing Page
 if not st.session_state.login_success:
     st.title("Welcome to Your Study Buddy!")
-    student_id = st.text_input("Please enter your student ID")
+    student_id = st.text_input("Please enter your username")
     password = st.text_input("Please enter your password", type="password")
 
     if st.session_state.login_failed:
-        st.error("Invalid student ID or password")
+        st.error("Invalid username or password")
     
     if st.button("Start Learning"):
         student_id_str = str(student_id).strip()
@@ -50,7 +51,7 @@ if not st.session_state.login_success:
             st.success("Login successful!")
             st.rerun()
         else:
-            logger.warning(f"Failed login attempt with ID {student_id_str}")
+            logger.warning(f"Failed login attempt with username {student_id_str}")
             st.session_state.login_failed = True
             st.rerun()
 
@@ -59,19 +60,29 @@ else:
     # Get current student data
     current_student = st.session_state.student_data
     student_name = f"{current_student['First name']} {current_student['Last name']}"
-    student_class = current_student['Current Class']
-    student_stream = current_student['Stream']
+    learning_topic = current_student.get('Learning Topic', 'math')  # Default to math if not specified
     
-    # Display personalized greeting
-    st.title(f"Hi {student_name}, let's learn math today!")
+    # Display personalized greeting based on learning topic
+    if learning_topic == 'math':
+        st.title(f"Hi {student_name}, let's learn math today!")
+        subject_name = "math"
+        pipeline_func = math_pipeline
+    elif learning_topic == 'econ':
+        st.title(f"Hi {student_name}, let's learn economics today!")
+        subject_name = "economics"
+        pipeline_func = econ_pipeline
+    else:
+        st.title(f"Hi {student_name}, let's start learning!")
+        subject_name = "your subject"
+        pipeline_func = math_pipeline
     
     # Display student info in sidebar
     with st.sidebar:
-        st.write(f"**Student ID:** {st.session_state.student_data['Student ID']}")
+        st.write(f"**Username:** {st.session_state.student_data['Username']}")
         st.write(f"**Name:** {student_name}")
-        st.write(f"**Class:** {student_class}")
+        st.write(f"**Learning Topic:** {learning_topic}")
         if st.button("Logout"):
-            logger.info(f"Logging out for student {st.session_state.student_data['Student ID']}")
+            logger.info(f"Logging out for student {st.session_state.student_data['Username']}")
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
             st.rerun()
@@ -80,8 +91,8 @@ else:
         with st.chat_message(message["role"]):
             st.markdown(message["content"], unsafe_allow_html=True)
 
-    if question := st.chat_input(f"Ask a question on math"):
-        logger.info(f"New question from student {st.session_state.student_data['Student ID']}")
+    if question := st.chat_input(f"Ask a question on {subject_name}"):
+        logger.info(f"New question from student {st.session_state.student_data['Username']}")
         logger.debug(f"Question: {question}")
         
         # Display user message
@@ -120,8 +131,8 @@ else:
                     full_response.append(token)
                     response_placeholder.markdown(''.join(full_response), unsafe_allow_html=True)
                 
-                # Call pipeline with student_data and streaming handler
-                response = pipeline(
+                # Call appropriate pipeline based on learning topic
+                response = pipeline_func(
                     student_data=st.session_state.student_data,
                     user_question=question,
                     history=history_str,

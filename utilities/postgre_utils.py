@@ -56,7 +56,7 @@ def insert_answer(no_extra_explain: bool, answer: str):
             )
             .execute()
         ).data[0]
-        logger.info(f"Inserted answer for id {response['id']}: {answer}")
+        logger.info(f"Inserted answer for id {response['id']}")
         return response['id']
     except Exception as e:
         logger.error(f"Error inserting answer: {str(e)}")

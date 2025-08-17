@@ -35,7 +35,8 @@ def _preload_all_prompts():
         "explain_prompt.txt",
         "rephrase_question_prompt.txt",
         "topic_based_answer_prompt.txt",
-        "topic_classification_prompt.txt"
+        "topic_classification_prompt.txt",
+        "simplified_prompt.txt"
     ]
     
     logger.info("Preloading prompts...")

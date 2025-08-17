@@ -35,8 +35,8 @@ def get_confidence_level_and_score(student_data, topic):
         tuple: (int, str): The student's confidence level as a integer (1-5) and score as a string ('A', 'B', etc.), defaults to (1, '') on error.
     """
     try:
-        student_id = student_data['Student ID']
-        logger.info(f"Getting confidence level for student {student_id} in topic {topic}")
+        username = student_data['Username']
+        logger.info(f"Getting confidence level for student {username} in topic {topic}")
         
         # Build a mapping of lowercase column names to their original forms for case-insensitive lookup
         topic_columns_map = {key.lower(): key for key in student_data.keys()}
@@ -58,7 +58,7 @@ def get_confidence_level_and_score(student_data, topic):
         confidence_level_num = CONFIDENCE_LEVELS_MAPPING.get(confidence_level_raw, 1)
         score = SCORES_MAPPING.get(score_raw, "")
         
-        logger.info(f"Student {student_id} is at {confidence_level_num} level and {score} score for {topic}")
+        logger.info(f"Student {username} is at {confidence_level_num} level and {score} score for {topic}")
         return int(confidence_level_num), score
         
     except KeyError as e:

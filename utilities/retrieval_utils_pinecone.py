@@ -169,7 +169,7 @@ def get_chunks_from_prior_years(topic: str, query: str):
         top_chunks = all_chunks[:5]
         top_chunks = [chunk['page_content'] for chunk in top_chunks]
         
-        logger.info(f"Retrieved chunks for topic '{topic}'")
+        logger.info(f"Retrieved prior year chunks for topic '{topic}'")
         return top_chunks
 
     except Exception as e:
