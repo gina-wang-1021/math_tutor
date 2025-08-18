@@ -59,15 +59,15 @@ if not st.session_state.login_success:
 else:
     # Get current student data
     current_student = st.session_state.student_data
-    student_name = f"{current_student['First name']} {current_student['Last name']}"
-    learning_topic = current_student.get('Learning Topic', 'math')  # Default to math if not specified
+    student_name = f"{current_student['First name'].lower().capitalize()} {current_student['Last name'].lower().capitalize()}"
+    learning_topic = current_student.get('Learning Topic', 'Math')  # Default to math if not specified
     
     # Display personalized greeting based on learning topic
-    if learning_topic == 'math':
+    if learning_topic == 'Math' or learning_topic == "Both":
         st.title(f"Hi {student_name}, let's learn math today!")
         subject_name = "Math"
         pipeline_func = math_pipeline
-    elif learning_topic == 'econ':
+    elif learning_topic == 'Econ':
         st.title(f"Hi {student_name}, let's learn economics today!")
         subject_name = "Economics"
         pipeline_func = econ_pipeline
