@@ -80,7 +80,7 @@ else:
     with st.sidebar:
         st.write(f"**Username:** {st.session_state.student_data['Username']}")
         st.write(f"**Name:** {student_name}")
-        st.write(f"**Learning Topic:** {learning_topic}")
+        st.write(f"**Learning Topic:** Math")
         if st.button("Logout"):
             logger.info(f"Logging out for student {st.session_state.student_data['Username']}")
             for key in list(st.session_state.keys()):
