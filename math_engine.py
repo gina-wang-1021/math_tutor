@@ -94,7 +94,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             
             # Get the confidence level and scores for the topic
             logger.info("Getting student's confidence level and score for topic...")
-            topic_level, topic_scores = get_confidence_level_and_score(student_data, detected_topic)
+            topic_level, topic_scores = get_confidence_level_and_score("Math Score", student_data, detected_topic)
             logger.debug(f"Student confidence level and score for topic {detected_topic}: {topic_level}, {topic_scores}")
             
             # Check confidence level and topic scores

@@ -5,7 +5,6 @@ docs.txt
 __pycache__/
 historic_qa_data/
 student_data.csv
-student_data.toml
 client_secrets.json
 google_creds.json
 logs/
