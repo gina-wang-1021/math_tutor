@@ -47,7 +47,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
     """
     try:
         student_id = student_data["Username"]
-        if student_data["Customization"] == "yes":
+        if student_data["Customization"] == "1":
             customization = True
         else:
             customization = False

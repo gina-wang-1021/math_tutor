@@ -4,7 +4,8 @@ docs.txt
 .streamlit/
 __pycache__/
 historic_qa_data/
-official_db.csv
+student_data.csv
+student_data.toml
 client_secrets.json
 google_creds.json
 logs/

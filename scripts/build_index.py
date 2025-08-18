@@ -1,6 +1,5 @@
 import os
 import shutil
-import chromadb
 import logging
 import datetime
 import time

@@ -4,10 +4,6 @@ from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
-# Determine the project root (assuming student_utils.py is in utilities/ subdir)
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STUDENT_DATA_CSV_PATH = os.path.join(PROJECT_ROOT, "official_db.csv")
-
 CONFIDENCE_LEVELS_MAPPING = {
     "1= = Not confident": 1,
     "2 = Slightly confident": 2,
@@ -25,7 +21,7 @@ SCORES_MAPPING = {
     "D (32-39)": "D",
 }
 
-def get_confidence_level_and_score(student_data, topic):
+def get_confidence_level_and_score(score_field, student_data, topic):
     """Get student's confidence level (1-5) and score for a specific topic from student data dictionary.
     
     Args:
@@ -52,7 +48,7 @@ def get_confidence_level_and_score(student_data, topic):
         # Get the actual key name (with correct case)
         topic_key_actual = topic_columns_map[topic_lower]
         confidence_level_raw = student_data[topic_key_actual]
-        score_raw = student_data.get("Score", "")
+        score_raw = student_data.get(score_field, "")
 
         # Parse confidence level and score
         confidence_level_num = CONFIDENCE_LEVELS_MAPPING.get(confidence_level_raw, 1)
