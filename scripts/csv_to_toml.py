@@ -3,7 +3,7 @@ import sys
 import toml
 
 def csv_to_dicts(csv_path):
-    with open(csv_path, newline='', encoding='utf-8') as f:
+    with open(csv_path, newline='', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         return list(reader)
 
@@ -17,4 +17,4 @@ def main(csv_path, toml_path):
     print(f"Converted {csv_path} → {toml_path}")
 
 if __name__ == "__main__":
-    main("/Users/wangyichi/Documents/Projects/math_tutor/student_data.csv", "/Users/wangyichi/Documents/Projects/math_tutor/student_data.toml")
+    main("/Users/wangyichi/Documents/Projects/math_tutor/student_data_tidy.csv", "/Users/wangyichi/Documents/Projects/math_tutor/student_data.toml")

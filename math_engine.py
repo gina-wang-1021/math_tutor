@@ -45,6 +45,9 @@ def pipeline(student_data, user_question, history, stream_handler=None):
         stream_handler (callable, optional): Function to handle streaming tokens
             The function should accept a string token as its argument.
     """
+
+    STREAM = "math"
+
     try:
         student_id = student_data["Username"]
         if student_data["Customization"] == "1":
@@ -64,7 +67,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             
             # Detect topics from the rephrased question
             logger.info("Detecting topic...")
-            detected_topic = get_topic(standalone_question)
+            detected_topic = get_topic(STREAM, standalone_question)
             logger.info(f"Get topic result: {detected_topic}")
             if detected_topic == "none":
                 response_message = f"This question is not covered in your textbook yet. I can only answer math questions related to your textbook content - happy to help with those! 😊"
@@ -106,7 +109,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
             
             with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
                 # Submit all tasks in parallel
-                current_year_future = executor.submit(get_chunks_for_current_year, detected_topic, standalone_question)
+                current_year_future = executor.submit(get_chunks_for_current_year, STREAM, detected_topic, standalone_question)
                 prior_years_future = executor.submit(get_chunks_from_prior_years, detected_topic, standalone_question)
                 
                 # Load prompt while other tasks are running
@@ -151,7 +154,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                         "student_question": standalone_question,
                     }).content.strip()
                     logger.info(f"Non-customized Answer → {non_customized_response}")
-                    response_id = insert_answer(no_extra_explain, non_customized_response)
+                    response_id = insert_answer(STREAM, no_extra_explain, non_customized_response)
                     logger.info(f"Stored answer for id {response_id}")
                     return non_customized_response
                 except Exception as e:
@@ -186,7 +189,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 }).content.strip()
                 logger.info(f"Simplified Answer → {simplified_response}")
                 try:
-                    response_id = insert_answer(no_extra_explain, simplified_response)
+                    response_id = insert_answer(STREAM, no_extra_explain, simplified_response)
                     logger.info(f"Stored answer for id {response_id}")
                 except Exception as e:
                     logger.error(f"Error inserting answer: {str(e)}")
@@ -221,7 +224,7 @@ def pipeline(student_data, user_question, history, stream_handler=None):
                 }).content.strip()
                 logger.info(f"Compared answer: {compare_answer}")
                 try:
-                    response_id = insert_answer(no_extra_explain, compare_answer)
+                    response_id = insert_answer(STREAM, no_extra_explain, compare_answer)
                     logger.info(f"Stored answer for id {response_id}")
                 except Exception as e:
                     logger.error(f"Error inserting answer: {str(e)}")

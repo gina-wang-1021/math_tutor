@@ -44,9 +44,16 @@ def get_historic_answer(id: int, no_extra_explain: bool):
         logger.error(f"Error getting historic answer: {str(e)}")
         return None
 
-def insert_answer(no_extra_explain: bool, answer: str):
+def insert_answer(stream: str, no_extra_explain: bool, answer: str):
 
-    tablespace_name = "gradeTwelveMath"
+    if stream == "math":
+        tablespace_name = "gradeTwelveMath"
+    elif stream == "econ":
+        tablespace_name = "gradeTwelveEcon"
+    else:
+        logger.error(f"Invalid stream: {stream}")
+        return None
+
     try:
         answer_field = "ans_high_con" if no_extra_explain else "ans_low_con"
         response = (

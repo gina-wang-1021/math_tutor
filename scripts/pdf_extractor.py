@@ -191,8 +191,6 @@ def parse_pdf_to_text(pdf_path, output_path):
                 for _, _, text in right_blocks:
                     output.write(text)
                     output.write("\n\n")
-                
-                output.write("===================================\n\n")
         return True
     except Exception as e:
         print(f"Error parsing PDF file {pdf_path}: {e}")
@@ -211,10 +209,49 @@ def parse_pdfs_in_folder(input_folder, output_folder):
                     print(f"Failed to parse {pdf_path}")
 
 
-# For the second Econ folder, the parsing order needs to be flipped
-# So it parses the left hand side first before parsing the right hand side
-# Check how to do this
+def normal_parsing(input_file, output_file):
+    """Parse a PDF file into a text file using standard text extraction.
+    
+    Args:
+        input_file (str): Path to the input PDF file
+        output_file (str): Path to the output text file
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        doc = pymupdf.open(input_file)
+        with open(output_file, "w", encoding="utf-8") as output:
+            for page in doc:
+                # Simply extract all text from the page
+                text = page.get_text()
+                
+                # Split into lines and skip first 2 and last 1 lines
+                lines = text.splitlines()
+                if len(lines) > 3:  # Only skip if we have more than 3 lines
+                    filtered_lines = lines[2:-1]  # Skip first 2 and last 1
+                    
+                    # Filter out lines with only one character (excluding spaces)
+                    final_lines = []
+                    for line in filtered_lines:
+                        stripped_line = line.strip()
+                        if len(stripped_line) > 1:  # Keep lines with more than 1 character
+                            final_lines.append(line)
+                    
+                    filtered_text = "\n".join(final_lines)
+                    output.write(filtered_text)
+                else:
+                    # If 3 or fewer lines, write as is (or skip entirely)
+                    output.write(text)
+        
+        doc.close()
+        return True
+        
+    except Exception as e:
+        print(f"Error parsing PDF file {input_file}: {e}")
+        return False
+    
 
 if __name__ == "__main__":
-    # parse_pdfs_in_folder("/Users/wangyichi/LocalData/chromadb/all_docs/XI Econ I - keec1dd", "/Users/wangyichi/LocalData/chromadb/processed_docs/XI Econ I - keec1dd")
-    parse_pdf_to_text("/Users/wangyichi/LocalData/chromadb/all_docs/XI Econ II - kest1dd/kest102.pdf", "/Users/wangyichi/LocalData/chromadb/all_docs/XI Econ II - kest1dd/kest102.txt")
+    # parse_pdfs_in_folder("/Users/wangyichi/LocalData/chromadb/all_docs/XI Econ II - kest1dd", "/Users/wangyichi/LocalData/chromadb/processed_docs/XI Econ II - kest1dd")
+    normal_parsing("/Users/wangyichi/LocalData/chromadb/all_docs/XII Econ II - leec2dd/leec205.pdf", "/Users/wangyichi/LocalData/chromadb/all_docs/XII Econ II - leec2dd/leec205.txt")

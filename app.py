@@ -9,8 +9,13 @@ logger = setup_logger('app')
 
 student_db = st.secrets["rows"]
 
-# Create a lookup dictionary for faster authentication
-student_lookup = {str(student["Username"]).lower(): student for student in student_db}
+# Create a lookup dictionary for faster authentication (supports multiple entries per username)
+student_lookup = {}
+for student in student_db:
+    username_key = str(student["Username"]).lower()
+    if username_key not in student_lookup:
+        student_lookup[username_key] = []
+    student_lookup[username_key].append(student)
 valid_student_ids = set(student_lookup.keys())
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -39,15 +44,23 @@ if not st.session_state.login_success:
         student_id_str = str(student_id).strip()
         password_str = str(password).strip()
         
-        # Check if student ID exists and password matches
-        if (student_id_str in valid_student_ids and 
-            student_lookup[student_id_str].get("Password") == password_str):
+        # Check if student ID exists and find matching password
+        matching_student = None
+        if student_id_str in valid_student_ids:
+            # Check up to 2 entries for this username
+            student_entries = student_lookup[student_id_str][:2]  # Limit to 2 entries
+            for student_entry in student_entries:
+                if student_entry.get("Password") == password_str:
+                    matching_student = student_entry
+                    break
+        
+        if matching_student:
             # Only log if this is the initial login, not during reruns
             if not st.session_state.login_success:
                 logger.info(f"Successful login for student {student_id_str}")
             st.session_state.login_success = True
             st.session_state.login_failed = False
-            st.session_state.student_data = student_lookup[student_id_str]
+            st.session_state.student_data = matching_student
             st.success("Login successful!")
             st.rerun()
         else:
@@ -61,13 +74,12 @@ else:
     current_student = st.session_state.student_data
     student_name = f"{current_student['First name'].lower().capitalize()} {current_student['Last name'].lower().capitalize()}"
     learning_topic = current_student.get('Learning Topic', 'Math')  # Default to math if not specified
-    
     # Display personalized greeting based on learning topic
-    if learning_topic == 'Math' or learning_topic == "Both":
+    if learning_topic.lower() == 'math':
         st.title(f"Hi {student_name}, let's learn math today!")
         subject_name = "Math"
         pipeline_func = math_pipeline
-    elif learning_topic == 'Econ':
+    elif learning_topic.lower() == 'econ':
         st.title(f"Hi {student_name}, let's learn economics today!")
         subject_name = "Economics"
         pipeline_func = econ_pipeline
@@ -80,7 +92,7 @@ else:
     with st.sidebar:
         st.write(f"**Username:** {st.session_state.student_data['Username']}")
         st.write(f"**Name:** {student_name}")
-        st.write(f"**Learning Topic:** Math")
+        st.write(f"**Learning Topic:** {learning_topic}")
         if st.button("Logout"):
             logger.info(f"Logging out for student {st.session_state.student_data['Username']}")
             for key in list(st.session_state.keys()):

@@ -32,10 +32,14 @@ def _preload_all_prompts():
     prompt_files = [
         "chunk_coverage_prompt.txt",
         "compare_prompt.txt", 
+        "econ_answer_prompt.txt",
+        "econ_classification_prompt.txt",
+        "econ_explain_prompt.txt",
+        "econ_simplified_prompt.txt",
         "explain_prompt.txt",
+        "math_classification_prompt.txt",
         "rephrase_question_prompt.txt",
         "topic_based_answer_prompt.txt",
-        "topic_classification_prompt.txt",
         "simplified_prompt.txt"
     ]
     

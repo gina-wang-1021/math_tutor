@@ -30,6 +30,16 @@ def get_confidence_level_and_score(score_field, student_data, topic):
     Returns:
         tuple: (int, str): The student's confidence level as a integer (1-5) and score as a string ('A', 'B', etc.), defaults to (1, '') on error.
     """
+    
+    econ_topic_mapping = {
+        "intro": "introduction to economics",
+        "consumer": "consumer behavior and demand",
+        "producer": "producer behavior and supply",
+        "equilibrium": "market equilibrium",
+        "data": "collection, organisation and presentation of data",
+        "stats": "statistical tools and interpretation"
+    }
+    
     try:
         username = student_data['Username']
         logger.info(f"Getting confidence level for student {username} in topic {topic}")
@@ -37,8 +47,10 @@ def get_confidence_level_and_score(score_field, student_data, topic):
         # Build a mapping of lowercase column names to their original forms for case-insensitive lookup
         topic_columns_map = {key.lower(): key for key in student_data.keys()}
         topic_lower = topic.lower()
+        if topic_lower in econ_topic_mapping:
+            topic = econ_topic_mapping[topic_lower]
 
-        if topic_lower not in topic_columns_map:
+        if topic not in topic_columns_map:
             logger.warning(
                 f"Topic '{topic}' not found as a key (case-insensitive) in student data. "
                 f"Available keys: {list(student_data.keys())}. Returning default level 1."
@@ -46,7 +58,7 @@ def get_confidence_level_and_score(score_field, student_data, topic):
             return 1, ''
 
         # Get the actual key name (with correct case)
-        topic_key_actual = topic_columns_map[topic_lower]
+        topic_key_actual = topic_columns_map[topic]
         confidence_level_raw = student_data[topic_key_actual]
         score_raw = student_data.get(score_field, "")
 

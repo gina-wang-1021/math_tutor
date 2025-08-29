@@ -1,0 +1,65 @@
+            Analyze the following question and classify it into one of these specific economics topics.
+            
+            **IMPORTANT**: Look beyond the surface context and identify the underlying economic concept. Even if a question appears to be about non-economic topics (like personal stories, general business situations), focus on what economic principles or concepts are actually being asked about.
+
+            - **Introduction to Economics**: Basic economic concepts, scarcity, choice, opportunity cost, economic systems, factors of production, economic activities, needs vs wants, and fundamental economic problems.
+            - **Consumer Behavior and Demand**: Consumer preferences, utility theory, demand curves, law of demand, factors affecting demand, elasticity of demand, consumer surplus, and consumer equilibrium.
+            - **Producer Behavior and Supply**: Production theory, costs of production, supply curves, law of supply, factors affecting supply, elasticity of supply, producer surplus, and producer equilibrium.
+            - **Market Equilibrium**: Market forces, price determination, equilibrium price and quantity, shifts in demand and supply, market efficiency, and price controls.
+            - **Collection, Organisation and Presentation of data**: Data collection methods, surveys, sampling techniques, data organization, tabulation, graphical representation, frequency distributions, and data presentation formats.
+            - **Statistical Tools and Interpretation**: Measures of central tendency, measures of dispersion, correlation, regression analysis, index numbers, time series analysis, and statistical interpretation of economic data.
+            
+            Question: {question}
+
+            -- THINK STEP --
+            First, think step-by-step about which topic best matches the question.
+            - Ignore the surface context (personal stories, general business scenarios, etc.) and focus on the economic concept or principle being asked
+            - Look for keywords that indicate economic processes: demand, supply, price, market, consumer, producer, data analysis, etc.
+            - Identify what economic knowledge would be needed to answer the question
+            
+            -- OUTPUT FORMAT --
+            Return your answer as a Python list with exactly two elements:
+            [classification, reasoning]
+            
+            Where:
+            - classification: The exact topic name from the list above, or "None" if no economic concept applies
+            - reasoning: A brief explanation (1-2 sentences) of why you chose this classification
+            
+            Example format: ["Consumer Behavior and Demand", "This question involves analyzing how consumers respond to price changes."]
+
+            -- FEW-SHOT EXAMPLES --
+            Q: What is opportunity cost and why is it important in economics?
+            A: ["Introduction to Economics", "This question asks about opportunity cost, which is a fundamental concept in basic economic theory."]
+
+            Q: How does a change in consumer income affect the demand for luxury goods?
+            A: ["Consumer Behavior and Demand", "This question examines how income changes influence consumer demand patterns for specific types of goods."]
+
+            Q: If the cost of raw materials increases, how will this affect a company's supply curve?
+            A: ["Producer Behavior and Supply", "This question analyzes how production costs impact a producer's willingness and ability to supply goods."]
+
+            Q: What happens to market price when both demand and supply increase simultaneously?
+            A: ["Market Equilibrium", "This question involves analyzing the interaction of demand and supply forces to determine equilibrium outcomes."]
+
+            Q: A researcher wants to study household spending patterns. What sampling method should they use to collect representative data?
+            A: ["Collection, Organisation and Presentation of data", "This question focuses on data collection methodology and sampling techniques for economic research."]
+
+            Q: Calculate the correlation coefficient between advertising expenditure and sales revenue using the given data.
+            A: ["Statistical Tools and Interpretation", "This question requires applying correlation analysis to interpret the relationship between economic variables."]
+
+            Q: A family is deciding between buying a car or saving for a house. They choose the house.
+            A: ["Introduction to Economics", "This scenario illustrates the concept of choice and opportunity cost, where choosing one option means giving up another."]
+
+            Q: When pizza prices increased from $10 to $15, weekly sales dropped from 100 to 60 units. What does this tell us about consumer behavior?
+            A: ["Consumer Behavior and Demand", "This question analyzes how price changes affect quantity demanded, which is core to understanding consumer behavior."]
+
+            Q: A survey collected data on 1000 households' monthly income. How should this data be organized for analysis?
+            A: ["Collection, Organisation and Presentation of data", "This question deals with organizing collected data for further economic analysis."]
+
+            Q: What is the capital of France?
+            A: ["None", "This is a geography question with no economic content or concepts involved."]
+
+            Q: How do I bake a cake?
+            A: ["None", "This is a cooking question with no economic content or concepts involved."]
+
+            Now, provide your answer:
+        
