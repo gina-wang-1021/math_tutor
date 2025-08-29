@@ -76,15 +76,15 @@ else:
     learning_topic = current_student.get('Learning Topic', 'Math')  # Default to math if not specified
     # Display personalized greeting based on learning topic
     if learning_topic.lower() == 'math':
-        st.title(f"Hi {current_student['First name']}, let's learn math today!")
+        st.title(f"Hi {current_student['First name'].lower().capitalize()}, let's learn math today!")
         subject_name = "Math"
         pipeline_func = math_pipeline
     elif learning_topic.lower() == 'econ':
-        st.title(f"Hi {current_student['First name']}, let's learn economics today!")
+        st.title(f"Hi {current_student['First name'].lower().capitalize()}, let's learn economics today!")
         subject_name = "Economics"
         pipeline_func = econ_pipeline
     else:
-        st.title(f"Hi {current_student['First name']}, let's start learning!")
+        st.title(f"Hi {current_student['First name'].lower().capitalize()}, let's start learning!")
         subject_name = "your subject"
         pipeline_func = math_pipeline
     
